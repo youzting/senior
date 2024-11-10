@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot WebSocket Chat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <style>
+        /* 스타일은 필요에 따라 설정 */
+    </style>
+</head>
+<body>
+
+<h2>채팅창</h2>
+
+<div>
+    <input type="text" id="sender" placeholder="Your Name" />
+    <input type="text" id="recipient" placeholder="Recipient Name" />
+    <textarea id="message" placeholder="Enter your message"></textarea>
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<div id="chat-box">
+    <h3>Chat Messages:</h3>
+    <ul id="messages"></ul>
+</div>
+
+<script>
+    var stompClient = null;
+    var socket = new SockJS('/chat');
+    stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/messages', function (messageOutput) {
+            showMessage(JSON.parse(messageOutput.body));
+        });
+    });
+
+    function sendMessage() {
+        var sender = document.getElementById("sender").value;
+        var recipient = document.getElementById("recipient").value;
+        var message = document.getElementById("message").value;
+
+        var chatMessage = {
+            sender: sender,
+            recipient: recipient,
+            content: message
+        };
+
+        stompClient.send("/app/send", {}, JSON.stringify(chatMessage));
+        document.getElementById("message").value = ''; // 메시지 전송 후 입력란 비우기
+    }
+
+    function showMessage(message) {
+        var messageElement = document.createElement('li');
+        messageElement.appendChild(document.createTextNode(message.sender + ": " + message.content));
+        document.getElementById("messages").appendChild(messageElement);
+    }
+</script>
+
+</body>
+</html>
