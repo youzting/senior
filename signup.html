@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            width: 400px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .submit-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>회원가입</h2>
+        <form id="signup-form" method="post" action="signup/insert">
+            <div class="form-group">
+                <label for="username">아이디</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">전화번호</label>
+                <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" pattern="\d{3}-\d{4}-\d{4}" required>
+            </div>
+            <div class="form-group">
+                <label for="birthdate">생년월일</label>
+                <input type="date" id="birthdate" name="birthdate" required onchange="calculateAge()">
+            </div>
+            <div class="form-group">
+                <label for="age">나이</label>
+                <input type="number" id="age" name="age" readonly>
+            </div>
+            <div class="form-group">
+                <label for="gender">성별</label>
+                <select id="gender" name="gender" required>
+                    <option value="">선택</option>
+                    <option value="남성">남성</option>
+                    <option value="여성">여성</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="interests">취미</label>
+                <textarea id="interests" name="interests" placeholder="관심 있는 취미를 입력하세요 (선택 사항)"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="health_conditions">건강 상태</label>
+                <textarea id="health_conditions" name="health_conditions" placeholder="건강 상태를 입력하세요 (선택 사항)"></textarea>
+            </div>
+            <button type="submit" class="submit-button">회원가입</button>
+        </form>
+    </div>
+
+    <script>
+        // 생년월일 입력 시 나이 자동 계산 함수
+        function calculateAge() {
+            const birthdate = document.getElementById("birthdate").value;
+            const ageInput = document.getElementById("age");
+
+            if (birthdate) {
+                const today = new Date();
+                const birthDate = new Date(birthdate);
+                let age = today.getFullYear() - birthDate.getFullYear() + 1;
+
+                ageInput.value = age;
+            }
+        }
+
+        // 전화번호 입력란 자동 하이픈 추가
+        document.getElementById("phone").addEventListener("input", function (e) {
+            let value = e.target.value.replace(/\D/g, ''); // 숫자 외의 문자는 제거
+            if (value.length >= 7) {
+                e.target.value = `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7)}`;
+            } else if (value.length >= 4) {
+                e.target.value = `${value.slice(0, 3)}-${value.slice(3)}`;
+            } else {
+                e.target.value = value;
+            }
+        });
+    </script>
+</body>
+</html>
