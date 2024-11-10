@@ -96,4 +96,65 @@ public class Server {
     private static void handleSignup(HttpExchange exchange) throws IOException {
         // POST 요청 바디 읽기
         String responseMessage = "<html><body>";
-        InputStream input
+        InputStream inputStream = exchange.getRequestBody();
+        String body = new String(inputStream.readAllBytes());
+
+        // 간단한 아이디 중복 체크 시나리오 (예: username=test)
+        if (body.contains("username=test")) {
+            // 회원가입 실패 메시지, 팝업 페이지로 리다이렉션
+            responseMessage += "<h1>아이디가 중복됩니다. 다시 시도해주세요.</h1>";
+            responseMessage += "<a href='/signup'>돌아가기</a>";
+        } else {
+            // 회원가입 성공 후 팝업 페이지로 리다이렉션
+            String redirectUrl = "/popup?msg=회원가입%20성공&url=/login";
+            exchange.getResponseHeaders().set("Location", redirectUrl);
+            exchange.sendResponseHeaders(302, -1);  // 302 리다이렉션 상태 코드
+            return;
+        }
+        responseMessage += "</body></html>";
+
+        exchange.sendResponseHeaders(200, responseMessage.length());
+        OutputStream os = exchange.getResponseBody();
+        os.write(responseMessage.getBytes());
+        os.close();
+    }
+
+    // 로그인 체크 후 팝업 페이지로 리다이렉트
+    private static void handleLogin(HttpExchange exchange) throws IOException {
+        String responseMessage = "<html><body>";
+        InputStream inputStream = exchange.getRequestBody();
+        String body = new String(inputStream.readAllBytes());
+
+        // 간단한 로그인 체크 (예: username=test, password=test)
+        if (body.contains("username=test") && body.contains("password=test")) {
+            // 로그인 성공 후 팝업 페이지로 리다이렉션
+            String redirectUrl = "/popup?msg=로그인%20성공&url=/home";
+            exchange.getResponseHeaders().set("Location", redirectUrl);
+            exchange.sendResponseHeaders(302, -1);  // 302 리다이렉션 상태 코드
+            return;
+        } else {
+            responseMessage += "<h1>아이디 또는 비밀번호가 틀렸습니다. 다시 시도해주세요.</h1>";
+            responseMessage += "<a href='/login'>돌아가기</a>";
+        }
+
+        responseMessage += "</body></html>";
+
+        exchange.sendResponseHeaders(200, responseMessage.length());
+        OutputStream os = exchange.getResponseBody();
+        os.write(responseMessage.getBytes());
+        os.close();
+    }
+
+    // 쿼리 파라미터를 맵으로 변환하는 메서드
+    private static Map<String, String> queryToMap(String query) {
+        Map<String, String> map = new HashMap<>();
+        String[] pairs = query.split("&");
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=");
+            if (keyValue.length == 2) {
+                map.put(keyValue[0], keyValue[1]);
+            }
+        }
+        return map;
+    }
+}
