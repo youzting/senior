@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        header a {
+            text-decoration: none;
+            color: white;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .profile-info, .booking-history {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px 0;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile-info h2, .booking-history h2 {
+            margin-top: 0;
+        }
+        .edit-form {
+            display: none;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function toggleEditForm() {
+            const form = document.getElementById('editForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+
+<header>
+    <a href="home"><h1 style="color: white; text-decoration: none;">노인 친구 찾기(가제)</h1></a>
+</header>
+
+<div class="main-content">
+    <div class="profile-info">
+        <h2>프로필 정보</h2>
+        <p><strong>아이디:</strong> <span id="profileUsername" th:text="${me.username}"></span></p>
+        <p><strong>이메일:</strong> <span id="profileEmail" th:text="${me.email}"></span></p>
+        <p><strong>휴대폰 번호:</strong> <span id="profilePhone" th:text="${me.phone}"></span></p>
+        <p><strong>생년월일:</strong> <span id="profileBirthdate" th:text="${me.birthdate}"></span></p>
+        <p><strong>나이:</strong> <span id="profileAge" th:text="${me.age}"></span></p>
+        <p><strong>성별:</strong> <span id="profileGender" th:text="${me.gender}"></span></p>
+        <p><strong>취미:</strong> <span id="profileInterests" th:text="${me.interests}">없음</span></p>
+        <p><strong>건강상태:</strong> <span id="profileHelath_Conditions" th:text="${me.health_conditions}">없음</span></p>
+        <button onclick="toggleEditForm()">프로필 수정</button>
+
+        <div id="editForm" class="edit-form">
+            <h3>프로필 수정</h3>
+            <form action="/mypage/update" method="post">
+                <strong>아이디:</strong>
+                <input type="text" id="id" name="username" th:value="${me.username}" readonly><br><br>
+                <strong>비밀번호:</strong>
+                <input type="password" id="password" name="password" th:value="${me.password}"><br><br>
+                <strong>이메일:</strong>
+                <input type="email" id="email" name="email" th:value="${me.email}"><br><br>
+                <strong>휴대폰 번호:</strong>
+                <input type="tel" id="phone" name="phone" th:value="${me.phone}"><br><br>
+                <strong>생년월일:</strong>
+                <input type="date" id="birthdate" name="birthdate" th:value="${me.birthdate}" readonly><br><br>
+                <strong>나이:</strong>
+                <input type="number" id="age" name="age" th:value="${me.age}" readonly><br><br>
+                <strong>성별:</strong>
+                <input type="text" id="gender" name="gender" th:value="${me.gender}" readonly><br><br>
+                <strong>취미:</strong>
+                <textarea id="interests" name="interests" placeholder="관심 있는 취미를 입력하세요 (선택 사항)"></textarea><br><br>
+                <strong>건강상태:</strong>
+                <textarea id="health_conditions" name="health_conditions" placeholder="건강 상태를 입력하세요 (선택 사항)"></textarea><br><br>
+                <button type="submit">저장</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
