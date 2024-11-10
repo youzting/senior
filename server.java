@@ -10,7 +10,7 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-public class VanControllerServer {
+public class server {
 
     public static void main(String[] args) throws Exception {
         // 0.0.0.0을 사용하면 외부에서도 접근할 수 있는 IP로 서버를 시작합니다.
