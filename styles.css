@@ -1,0 +1,242 @@
+/* 기본 스타일 */
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    color: #333;
+    background-color: #f4f6f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* 헤더 */
+  .header {
+    display: flex;
+    align-items: center;
+    padding: 1em 1.5em;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%;
+    position: fixed; /* 헤더를 고정 */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* 사이드 메뉴 위에 표시 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  /* 메인 레이아웃 */
+  .main-layout {
+    display: flex;
+    width: 100%;
+    margin-top: 3.5em; /* 헤더 높이만큼 추가 */
+    position: relative;
+  }
+  
+  /* 사이드 메뉴 */
+  .side-menu {
+    width: 200px;
+    max-width: 20%;
+    background-color: #f8f9fa;
+    padding: 1em;
+    border-right: 1px solid #e0e0e0;
+    position: fixed; /* 화면 왼쪽에 고정 */
+    left: 0;
+    top: 3.5em; /* 헤더 높이만큼 아래로 내림 */
+    bottom: 0;
+    transition: width 0.3s ease;
+  }
+  
+  .side-menu ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .side-menu ul li {
+    margin-bottom: 1em;
+  }
+  
+  .side-menu ul li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1em;
+  }
+  
+  .side-menu ul li a:hover {
+    color: #007bff;
+  }
+  
+  /* 사이드 메뉴 숨기기 */
+  .side-menu.hidden {
+    width: 50px; /* 접힌 상태에서도 여닫기 버튼을 볼 수 있도록 너비를 조절 */
+  }
+  
+  .side-menu.hidden ul {
+    display: none;
+  }
+  
+  .menu-toggle {
+    font-size: 1.5em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    position: absolute;
+    top: 10px;
+    right: -35px;
+    background-color: #f8f9fa;
+    padding: 0.5em;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 콘텐츠 영역 */
+  .content-area {
+    flex-grow: 1;
+    padding: 2em;
+    transition: margin-left 0.3s ease;
+    width: calc(100% - 200px); /* 사이드 메뉴 너비를 제외한 나머지 */
+  }
+  
+  .main-layout.side-collapsed .content-area {
+    margin-left: 50px;
+    width: calc(100% - 50px); /* 사이드 메뉴가 접혔을 때 너비 */
+  }
+  
+  .main-layout:not(.side-collapsed) .content-area {
+    margin-left: 200px;
+    width: calc(100% - 200px); /* 사이드 메뉴가 펼쳐졌을 때 너비 */
+  }
+  
+  /* 서비스 제목 영역 */
+  .service-title {
+    text-align: center;
+    padding: 2.5em;
+    background-color: #007bff;
+    color: #fff;
+    margin-bottom: 1.5em;
+  }
+  
+  .service-title h1 {
+    font-size: 2em;
+    margin: 0;
+  }
+  
+  .service-title p {
+    font-size: 1.1em;
+    margin-top: 0.5em;
+    color: #e0e0e0;
+  }
+  
+  /* 필터 및 검색 영역 */
+  .filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    margin-bottom: 2em;
+    flex-wrap: wrap; /* 화면 크기에 따라 줄바꿈 */
+  }
+  
+  .filters select {
+    padding: 0.5em;
+    font-size: 1em;
+    width: 200px;
+    max-width: 100%;
+  }
+  
+  .filters .btn {
+    padding: 0.5em 1.5em;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  
+  .filters .btn:hover {
+    background-color: #0056b3;
+  }
+  
+/* 콘텐츠 카드 */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: center;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  max-width: 100%;
+  text-align: center;
+  text-decoration: none; /* 링크 밑줄 제거 */
+  color: inherit; /* 링크 색상 상속 */
+  transition: transform 0.2s ease; /* 마우스 오버 시 확대 효과 */
+}
+
+.card:hover {
+  transform: scale(1.05); /* 마우스 오버 시 확대 효과 */
+}
+
+.card h3 {
+  color: #007bff; /* 제목 색상 */
+  font-size: 1.25em;
+  margin: 0;
+  text-decoration: none; /* 제목 링크 밑줄 제거 */
+}
+
+.card p {
+  font-size: 0.9em;
+  color: #666;
+  margin: 1em 0;
+}
+
+.card .btn {
+  display: inline-block;
+  padding: 0.5em 1em;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  text-decoration: none; /* 버튼 텍스트 밑줄 제거 */
+  margin-top: 1em;
+}
+
+.card .btn:hover {
+  background-color: #0056b3;
+}
+  
+  /* 푸터 */
+  .footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+    width: 100%;
+    margin-left: 0; /* 반응형을 위해 변경 */
+  }
+  
+  .footer-links a {
+    color: #aaa;
+    margin: 0 0.5em;
+    text-decoration: none;
+  }
+  
+  .footer-links a:hover {
+    color: #fff;
+  }
