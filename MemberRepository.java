@@ -5,9 +5,9 @@ import java.sql.ResultSet;
 
 public class MemberDAO {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/your_database";
-    private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "password";
+    private static final String DB_URL = "jdbc:mysql://116.124.191.174:15016/kdh_2023605";
+    private static final String DB_USERNAME = "kdh_2023605";
+    private static final String DB_PASSWORD = "kdh_2023605";
 
     public static String findPasswordByUsername(String username) {
         String password = null;
