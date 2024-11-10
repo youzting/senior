@@ -19,6 +19,9 @@ public class server {
         // 경로별 핸들러 매핑
         Map<String, HttpHandler> handlers = new HashMap<>();
 
+        // /home 경로 핸들러 (홈 화면)
+        handlers.put("/home", exchange -> servePage(exchange, "home.html"));
+
         // /login 경로 핸들러
         handlers.put("/login", exchange -> servePage(exchange, "login.html"));
 
