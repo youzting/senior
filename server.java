@@ -7,7 +7,7 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class SimpleHttpServer {
+public class server {
 
     public static void main(String[] args) throws IOException {
         // 서버의 IP 주소와 포트 번호
