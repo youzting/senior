@@ -31,6 +31,22 @@ public class server {
         // /mypage 경로 핸들러
         handlers.put("/mypage", exchange -> servePage(exchange, "mypage.html"));
 
+        handlers.put("/chat", exchange -> servePage(exchange, "chat.html"));
+
+        handlers.put("/hobbyRec", exchange -> servePage(exchange, "hobbyRec.html"));
+
+        handlers.put("/matching", exchange -> servePage(exchange, "matching.html"));
+
+        handlers.put("/popup", exchange -> servePage(exchange, "popup.html"));
+
+        handlers.put("/progApply", exchange -> servePage(exchange, "progApply.html"));
+
+        handlers.put("/program", exchange -> servePage(exchange, "program.html"));
+
+        handlers.put("/proginfo", exchange -> servePage(exchange, "proginfo.html"));
+
+        handlers.put("/user", exchange -> servePage(exchange, "user.html"));
+
         // 핸들러 추가
         for (Map.Entry<String, HttpHandler> entry : handlers.entrySet()) {
             server.createContext(entry.getKey(), entry.getValue());
