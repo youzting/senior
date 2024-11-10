@@ -7,16 +7,19 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.net.InetSocketAddress;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.BufferedWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class server {
+public class Server {
 
     public static void main(String[] args) throws Exception {
-        // 0.0.0.0을 사용하면 외부에서도 접근할 수 있는 IP로 서버를 시작합니다.
         HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 15016), 0);
 
-        // 경로별 핸들러 매핑
+        // 경로별 핸들러 설정
         Map<String, HttpHandler> handlers = new HashMap<>();
 
         // /home 경로 핸들러 (홈 화면)
@@ -31,21 +34,19 @@ public class server {
         // /mypage 경로 핸들러
         handlers.put("/mypage", exchange -> servePage(exchange, "mypage.html"));
 
+        // 추가된 페이지 핸들러
         handlers.put("/chat", exchange -> servePage(exchange, "chat.html"));
-
         handlers.put("/hobbyRec", exchange -> servePage(exchange, "hobbyRec.html"));
-
         handlers.put("/matching", exchange -> servePage(exchange, "matching.html"));
-
-        handlers.put("/popup", exchange -> servePage(exchange, "popup.html"));
-
+        handlers.put("/popup", exchange -> servePopupPage(exchange)); // 팝업 페이지 핸들러
         handlers.put("/progApply", exchange -> servePage(exchange, "progApply.html"));
-
         handlers.put("/program", exchange -> servePage(exchange, "program.html"));
-
         handlers.put("/proginfo", exchange -> servePage(exchange, "proginfo.html"));
-
         handlers.put("/user", exchange -> servePage(exchange, "user.html"));
+
+        // POST 요청 핸들러 추가
+        handlers.put("/signup/insert", exchange -> handleSignup(exchange));
+        handlers.put("/login/check", exchange -> handleLogin(exchange));
 
         // 핸들러 추가
         for (Map.Entry<String, HttpHandler> entry : handlers.entrySet()) {
@@ -73,5 +74,83 @@ public class server {
             os.write(response.getBytes());
             os.close();
         }
+    }
+
+    // 팝업 페이지를 서빙하는 메서드
+    private static void servePopupPage(HttpExchange exchange) throws IOException {
+        String query = exchange.getRequestURI().getQuery();
+        Map<String, String> queryParams = queryToMap(query);
+
+        String msg = queryParams.get("msg");
+        String url = queryParams.get("url");
+
+        String responseMessage = "<html><body>";
+        responseMessage += "<h1>" + msg + "</h1>";
+        responseMessage += "<a href='" + url + "'>이동하기</a>";
+        responseMessage += "</body></html>";
+
+        exchange.sendResponseHeaders(200, responseMessage.length());
+        OutputStream os = exchange.getResponseBody();
+        os.write(responseMessage.getBytes());
+        os.close();
+    }
+
+    // 회원가입 처리 후 팝업 페이지로 리다이렉트
+    private static void handleSignup(HttpExchange exchange) throws IOException {
+        // POST 요청 바디 읽기
+        String responseMessage = "<html><body>";
+        InputStream inputStream = exchange.getRequestBody();
+        String body = new String(inputStream.readAllBytes());
+
+        // 간단한 아이디 중복 체크 시나리오 (예: username=test)
+        if (body.contains("username=test")) {
+            responseMessage += "<h1>아이디가 중복됩니다. 다시 시도해주세요.</h1>";
+            responseMessage += "<a href='/signup'>돌아가기</a>";
+        } else {
+            responseMessage += "<h1>회원가입이 완료되었습니다. 로그인해주세요.</h1>";
+            responseMessage += "<a href='/login'>로그인 페이지로 가기</a>";
+        }
+        responseMessage += "</body></html>";
+
+        exchange.sendResponseHeaders(200, responseMessage.length());
+        OutputStream os = exchange.getResponseBody();
+        os.write(responseMessage.getBytes());
+        os.close();
+    }
+
+    // 로그인 체크 후 팝업 페이지로 리다이렉트
+    private static void handleLogin(HttpExchange exchange) throws IOException {
+        String responseMessage = "<html><body>";
+        InputStream inputStream = exchange.getRequestBody();
+        String body = new String(inputStream.readAllBytes());
+
+        // 간단한 로그인 체크 (예: username=test, password=test)
+        if (body.contains("username=test") && body.contains("password=test")) {
+            responseMessage += "<h1>로그인 성공! 홈으로 이동합니다.</h1>";
+            responseMessage += "<a href='/home'>홈으로 가기</a>";
+        } else {
+            responseMessage += "<h1>아이디 또는 비밀번호가 틀렸습니다. 다시 시도해주세요.</h1>";
+            responseMessage += "<a href='/login'>돌아가기</a>";
+        }
+
+        responseMessage += "</body></html>";
+
+        exchange.sendResponseHeaders(200, responseMessage.length());
+        OutputStream os = exchange.getResponseBody();
+        os.write(responseMessage.getBytes());
+        os.close();
+    }
+
+    // 쿼리 파라미터를 맵으로 변환하는 메서드
+    private static Map<String, String> queryToMap(String query) {
+        Map<String, String> map = new HashMap<>();
+        String[] pairs = query.split("&");
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=");
+            if (keyValue.length == 2) {
+                map.put(keyValue[0], keyValue[1]);
+            }
+        }
+        return map;
     }
 }
