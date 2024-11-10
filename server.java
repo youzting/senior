@@ -18,7 +18,7 @@ public class server {
             @Override
             public void handle(HttpExchange exchange) throws IOException {
                 // 요청된 HTML 파일 경로
-                String filePath = "index.html";
+                String filePath = "home.html";
                 
                 // HTML 파일 읽기
                 byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
