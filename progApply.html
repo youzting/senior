@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프로그램 신청하기</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="home" class="logo">홈페이지로 이동</a>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="main-layout">
+    <!-- 사이드 메뉴 (고정) -->
+    <aside class="side-menu" id="side-menu">
+      <ul>
+        <li><a href="hobbyRec">취미 추천</a></li>
+        <li><a href="matching">유저 매칭</a></li>
+        <li><a href="program">프로그램 검색</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="content-area">
+      <!-- 신청서 제목 -->
+      <section class="service-title">
+        <h1>프로그램 신청하기</h1>
+        <p>아래에서 신청할 일정을 선택하세요.</p>
+      </section>
+
+      <!-- 신청서 폼 -->
+      <section class="content-section">
+        <form id="application-form" class="centered-form">
+          <label for="preferred_date">참여 희망 날짜:</label>
+          <input type="date" id="preferred_date" name="preferred_date" required>
+
+          <label for="preferred_time">참여 희망 시간:</label>
+          <input type="time" id="preferred_time" name="preferred_time" required>
+
+          <!-- 제출 버튼 -->
+          <button type="button" class="btn" onclick="confirmReminder()">신청하기</button>
+          <a href="ProgInfo" class="btn" style="display:inline-block; margin-top:1em;">프로그램 정보로 돌아가기</a>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#privacy">개인정보 처리방침</a>
+      <a href="#terms">이용 약관</a>
+    </div>
+    <p>&copy; 2024 경로당테스트. All Rights Reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    function confirmReminder() {
+      const userConfirmed = confirm("리마인더를 사용하시겠습니까?");
+      if (userConfirmed) {
+        // 리마인더 페이지로 이동 -> 별도로db에 저장?
+        window.location.href = "reminder_page";
+      } else {
+        // 리마인더 사용을 거부한 경우, 신청서만 제출
+        document.getElementById("application-form").submit();
+      }
+    }
+  </script>
+
+  <!-- CSS 스타일링 -->
+  <style>
+    /* 기본 페이지 스타일 */
+    body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      color: #333;
+      background-color: #f4f6f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    /* 메인 레이아웃 스타일 */
+    .main-layout {
+      display: flex;
+      width: 100%;
+      margin-top: 3.5em; /* 헤더 높이만큼 추가 */
+    }
+
+    /* 중앙 정렬된 폼 스타일 */
+    .content-section {
+      display: flex;
+      justify-content: center; /* 수평 중앙 정렬 */
+      align-items: center; /* 수직 중앙 정렬 */
+      min-height: 60vh;
+    }
+
+    .centered-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5em;
+    }
+
+    /* 날짜 및 시간 선택 필드 */
+    .centered-form label {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .centered-form input[type="date"],
+    .centered-form input[type="time"] {
+      font-size: 1.2em;
+      padding: 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    /* 버튼 스타일 */
+    .btn {
+      font-size: 1.2em;
+      padding: 0.5em 2em;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+
+</body>
+</html>
