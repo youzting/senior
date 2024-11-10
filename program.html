@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프로그램 검색</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script> <!-- JavaScript 파일 연결 -->
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="home" class="logo">홈페이지로 이동</a>
+  </header>
+
+  <!-- Main Layout (사이드 메뉴 포함) -->
+  <div class="main-layout">
+    <!-- 사이드 메뉴 (토글 버튼 포함) -->
+    <aside class="side-menu" id="side-menu">
+      <button id="toggle-menu" class="menu-toggle">☰</button>
+      <ul>
+        <li><a href="hobbyRec">취미 추천</a></li>
+        <li><a href="matching">유저 매칭</a></li>
+        <li><a href="program">프로그램 검색</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="content-area">
+      <!-- 서비스 제목 영역 -->
+      <section class="service-title">
+        <h1>프로그램 검색</h1>
+        <p>관심 있는 프로그램을 찾고 리마인더 설정을 해보세요.</p>
+      </section>
+
+      <!-- 프로그램 검색 영역 -->
+      <section class="filters">
+        <h2>프로그램 검색</h2>
+        <input type="text" id="program-search" placeholder="프로그램 이름 입력">
+        <button class="btn">검색</button>
+      </section>
+
+      <!-- 검색 결과 목록 -->
+      <section class="content-section">
+        <h2>검색 결과</h2>
+        <div class="card-container">
+          <a href="progInfo" class="card">
+            <h3>요가 클래스</h3>
+            <p>위치: 서울, 시간: 매주 화요일 10:00</p>
+            <div class="btn">리마인더 설정</div>
+          </a>
+          <a href="progInfo" class="card">
+            <h3>코딩 부트캠프</h3>
+            <p>위치: 온라인, 시간: 매주 토요일 14:00</p>
+            <div class="btn">리마인더 설정</div>
+          </a>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#privacy">개인정보 처리방침</a>
+      <a href="#terms">이용 약관</a>
+    </div>
+    <p>&copy; 2024 경로당테스트. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>
