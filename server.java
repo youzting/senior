@@ -11,7 +11,7 @@ public class server {
 
     public static void main(String[] args) throws IOException {
         // 서버의 IP 주소와 포트 번호
-        HttpServer server = HttpServer.create(new InetSocketAddress("116.124.191.174", 15016), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 15016), 0);
 
         // 요청을 처리할 핸들러 설정
         server.createContext("/", new HttpHandler() {
@@ -35,7 +35,7 @@ public class server {
         });
 
         // 서버 시작
-        System.out.println("Server started at http://116.124.191.174:15016/");
+        System.out.println("Server started at http://0.0.0.0:15016/");
         server.start();
     }
 }
