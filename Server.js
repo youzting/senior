@@ -47,6 +47,7 @@ app.get('/', (req, res) => {
 
 
 // 서버 실행
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
+app.listen(15016, '0.0.0.0', () => {  // 모든 네트워크 인터페이스에서 포트 열기
+  console.log('서버가 0.0.0.0:15016 포트에서 실행 중...');
 });
+
