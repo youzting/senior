@@ -1,24 +1,4 @@
-// 카테고리
-const categoryButton = document.querySelector('.category'); // '카테고리' 버튼
-const categoryContent = document.getElementById('categoryContent'); // 카테고리 내용
 
-categoryButton.addEventListener('click', () => {
-  const isActive = categoryButton.classList.contains('active');
-
-  // 카테고리 버튼 상태 토글
-  categoryButton.classList.toggle('active');
-  categoryButton.textContent = isActive 
-      ? categoryButton.textContent.replace('▽', '▶') 
-      : categoryButton.textContent.replace('▶', '▽');
-
-  // 내용 표시/숨기기 (display 속성 추가)
-  if (isActive) {
-    categoryContent.style.display = 'none';  // 숨김
-  } else {
-    categoryContent.style.display = 'block'; // 표시
-    categoryContent.classList.add('show');
-  }
-});
 
 const express = require('express');
 const cors = require('cors');
