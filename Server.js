@@ -38,6 +38,11 @@ app.get('/home', (req, res) => {
     res.render('home', { username });  // EJS 템플릿에 username 전달
 });
 
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'home.html')); //홈
+});
+
 // 아이디 중복 확인 API
 app.post('/check-username', (req, res) => {
   const username = req.body.username;
