@@ -32,16 +32,6 @@ app.use(bodyParser.json());
 // 세션 설정--------------------------------------
 app.use(session({ secret: 'your-secret', resave: false, saveUninitialized: true }));
 
-// 홈 페이지
-app.get('/home', (req, res) => {
-    const username = req.session.username;  // 세션에서 로그인된 사용자 정보 가져오기
-    res.render('home', { username });  // EJS 템플릿에 username 전달
-});
-
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'home.html')); //홈
-});
 
 // 아이디 중복 확인 API
 app.post('/check-username', (req, res) => {
@@ -230,4 +220,57 @@ app.get('/user', (req, res) => {
 
 app.listen(15016, '0.0.0.0', () => {  // 모든 네트워크 인터페이스에서 포트 열기
   console.log('서버가 0.0.0.0:15016 포트에서 실행 중...');
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'home.html')); //홈
+});
+
+app.get('/home', (req, res) => {
+    const username = req.session.username;  // 세션에서 로그인된 사용자 정보 가져오기
+    res.render('home', { username });  // EJS 템플릿에 username 전달
+});
+
+app.get('/HobbyRec', (req, res) => {
+  res.sendFile(path.join(__dirname, 'HobbyRec.html'));
+});
+
+app.get('/matching', (req, res) => {
+  res.sendFile(path.join(__dirname, 'matching.html'));
+});
+
+app.get('/chat', (req, res) => {
+  res.sendFile(path.join(__dirname, 'chat.html'));
+});
+
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+app.get('/signup', (req, res) => {
+  res.sendFile(path.join(__dirname, 'signup.html'));
+});
+
+app.get('/mypage', (req, res) => {
+  res.sendFile(path.join(__dirname, 'mypage.html'));
+});
+
+app.get('/popup', (req, res) => {
+  res.sendFile(path.join(__dirname, 'popup.html'));
+});
+
+app.get('/progApply', (req, res) => {
+  res.sendFile(path.join(__dirname, 'progApply.html'));
+});
+
+app.get('/Program', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Program.html'));
+});
+
+app.get('/progInfo', (req, res) => {
+  res.sendFile(path.join(__dirname, 'progInfo.html'));
+});
+
+app.get('/user', (req, res) => {
+  res.sendFile(path.join(__dirname, 'user.html'));
 });
