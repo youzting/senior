@@ -59,13 +59,24 @@ function isAuthenticated(req, res, next) {
 
 // 라우팅
 // 홈 페이지
+// 홈 라우트
 app.get('/', (req, res) => {
-    res.render('home.html', { username: req.session.username });
+    const username = req.session.username || null;
+    res.sendFile(path.join(__dirname, 'public', 'home.html'), {
+        headers: {
+            'Content-Type': 'text/html',
+        },
+    });
 });
 
 // 로그인 페이지
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+// 세션 값 전송 API
+app.get('/api/session', (req, res) => {
+    res.json({ username: req.session.username || null });
 });
 
 // 로그인 처리
