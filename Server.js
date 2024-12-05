@@ -164,8 +164,6 @@ app.get('/mypage', isAuthenticated, (req, res) => {
 app.post('/mypage/update', isAuthenticated, (req, res) => {
     const { username, email, phone, birthdate, age, gender, interests, health_conditions } = req.body;
     const usernameFromSession = req.session.username;
-    const preferredDate = req.body.preferred_date;  // 참여 희망 날짜
-    const preferredTime = req.body.preferred_time;  // 참여 희망 시간
 
 
     // 세션과 데이터베이스에서 사용자 정보를 업데이트
