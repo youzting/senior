@@ -78,14 +78,14 @@ app.post('/login', (req, res) => {
             return res.status(401).send('유효하지 않은 사용자명 또는 비밀번호');
         }
         req.session.username = username;
-        res.redirect('/');
+        res.redirect('/home');
     });
 });
 
 // 로그아웃
 app.get('/logout', (req, res) => {
     req.session.destroy();
-    res.redirect('/');
+    res.redirect('/home');
 });
 
 // 회원가입 페이지
