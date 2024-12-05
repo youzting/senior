@@ -77,7 +77,7 @@ app.get('/api/session', (req, res) => {
 // 로그인 처리
 app.post('/login/check', (req, res) => {
     const { username, password } = req.body;
-    db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
+    db.query('SELECT * FROM member WHERE username = ?', [username], async (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).send('서버 에러');
