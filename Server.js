@@ -80,7 +80,7 @@ app.get('/api/session', (req, res) => {
 });
 
 // 로그인 처리
-app.post('/login', (req, res) => {
+app.post('/login/check', (req, res) => {
     const { username, password } = req.body;
     db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
         if (err) {
