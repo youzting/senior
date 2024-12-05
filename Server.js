@@ -57,8 +57,7 @@ function isAuthenticated(req, res, next) {
 // 라우팅
 // 홈 페이지
 app.get('/', (req, res) => {
-    const username = req.session.username || null;
-    res.render('home', { username });
+    res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 
 // 로그인 페이지
