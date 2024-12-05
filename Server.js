@@ -159,6 +159,32 @@ app.get('/mypage', isAuthenticated, (req, res) => {
     });
 });
 
+// 마이페이지 수정 처리
+app.post('/mypage/update', isAuthenticated, (req, res) => {
+    const { username, email, phone, birthdate, age, gender, interests, health_conditions } = req.body;
+    const usernameFromSession = req.session.username;
+
+    // 세션과 데이터베이스에서 사용자 정보를 업데이트
+    if (!usernameFromSession) {
+        return res.status(400).send('사용자 정보가 없습니다.');
+    }
+
+    const updateQuery = `
+        UPDATE member
+        SET email = ?, phone = ?, birthdate = ?, age = ?, gender = ?, interests = ?, health_conditions = ?
+        WHERE username = ?
+    `;
+
+    db.query(updateQuery, [email, phone, birthdate, age, gender, interests, health_conditions, usernameFromSession], (err, results) => {
+        if (err) {
+            console.error('업데이트 오류:', err);
+            return res.status(500).send('서버 오류');
+        }
+        res.redirect('/mypage');  // 업데이트 후 마이페이지로 리다이렉트
+    });
+});
+
+
 // 기타 페이지 라우팅
 const pages = ['hobbyRec', 'matching', 'program', 'progApply', 'progInfo', 'chat'];
 pages.forEach(page => {
