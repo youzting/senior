@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>노인 친구 찾기(가제)</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <header>
@@ -14,17 +14,17 @@
 <div class="main-content">
     <div class="video-container">
         <h2>나에게 맞는 취미를 찾아보세요!</h2>
-        {$ if username $}
+        {% if username %}
             <div>
-                <a href="hobbyList">취미 목록</a>
-                <a href="matching">매칭</a>
-                <a href="logout">로그아웃</a>
-                <a href="mypage">마이페이지</a>
+                <a href="/hobbyList">취미 목록</a>
+                <a href="/matching">매칭</a>
+                <a href="/logout">로그아웃</a>
+                <a href="/mypage">마이페이지</a>
             </div>
         {% else %}
             <div>
-                <a href="login">로그인</a>
-                <a href="signup">회원가입</a>
+                <a href="/login">로그인</a>
+                <a href="/signup">회원가입</a>
             </div>
         {% endif %}
     </div>
@@ -33,7 +33,5 @@
 <footer>
     <p>&copy; 2024 SeniorHobbyFinder. All rights reserved.</p>
 </footer>
-<script src="Server.js">
-</script>
 </body>
 </html>
