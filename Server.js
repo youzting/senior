@@ -201,6 +201,7 @@ app.post('/appform', isAuthenticated, (req, res) => {
 
         res.send('신청서가 성공적으로 저장되었습니다.');
     });
+});
 
     
 
