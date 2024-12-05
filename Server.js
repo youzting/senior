@@ -12,10 +12,10 @@ const app = express();
 
 // MySQL 연결 설정
 const db = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'test'
+    host: 'localhost',
+    user: 'kdh_2023605',
+    password: 'kdh_2023605',
+    database: 'kdh_2023605'
 });
 
 db.connect((err) => {
