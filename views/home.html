@@ -15,15 +15,15 @@
 <nav>
     {% if username %}
         <div>
-            <a href="login">로그인</a>
-            <a href="signup">회원가입</a>
-        </div>
-    {% else %}
-        <div>
             <a href="hobbyList">취미 목록</a>
             <a href="matching">매칭</a>
             <a href="logout">로그아웃</a>
             <a href="mypage">마이페이지</a>
+        </div>
+    {% else %}
+        <div>
+            <a href="login">로그인</a>
+            <a href="signup">회원가입</a>
         </div>
     {% endif %}
 </nav>
