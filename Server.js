@@ -197,7 +197,6 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
         }
         res.redirect('/mypage');  // 업데이트 후 마이페이지로 리다이렉트
     });
-);
 
 
 // 기타 페이지 라우팅
