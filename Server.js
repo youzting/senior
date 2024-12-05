@@ -8,8 +8,6 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
 const bcrypt = require('bcrypt');
-const util = require('util');
-const query = util.promisify(db.query).bind(db);
 
 const app = express();
 
