@@ -6,6 +6,7 @@ const app = express();
 const path = require('path');
 const session = require('express-session');
 const mySQLStore = require('express-mysql-session')(session);
+const sessionStore = new mySQLStore({}, db);
 
 // MySQL 연결
 const db = mysql.createConnection({
