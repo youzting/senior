@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const nunjucks = require('nunjucks');
 const cors = require('cors');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
@@ -42,9 +43,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 템플릿 엔진 설정 (EJS 사용)
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// 템플릿 엔진 설정 (nunjucks 사용)
+nunjucks.configure(path.join(__dirname, 'views'), {
+    autoescape: true,
+    express: app
+});
 
 // 유틸 함수: 인증 확인 미들웨어
 function isAuthenticated(req, res, next) {
@@ -57,7 +60,7 @@ function isAuthenticated(req, res, next) {
 // 라우팅
 // 홈 페이지
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
+    res.render('home.html', { username: req.session.username });
 });
 
 // 로그인 페이지
