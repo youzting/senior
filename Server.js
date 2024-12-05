@@ -105,7 +105,7 @@ app.get('/signup', (req, res) => {
 app.post('/signup/insert', async (req, res) => {
     const { username, password, email, phone, birthdate, age, gender, interests, health_conditions } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    db.query('INSERT INTO users (username, password, email, phone, birthdate, age, gender, interests, health_conditions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    db.query('INSERT INTO member (username, password, email, phone, birthdate, age, gender, interests, health_conditions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [username, hashedPassword, email, phone, birthdate, age, gender, interests, health_conditions],
         (err) => {
             if (err) {
