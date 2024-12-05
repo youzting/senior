@@ -189,13 +189,18 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
 
 
 app.post('/appform', isAuthenticated, (req, res) => {
-    const usernameFromSession = req.session.username;
+    const usernameFromSession = req.session.username;  // 세션에서 username을 가져옴
     const preferredDate = req.body.preferred_date;  // 참여 희망 날짜
     const preferredTime = req.body.preferred_time;  // 참여 희망 시간
 
-     const query = 'INSERT INTO application_form (username, preferred_date, preferred_time) VALUES (?, ?, ?)';
+    if (!usernameFromSession) {
+        return res.status(400).send('로그인된 사용자가 없습니다.');
+    }
 
-    db.query(query, [username, preferredDate, preferredTime], (err, result) => {
+    // 'application_form' 테이블에 username과 함께 신청서를 추가
+    const query = 'INSERT INTO application_form (username, preferred_date, preferred_time) VALUES (?, ?, ?)';
+
+    db.query(query, [usernameFromSession, preferredDate, preferredTime], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).send('신청서를 저장하는 중 오류가 발생했습니다.');
@@ -204,6 +209,7 @@ app.post('/appform', isAuthenticated, (req, res) => {
         res.send('신청서가 성공적으로 저장되었습니다.');
     });
 });
+
 
     
 
