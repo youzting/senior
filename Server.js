@@ -186,6 +186,23 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
     });
 });
 
+//(로그인한 사용자와 연동)
+app.get('/userpage', isAuthenticated, (req, res) => {
+    const username = req.session.username; // 로그인한 사용자의 username을 세션에서 가져옴
+
+    // `application_form` 테이블에서 해당 사용자의 신청 정보 조회
+    db.query('SELECT * FROM application_form WHERE username = ?', [username], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('마이페이지 정보를 가져오는 중 오류 발생');
+        }
+        // 신청 정보가 없으면 빈 데이터 전달
+        const applicationData = results.length > 0 ? results[0] : {};
+        res.render('appform', { user: req.session.username, preferredDate, preferredTime});
+    });
+});
+
+
 app.post('/appform', isAuthenticated, (req, res) => {
     const usernameFromSession = req.session.username;
     const preferredDate = req.body.preferred_date;  // 참여 희망 날짜
