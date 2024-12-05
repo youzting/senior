@@ -139,7 +139,7 @@ app.get('/user/:id', isAuthenticated, (req, res) => {
 // 마이페이지
 app.get('/mypage', isAuthenticated, (req, res) => {
     const username = req.session.username;
-    db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+    db.query('SELECT * FROM member WHERE username = ?', [username], (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).send('마이페이지 정보를 가져오는 중 오류 발생');
