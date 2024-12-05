@@ -10,7 +10,7 @@
 
   <!-- Header -->
   <header class="header">
-    <a href="home" class="logo">홈페이지로 이동</a>
+    <a href="/" class="logo">홈페이지로 이동</a>
   </header>
 
   <!-- Main Layout -->
@@ -34,16 +34,16 @@
 
       <!-- 신청서 폼 -->
       <section class="content-section">
-        <form id="application-form" class="centered-form">
-          <label for="preferred_date">참여 희망 날짜:</label>
-          <input type="date" id="preferred_date" name="preferred_date" required>
+        <form id="application-form" class="centered-form" method="POST" action="/mypage/update">
+        <label for="preferred_date">참여 희망 날짜:</label>
+        <input type="date" id="preferred_date" name="preferred_date" required>
 
-          <label for="preferred_time">참여 희망 시간:</label>
-          <input type="time" id="preferred_time" name="preferred_time" required>
+        <label for="preferred_time">참여 희망 시간:</label>
+        <input type="time" id="preferred_time" name="preferred_time" required>
 
-          <!-- 제출 버튼 -->
-          <button type="button" class="btn" onclick="confirmReminder()">신청하기</button>
-          <a href="ProgInfo" class="btn" style="display:inline-block; margin-top:1em;">프로그램 정보로 돌아가기</a>
+        <!-- 제출 버튼 -->
+        <button type="submit" class="btn">신청하기</button>
+        <a href="ProgInfo" class="btn" style="display:inline-block; margin-top:1em;">프로그램 정보로 돌아가기</a>
         </form>
       </section>
     </div>
