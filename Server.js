@@ -139,6 +139,7 @@ app.get('/user/:id', isAuthenticated, (req, res) => {
 // 마이페이지 라우트
 app.get('/mypage', isAuthenticated, (req, res) => {
     const username = req.session.username;
+    
 
     if (!username) {
         return res.status(400).send('잘못된 요청입니다.');
@@ -163,6 +164,10 @@ app.get('/mypage', isAuthenticated, (req, res) => {
 app.post('/mypage/update', isAuthenticated, (req, res) => {
     const { username, email, phone, birthdate, age, gender, interests, health_conditions } = req.body;
     const usernameFromSession = req.session.username;
+    const username = req.session.username;  // 로그인한 사용자 이름
+    const preferredDate = req.body.preferred_date;  // 참여 희망 날짜
+    const preferredTime = req.body.preferred_time;  // 참여 희망 시간
+
 
     // 세션과 데이터베이스에서 사용자 정보를 업데이트
     if (!usernameFromSession) {
@@ -174,6 +179,17 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
         SET email = ?, phone = ?, birthdate = ?, age = ?, gender = ?, interests = ?, health_conditions = ?
         WHERE username = ?
     `;
+    const query = 'INSERT INTO application_form (username, preferred_date, preferred_time) VALUES (?, ?, ?)';
+
+    db.query(query, [username, preferredDate, preferredTime], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('신청서를 저장하는 중 오류가 발생했습니다.');
+        }
+
+        res.send('신청서가 성공적으로 저장되었습니다.');
+    });
+});
 
     db.query(updateQuery, [email, phone, birthdate, age, gender, interests, health_conditions, usernameFromSession], (err, results) => {
         if (err) {
