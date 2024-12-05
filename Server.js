@@ -184,13 +184,8 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
         }
         res.redirect('/mypage');  // 업데이트 후 마이페이지로 리다이렉트
     });
-});
 
-//(로그인한 사용자와 연동)
-app.get('/userpage', isAuthenticated, (req, res) => {
-    const username = req.session.username; // 로그인한 사용자의 username을 세션에서 가져옴
-
-    // `application_form` 테이블에서 해당 사용자의 신청 정보 조회
+     // `application_form` 테이블에서 해당 사용자의 신청 정보 조회
     db.query('SELECT * FROM application_form WHERE username = ?', [username], (err, results) => {
         if (err) {
             console.error(err);
@@ -201,6 +196,7 @@ app.get('/userpage', isAuthenticated, (req, res) => {
         res.render('appform', { user: req.session.username, preferredDate, preferredTime});
     });
 });
+
 
 
 app.post('/appform', isAuthenticated, (req, res) => {
