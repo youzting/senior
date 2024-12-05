@@ -102,11 +102,11 @@ app.get('/signup', (req, res) => {
 });
 
 // 회원가입 처리
-app.post('/signup', async (req, res) => {
+app.post('/signup/insert', async (req, res) => {
     const { username, password, email, phone, birthdate, age, gender, interests, health_conditions } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     db.query('INSERT INTO users (username, password, email, phone, birthdate, age, gender, interests, health_conditions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [username, hashedPassword, email, phone, birthdate, age, gender, interests, health_conditions],
+        [username, password, email, phone, birthdate, age, gender, interests, health_conditions],
         (err) => {
             if (err) {
                 console.error(err);
