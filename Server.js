@@ -166,7 +166,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
         }
         // 신청 정보가 없으면 빈 데이터 전달
         const applicationData = results.length > 0 ? results[0] : {};
-        res.render('appform', { user: req.session.username, preferredDate, preferredTime});
+        res.render('appform', { user: req.session.username, preferred_date, preferred_time});
     });
 });
 
