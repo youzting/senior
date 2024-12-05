@@ -61,11 +61,7 @@ function isAuthenticated(req, res, next) {
 // 홈 페이지
 // 홈 라우트
 app.get('/', (req, res) => {
-    const username = req.session.username || null;
-    res.sendFile(path.join(__dirname, 'public', 'home.html'), {
-        headers: {
-            'Content-Type': 'text/html',
-        },
+    res.render('home.html', {username: req.session.username});
     });
 });
 
