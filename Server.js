@@ -8,6 +8,8 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
 const bcrypt = require('bcrypt');
+const util = require('util');
+const query = util.promisify(db.query).bind(db);
 
 const app = express();
 
@@ -75,19 +77,21 @@ app.get('/api/session', (req, res) => {
 });
 
 // 로그인 처리
-app.post('/login/check', (req, res) => {
-    const { username, password } = req.body;
-    db.query('SELECT * FROM member WHERE username = ?', [username], async (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('서버 에러');
-        }
+app.post('/login/check', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const results = await query('SELECT * FROM member WHERE username = ?', [username]);
+
         if (results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
             return res.status(401).send('유효하지 않은 사용자명 또는 비밀번호');
         }
+
         req.session.username = username;
         res.redirect('/');
-    });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('서버 에러');
+    }
 });
 
 // 로그아웃
