@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -78,39 +78,39 @@
 <body>
 
 <header>
-    <a href="home"><h1 style="color: white; text-decoration: none;">노인 친구 찾기(가제)</h1></a>
+    <a href="/home"><h1 style="color: white; text-decoration: none;">노인 친구 찾기(가제)</h1></a>
 </header>
 
 <div class="main-content">
     <div class="profile-info">
         <h2>프로필 정보</h2>
-        <p><strong>아이디:</strong> <span id="profileUsername" th:text="${me.username}"></span></p>
-        <p><strong>이메일:</strong> <span id="profileEmail" th:text="${me.email}"></span></p>
-        <p><strong>휴대폰 번호:</strong> <span id="profilePhone" th:text="${me.phone}"></span></p>
-        <p><strong>생년월일:</strong> <span id="profileBirthdate" th:text="${me.birthdate}"></span></p>
-        <p><strong>나이:</strong> <span id="profileAge" th:text="${me.age}"></span></p>
-        <p><strong>성별:</strong> <span id="profileGender" th:text="${me.gender}"></span></p>
-        <p><strong>취미:</strong> <span id="profileInterests" th:text="${me.interests}">없음</span></p>
-        <p><strong>건강상태:</strong> <span id="profileHelath_Conditions" th:text="${me.health_conditions}">없음</span></p>
+        <p><strong>아이디:</strong> <span id="profileUsername">{{ me.username }}</span></p>
+        <p><strong>이메일:</strong> <span id="profileEmail">{{ me.email }}</span></p>
+        <p><strong>휴대폰 번호:</strong> <span id="profilePhone">{{ me.phone }}</span></p>
+        <p><strong>생년월일:</strong> <span id="profileBirthdate">{{ me.birthdate }}</span></p>
+        <p><strong>나이:</strong> <span id="profileAge">{{ me.age }}</span></p>
+        <p><strong>성별:</strong> <span id="profileGender">{{ me.gender }}</span></p>
+        <p><strong>취미:</strong> <span id="profileInterests">{{ me.interests or '없음' }}</span></p>
+        <p><strong>건강상태:</strong> <span id="profileHealthConditions">{{ me.health_conditions or '없음' }}</span></p>
         <button onclick="toggleEditForm()">프로필 수정</button>
 
         <div id="editForm" class="edit-form">
             <h3>프로필 수정</h3>
             <form action="/mypage/update" method="post">
                 <strong>아이디:</strong>
-                <input type="text" id="id" name="username" th:value="${me.username}" readonly><br><br>
+                <input type="text" id="id" name="username" value="{{ me.username }}" readonly><br><br>
                 <strong>비밀번호:</strong>
-                <input type="password" id="password" name="password" th:value="${me.password}"><br><br>
+                <input type="password" id="password" name="password" value="{{ me.password }}"><br><br>
                 <strong>이메일:</strong>
-                <input type="email" id="email" name="email" th:value="${me.email}"><br><br>
+                <input type="email" id="email" name="email" value="{{ me.email }}"><br><br>
                 <strong>휴대폰 번호:</strong>
-                <input type="tel" id="phone" name="phone" th:value="${me.phone}"><br><br>
+                <input type="tel" id="phone" name="phone" value="{{ me.phone }}"><br><br>
                 <strong>생년월일:</strong>
-                <input type="date" id="birthdate" name="birthdate" th:value="${me.birthdate}" readonly><br><br>
+                <input type="date" id="birthdate" name="birthdate" value="{{ me.birthdate }}" readonly><br><br>
                 <strong>나이:</strong>
-                <input type="number" id="age" name="age" th:value="${me.age}" readonly><br><br>
+                <input type="number" id="age" name="age" value="{{ me.age }}" readonly><br><br>
                 <strong>성별:</strong>
-                <input type="text" id="gender" name="gender" th:value="${me.gender}" readonly><br><br>
+                <input type="text" id="gender" name="gender" value="{{ me.gender }}" readonly><br><br>
                 <strong>취미:</strong>
                 <textarea id="interests" name="interests" placeholder="관심 있는 취미를 입력하세요 (선택 사항)"></textarea><br><br>
                 <strong>건강상태:</strong>
