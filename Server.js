@@ -63,7 +63,7 @@ app.get('/', (req, res) => {
 
 // 로그인 페이지
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+    res.sendFile(path.join(__dirname, 'main', 'login.html'));
 });
 
 // 로그인 처리
@@ -90,7 +90,7 @@ app.get('/logout', (req, res) => {
 
 // 회원가입 페이지
 app.get('/signup', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'signup.html'));
+    res.sendFile(path.join(__dirname, 'main', 'signup.html'));
 });
 
 // 회원가입 처리
@@ -139,7 +139,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
 const pages = ['hobbyRec', 'matching', 'program', 'progApply', 'progInfo', 'chat'];
 pages.forEach(page => {
     app.get(`/${page}`, (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', `${page}.html`));
+        res.sendFile(path.join(__dirname, 'main', `${page}.html`));
     });
 });
 
