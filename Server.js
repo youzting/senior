@@ -74,6 +74,9 @@ app.get('/api/session', (req, res) => {
     res.json({ username: req.session.username || null });
 });
 
+const util = require('util');
+const query = util.promisify(db.query).bind(db);
+
 // 로그인 처리
 app.post('/login/check', async (req, res) => {
     try {
