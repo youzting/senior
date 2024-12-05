@@ -158,16 +158,6 @@ app.get('/mypage', isAuthenticated, (req, res) => {
         // HTML 템플릿 렌더링
         res.render('mypage.html', { me: results[0] });
     });
-    // `application_form` 테이블에서 해당 사용자의 신청 정보 조회
-    db.query('SELECT * FROM application_form WHERE username = ?', [username], (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('마이페이지 정보를 가져오는 중 오류 발생');
-        }
-        // 신청 정보가 없으면 빈 데이터 전달
-        const applicationData = results.length > 0 ? results[0] : {};
-        res.render('appform', { user: req.session.username, preferred_date, preferred_time});
-    });
 });
 
 // 마이페이지 수정 처리
