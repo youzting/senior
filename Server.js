@@ -178,6 +178,15 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
         SET email = ?, phone = ?, birthdate = ?, age = ?, gender = ?, interests = ?, health_conditions = ?
         WHERE username = ?
     `;
+
+    db.query(updateQuery, [email, phone, birthdate, age, gender, interests, health_conditions, usernameFromSession], (err, results) => {
+        if (err) {
+            console.error('업데이트 오류:', err);
+            return res.status(500).send('서버 오류');
+        }
+        res.redirect('/mypage');  // 업데이트 후 마이페이지로 리다이렉트
+    });
+
     const query = 'INSERT INTO application_form (username, preferred_date, preferred_time) VALUES (?, ?, ?)';
 
     db.query(query, [username, preferredDate, preferredTime], (err, result) => {
@@ -190,14 +199,7 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
     });
 });
 
-    db.query(updateQuery, [email, phone, birthdate, age, gender, interests, health_conditions, usernameFromSession], (err, results) => {
-        if (err) {
-            console.error('업데이트 오류:', err);
-            return res.status(500).send('서버 오류');
-        }
-        res.redirect('/mypage');  // 업데이트 후 마이페이지로 리다이렉트
-    });
-
+    
 
 // 기타 페이지 라우팅
 const pages = ['hobbyRec', 'matching', 'program', 'progApply', 'progInfo', 'chat'];
