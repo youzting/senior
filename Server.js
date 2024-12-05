@@ -136,15 +136,26 @@ app.get('/user/:id', isAuthenticated, (req, res) => {
     });
 });
 
-// 마이페이지
+// 마이페이지 라우트
 app.get('/mypage', isAuthenticated, (req, res) => {
     const username = req.session.username;
+
+    if (!username) {
+        return res.status(400).send('잘못된 요청입니다.');
+    }
+
     db.query('SELECT * FROM member WHERE username = ?', [username], (err, results) => {
         if (err) {
-            console.error(err);
-            return res.status(500).send('마이페이지 정보를 가져오는 중 오류 발생');
+            console.error('데이터베이스 오류:', err);
+            return res.status(500).send('서버 오류: 데이터를 가져오지 못했습니다.');
         }
-        res.render('mypage', { user: results[0] });
+
+        if (results.length === 0) {
+            return res.status(404).send('사용자 정보를 찾을 수 없습니다.');
+        }
+
+        // HTML 템플릿 렌더링
+        res.render('mypage', { me: results[0] });
     });
 });
 
