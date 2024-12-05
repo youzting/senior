@@ -1,9 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const mysql = require('mysql2');
-const path = require('path');
-const session = require('express-session');
 const bodyParser = require('body-parser');
 const app = express();
+const path = require('path');
+const session = require('express-session');
+const mySQLStore = require('express-mysql-session')(session);
 
 // MySQL 연결
 const db = mysql.createConnection({
@@ -28,7 +30,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // 세션 설정
-app.use(session({ secret: 'your-secret', resave: false, saveUninitialized: true }));
+app.use(session({
+    key: 'user_sid',
+    secret: 'your-secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
+}));
 
 // 아이디 중복 확인 API
 app.post('/check-username', (req, res) => {
@@ -43,7 +51,7 @@ app.post('/check-username', (req, res) => {
   });
 });
 
-// 회원가입 처리
+// 회원가입
 app.post('/signup', (req, res) => {
   const { username, password, email, phone, birthdate, age, gender, interests, health_conditions } = req.body;
   db.query('INSERT INTO users (username, password, email, phone, birthdate, age, gender, interests, health_conditions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -142,8 +150,8 @@ app.get('/home', (req, res) => {
     res.render('home', { username });  // EJS 템플릿에 username 전달
 });
 
-app.get('/HobbyRec', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HobbyRec.html'));
+app.get('/hobbyRec', (req, res) => {
+  res.sendFile(path.join(__dirname, 'hobbyRec.html'));
 });
 
 app.get('/matching', (req, res) => {
@@ -174,8 +182,8 @@ app.get('/progApply', (req, res) => {
   res.sendFile(path.join(__dirname, 'progApply.html'));
 });
 
-app.get('/Program', (req, res) => {
-  res.sendFile(path.join(__dirname, 'Program.html'));
+app.get('/program', (req, res) => {
+  res.sendFile(path.join(__dirname, 'program.html'));
 });
 
 app.get('/progInfo', (req, res) => {
