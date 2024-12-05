@@ -206,7 +206,7 @@ app.post('/appform', isAuthenticated, (req, res) => {
             return res.status(500).send('신청서를 저장하는 중 오류가 발생했습니다.');
         }
 
-        res.send('신청서가 성공적으로 저장되었습니다.');
+        res.redirect('/proginfo');
     });
 });
 
