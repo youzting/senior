@@ -1,0 +1,150 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const mysql = require('mysql2');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+const path = require('path');
+const bcrypt = require('bcrypt');
+
+const app = express();
+
+// MySQL 연결 설정
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'kdh_2023605',
+    password: 'kdh_2023605',
+    database: 'kdh_2023605'
+});
+
+db.connect((err) => {
+    if (err) {
+        console.error('MySQL 연결 실패:', err.message);
+        process.exit(1);
+    }
+    console.log('MySQL에 성공적으로 연결되었습니다.');
+});
+
+// 세션 저장소 설정
+const sessionStore = new MySQLStore({}, db);
+app.use(session({
+    key: 'user_sid',
+    secret: process.env.SESSION_SECRET || 'your-secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
+}));
+
+// 미들웨어 설정
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// 템플릿 엔진 설정 (EJS 사용)
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// 유틸 함수: 인증 확인 미들웨어
+function isAuthenticated(req, res, next) {
+    if (req.session.username) {
+        return next();
+    }
+    res.redirect('/login');
+}
+
+// 라우팅
+// 홈 페이지
+app.get('/', (req, res) => {
+    const username = req.session.username || null;
+    res.render('home', { username });
+});
+
+// 로그인 페이지
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+// 로그인 처리
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('서버 에러');
+        }
+        if (results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
+            return res.status(401).send('유효하지 않은 사용자명 또는 비밀번호');
+        }
+        req.session.username = username;
+        res.redirect('/');
+    });
+});
+
+// 로그아웃
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
+
+// 회원가입 페이지
+app.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'signup.html'));
+});
+
+// 회원가입 처리
+app.post('/signup', async (req, res) => {
+    const { username, password, email, phone, birthdate, age, gender, interests, health_conditions } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    db.query('INSERT INTO users (username, password, email, phone, birthdate, age, gender, interests, health_conditions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [username, hashedPassword, email, phone, birthdate, age, gender, interests, health_conditions],
+        (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('회원가입 중 오류 발생');
+            }
+            res.send('회원가입이 완료되었습니다.');
+        });
+});
+
+// 유저 프로필 페이지
+app.get('/user/:id', isAuthenticated, (req, res) => {
+    const userId = req.params.id;
+    db.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('프로필 조회 실패');
+        }
+        if (results.length === 0) {
+            return res.status(404).send('유저를 찾을 수 없습니다.');
+        }
+        res.render('user-profile', { user: results[0] });
+    });
+});
+
+// 마이페이지
+app.get('/mypage', isAuthenticated, (req, res) => {
+    const username = req.session.username;
+    db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('마이페이지 정보를 가져오는 중 오류 발생');
+        }
+        res.render('mypage', { user: results[0] });
+    });
+});
+
+// 기타 페이지 라우팅
+const pages = ['hobbyRec', 'matching', 'program', 'progApply', 'progInfo', 'chat'];
+pages.forEach(page => {
+    app.get(`/${page}`, (req, res) => {
+        res.sendFile(path.join(__dirname, 'public', `${page}.html`));
+    });
+});
+
+// 서버 실행
+const PORT = process.env.PORT || 15016;
+app.listen(PORT, () => {
+    console.log(`서버가 http://116.124.191.174:${PORT}에서 실행 중입니다.`);
+});
