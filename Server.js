@@ -186,8 +186,14 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
         }
         res.redirect('/mypage');  // 업데이트 후 마이페이지로 리다이렉트
     });
+});
 
-    const query = 'INSERT INTO application_form (username, preferred_date, preferred_time) VALUES (?, ?, ?)';
+app.post('/appform', isAuthenticated, (req, res) => {
+    const usernameFromSession = req.session.username;
+    const preferredDate = req.body.preferred_date;  // 참여 희망 날짜
+    const preferredTime = req.body.preferred_time;  // 참여 희망 시간
+
+     const query = 'INSERT INTO application_form (username, preferred_date, preferred_time) VALUES (?, ?, ?)';
 
     db.query(query, [username, preferredDate, preferredTime], (err, result) => {
         if (err) {
@@ -197,7 +203,6 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
 
         res.send('신청서가 성공적으로 저장되었습니다.');
     });
-});
 
     
 
