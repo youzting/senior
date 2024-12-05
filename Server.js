@@ -40,7 +40,7 @@ app.use(session({
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'main')));
 
 // 템플릿 엔진 설정 (EJS 사용)
 app.set('view engine', 'ejs');
