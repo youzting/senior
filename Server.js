@@ -112,7 +112,7 @@ app.post('/signup/insert', async (req, res) => {
                 console.error(err);
                 return res.status(500).send('회원가입 중 오류 발생');
             }
-            res.send('회원가입이 완료되었습니다.');
+            res.redirect('/');
         });
 });
 
