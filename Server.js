@@ -56,9 +56,9 @@ function isAuthenticated(req, res, next) {
 
 // 라우팅
 // 홈 페이지
-app.get('/home', (req, res) => {
+app.get('/', (req, res) => {
     const username = req.session.username || null;
-    res.render('home.html', { username });
+    res.render('home', { username });
 });
 
 // 로그인 페이지
@@ -78,14 +78,14 @@ app.post('/login', (req, res) => {
             return res.status(401).send('유효하지 않은 사용자명 또는 비밀번호');
         }
         req.session.username = username;
-        res.redirect('/home');
+        res.redirect('/');
     });
 });
 
 // 로그아웃
 app.get('/logout', (req, res) => {
     req.session.destroy();
-    res.redirect('/home');
+    res.redirect('/');
 });
 
 // 회원가입 페이지
