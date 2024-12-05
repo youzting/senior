@@ -155,7 +155,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
         }
 
         // HTML 템플릿 렌더링
-        res.render('mypage', { me: results[0] });
+        res.render('mypage.html', { me: results[0] });
     });
 });
 
