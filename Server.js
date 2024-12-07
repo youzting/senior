@@ -231,18 +231,38 @@ app.post('/hobby/update', isAuthenticated, (req, res) => {
 
     // 클라이언트에서 전송된 'hobby' 값을 가져옵니다.
     const { interests } = req.body; // req.body에서 hobby 가져오기
-    if (!interests) {
-        return res.status(400).send('취미 정보가 없습니다.');
-    }
 
-    const updateQuery = `UPDATE member SET interests = ? WHERE username = ?`;
+    // interests 필드 확인 후 동작
+    const selectQuery = `SELECT interests FROM member WHERE username = ?`;
 
-    db.query(updateQuery, [interests, usernameFromSession], (err, results) => {
+    db.query(selectQuery, [usernameFromSession], (err, results) => {
         if (err) {
-            console.error('업데이트 오류:', err);
+            console.error('조회 오류:', err);
             return res.status(500).send('서버 오류');
         }
-        res.redirect('/hobbyRec'); // 업데이트 후 취미 추천으로 리다이렉트
+
+        const currentInterests = results[0]?.interests || ''; // 기존 interests 값
+
+        let updateQuery, updatedInterests;
+
+        if (!currentInterests) {
+            // interests 필드가 비어 있는 경우
+            updateQuery = `UPDATE member SET interests = ? WHERE username = ?`;
+            updatedInterests = interests; // 새로 추가된 취미
+        } else {
+            // interests 필드가 비어 있지 않은 경우
+            updateQuery = `UPDATE member SET interests = ? WHERE username = ?`;
+            updatedInterests = `${currentInterests}, ${interests}`; // 기존 값에 추가
+        }
+
+        // interests 필드 업데이트
+        db.query(updateQuery, [updatedInterests, usernameFromSession], (err, results) => {
+            if (err) {
+                console.error('업데이트 오류:', err);
+                return res.status(500).send('서버 오류');
+            }
+            res.redirect('/hobbyRec'); // 성공적으로 업데이트 후 리다이렉트
+        }
     });
 });
 
