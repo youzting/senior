@@ -166,11 +166,17 @@ app.get('/mypage', isAuthenticated, (req, res) => {
             if (applicationResults.length === 0) {
             return res.status(404).send('신청 내역이 없습니다.');
             }
+            const moment = require('moment');
+            moment.locale('ko'); // 한국어 로케일 설정
 
+            // 날짜 포맷팅
+            const formattedDate = moment(application.preferred_date).format('YYYY년 MM월 DD일 dddd');
+
+            // 'mypage' 템플릿을 렌더링하면서 'formattedDate'를 포함한 'application' 객체를 전달
             // 데이터베이스에서 가져온 신청 내역을 HTML로 전달
            res.render('mypage', { 
                 me: userResults[0], 
-                applications: applicationResults 
+                { application: { ...applicationResults, formattedDate } } 
             });
         });
     });
