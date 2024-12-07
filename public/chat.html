@@ -16,7 +16,7 @@
 
 <div>
     <input type="text" id="sender" placeholder="Your Name" />
-    <input type="text" id="recipient" placeholder="Recipient Name" />
+    <input type="text" id="recipient" placeholder="Recipient Name"/>
     <textarea id="message" placeholder="Enter your message"></textarea>
     <button onclick="sendMessage()">Send</button>
 </div>
@@ -58,6 +58,16 @@
         messageElement.appendChild(document.createTextNode(message.sender + ": " + message.content));
         document.getElementById("messages").appendChild(messageElement);
     }
+
+    // URL에서 쿼리 파라미터 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipient = urlParams.get('username'); // 'username' 키의 값 가져오기 -> 채팅 받는 사람
+
+    if (username) {
+      // HTML 요소에 동적으로 사용자 이름 표시
+      document.body.insertAdjacentHTML('afterbegin', `<h1>${username}님과의 채팅</h1>`);
+    }
+
 </script>
 
 </body>
