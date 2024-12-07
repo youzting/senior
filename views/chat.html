@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>채팅창</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <style>
         /* 스타일은 필요에 따라 설정 */
     </style>
@@ -17,24 +16,21 @@
 </div>
 
 <div>
-    <input type="type" id="sender">
+    <input type="text" id="sender" placeholder="보내는 사람">
     <input type="hidden" id="recipient">
     <br><br><textarea id="message" placeholder="메세지를 입력하세요."></textarea>
     <button onclick="sendMessage()">보내기</button>
 </div>
 
 <script>
-    var stompClient = null;
-    var socket = new SockJS('/chat');
-    stompClient = Stomp.over(socket);
+    var socket = io();  // Socket.IO 클라이언트 생성
 
-    stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/messages', function (messageOutput) {
-            showMessage(JSON.parse(messageOutput.body));
-        });
+    // 서버에서 메시지를 받으면 화면에 표시
+    socket.on('chat message', function(message) {
+        showMessage(message);
     });
 
+    // 메시지 전송
     function sendMessage() {
         var sender = document.getElementById("sender").value;
         var recipient = document.getElementById("recipient").value;
@@ -46,10 +42,11 @@
             content: message
         };
 
-        stompClient.send("/app/send", {}, JSON.stringify(chatMessage));
+        socket.emit('chat message', chatMessage);  // 메시지를 서버로 전송
         document.getElementById("message").value = ''; // 메시지 전송 후 입력란 비우기
     }
 
+    // 메시지 화면에 표시
     function showMessage(message) {
         var messageElement = document.createElement('li');
         messageElement.appendChild(document.createTextNode(message.sender + ": " + message.content));
@@ -67,7 +64,6 @@
         // HTML 요소에 동적으로 사용자 이름 표시 (옵션)
         document.body.insertAdjacentHTML('afterbegin', `<h1>${recipient}</h1>`);
     }
-
 </script>
 
 </body>
