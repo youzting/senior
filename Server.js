@@ -8,12 +8,8 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
 const bcrypt = require('bcrypt');
-const http = require('http');
-const { Server } = require('socket.io');
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
 
 // MySQL 연결 설정
 const db = mysql.createConnection({
@@ -311,22 +307,6 @@ app.get('/matching', (req, res) => {
 
 app.get('/chat', (req, res) => {
     res.render('chat.html', {sender: req.session.username});
-});
-
-// Socket.IO 이벤트 핸들링
-io.on('connection', (socket) => {
-    console.log('사용자가 접속했습니다:', socket.id);
-
-    // 채팅 메시지를 받으면 모든 클라이언트로 전달
-    socket.on('chat message', (msg) => {
-        console.log('새 메시지:', msg);
-        io.emit('chat message', msg); // 모든 클라이언트에게 메시지 전달
-    });
-
-    // 클라이언트 연결 해제
-    socket.on('disconnect', () => {
-        console.log('사용자가 연결 해제되었습니다:', socket.id);
-    });
 });
 
 // 서버 실행
