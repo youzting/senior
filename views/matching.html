@@ -90,13 +90,7 @@
         searchInputContainer.innerHTML = '<input type="text" id="search-input" placeholder="이름 입력" />';
       } else if (criteria === "tag") {
         // 취미 검색 시 드롭다운
-        searchInputContainer.innerHTML = `
-          <select id="search-input">
-            <option value="sports">스포츠</option>
-            <option value="arts">예술</option>
-            <option value="music">음악</option>
-            <option value="technology">기술</option>
-          </select>`;
+        searchInputContainer.innerHTML = '<input type="text" id="search-input" placeholder="취미 입력" />';
       }
     }
 
@@ -113,8 +107,6 @@
           match = card.dataset.name.toLowerCase().includes(input);
         } else if (criteria === "tag") {
           match = card.dataset.tag.toLowerCase().includes(input);
-        } else if (criteria === "location") {
-          match = card.dataset.location.toLowerCase().includes(input);
         } else {
           match = true;
         }
