@@ -64,6 +64,7 @@
     // 메시지 전송
     function sendMessage() {
         var sender = document.getElementById("sender").value; // sender 값을 읽음
+        console.log('보내는 사람:', sender);
         var recipient = document.getElementById("recipient").value;
         var message = document.getElementById("message").value.trim();
 
