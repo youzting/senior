@@ -45,13 +45,13 @@
       <!-- 검색 결과 목록 -->
       <section class="content-section">
         <h2>검색 결과</h2>
-        <div class="card-container">
-          <a href="progInfo1" class="card">
+        <div class="card-container" id="programs-list">
+          <a href="progInfo1" class="card" data-name="요가 클래스">
             <h3>요가 클래스</h3>
             <p>위치: 서울, 시간: 매주 화요일 10:00</p>
             <div class="btn">신청하기</div>
           </a>
-          <a href="progInfo2" class="card">
+          <a href="progInfo2" class="card" data-name="코딩 부트캠프">
             <h3>코딩 부트캠프</h3>
             <p>위치: 온라인, 시간: 매주 토요일 14:00</p>
             <div class="btn">신청하기</div>
@@ -71,31 +71,31 @@
   </footer>
 
 <script>
-    function filterPrograms() {
-      const searchInput = document.getElementById("program-search").value.toLowerCase();
-      const programsList = document.getElementById("programs-list");
-      const programs = programsList.getElementsByClassName("card");
+  function filterPrograms() {
+    const searchInput = document.getElementById("program-search").value.toLowerCase();
+    const programsList = document.getElementById("programs-list");
+    const programs = programsList.getElementsByClassName("card");
 
-      // 프로그램을 하나씩 확인하여 검색어와 일치하는지 확인
-      Array.from(programs).forEach(program => {
-        const programName = program.getAttribute("data-name").toLowerCase();
-        if (programName.includes(searchInput)) {
-          program.style.display = "block"; // 검색어와 일치하면 표시
-        } else {
-          program.style.display = "none"; // 일치하지 않으면 숨김
-        }
-      });
-    }
-  </script>
+    // 프로그램을 하나씩 확인하여 검색어와 일치하는지 확인
+    Array.from(programs).forEach(program => {
+      const programName = program.getAttribute("data-name").toLowerCase();
+      if (programName.includes(searchInput)) {
+        program.style.display = "block"; // 검색어와 일치하면 표시
+      } else {
+        program.style.display = "none"; // 일치하지 않으면 숨김
+      }
+    });
+  }
+</script>
 
 <!-- 스타일 -->
-  <style>
-    /* 검색 입력란과 버튼의 스타일 */
-    .filters input, .filters button {
-      height: 2.5em;
-      font-size: 1em;
-    }
-  </style>
+<style>
+  /* 검색 입력란과 버튼의 스타일 */
+  .filters input, .filters button {
+    height: 2.5em;
+    font-size: 1em;
+  }
+</style>
 
 </body>
 </html>
