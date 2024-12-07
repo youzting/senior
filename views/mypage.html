@@ -70,20 +70,20 @@
         .apply {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center; /* 카드들을 가로로 정렬 */
-    padding: 20px; /* 전체 컨테이너의 여백 추가 */
+    gap: 20px;  /* 카드 간의 간격 */
+    justify-content: center;
+    padding: 20px;
 }
 
 .card {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    width: calc(33.33% - 20px); /* 화면 너비의 1/3로 설정하고, gap을 고려하여 20px 차감 */
+    width: calc(25% - 20px); /* 한 줄에 4개의 카드가 들어가도록 설정 */
     padding: 20px;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease; /* 카드에 마우스를 올렸을 때 애니메이션 효과 */
+    transition: transform 0.3s ease;
 }
 
 .card:hover {
