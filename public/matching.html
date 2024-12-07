@@ -38,14 +38,14 @@
       <section class="filters">
         <h2>검색 기준 선택</h2>
         <select id="search-criteria" onchange="updateSearchInput()">
-          <option value="all">선택</option>
+          <option value="name" selected>이름</option>
           <option value="tag">관심사</option>
           <option value="location">위치</option>
         </select>
 
         <!-- 검색어 입력란 (기본은 텍스트 입력) -->
         <span id="search-input-container">
-          <input type="text" id="search-input" placeholder="검색어 입력" />
+          <input type="text" id="search-input" placeholder="이름 입력" />
         </span>
 
         <button class="btn" onclick="filterUsers()">검색</button>
@@ -108,7 +108,7 @@
 
       if (criteria === "name") {
         // 이름 검색 시 텍스트 입력란
-        searchInputContainer.innerHTML = '<input type="text" id="search-input" placeholder="검색어 입력" />';
+        searchInputContainer.innerHTML = '<input type="text" id="search-input" placeholder="이름 입력" />';
       } else if (criteria === "tag") {
         // 태그 검색 시 드롭다운
         searchInputContainer.innerHTML = `
@@ -139,7 +139,9 @@
         let match = false;
 
         // 검색 기준에 따라 필터링
-        if (criteria === "tag") {
+        if (criteria === "name") {
+          match = card.dataset.name.toLowerCase().includes(input);
+        } else if (criteria === "tag") {
           match = card.dataset.tag.toLowerCase().includes(input);
         } else if (criteria === "location") {
           match = card.dataset.location.toLowerCase().includes(input);
@@ -149,6 +151,9 @@
         card.style.display = match ? "block" : "none";
       });
     }
+
+    // 페이지 로드 시 기본값 초기화
+    document.addEventListener("DOMContentLoaded", updateSearchInput);
   </script>
 
   <!-- 스타일 -->
