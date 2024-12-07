@@ -91,10 +91,14 @@ body {
 .filter-container select,
 .filter-container input,
 .filter-container button {
-  height: 3em; /* 높이를 동일하게 설정 */
-  font-size: 1.2em; /* 텍스트 크기 동일하게 설정 */
-  padding: 1em; /* 내부 여백을 동일하게 설정 */
-  border-radius: 5px; /* 모서리 둥글게 설정 */
+  height: 3em; /* 버튼 높이 */
+  font-size: 1.2em; /* 텍스트 크기 */
+  padding: 0 1em; /* 좌우 여백을 추가하여 크기 조정 */
+  line-height: 3em; /* 텍스트가 수직 가운데로 오도록 설정 */
+  width: auto; /* 기본적으로 콘텐츠에 맞는 너비 */
+  min-width: 80px; /* 버튼의 최소 너비를 설정 */
+  border-radius: 5px; /* 둥근 모서리 */
+  text-align: center; /* 텍스트 가운데 정렬 */
   box-sizing: border-box; /* 경계와 패딩 포함 */
 }
 
