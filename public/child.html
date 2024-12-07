@@ -26,7 +26,7 @@
             const email = document.getElementById('email').value;
             const parentCode = document.getElementById('parentCode').value;
 
-            const response = await fetch('/child/register', {
+            const response = await fetch('/child', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
