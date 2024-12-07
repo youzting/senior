@@ -161,9 +161,12 @@ app.get('/mypage', isAuthenticated, (req, res) => {
                 console.error('데이터베이스 오류:', err);
                 return res.status(500).send('서버 오류: 신청 내역을 가져오지 못했습니다.');
             }
+            if (applications.length === 0) {
+            return res.status(404).send('신청 내역이 없습니다.');
+            }
 
-            // HTML 템플릿 렌더링
-            res.render('mypage.html', { me: userResults[0], applications: applicationResults });
+            // 데이터베이스에서 가져온 신청 내역을 HTML로 전달
+            res.render('mypage', { applications: applications });
         });
     });
 });
