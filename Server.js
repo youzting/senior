@@ -5,6 +5,7 @@ const cors = require('cors');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const nodemailer = require('nodemailer');
 const MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
 const bcrypt = require('bcrypt');
@@ -36,6 +37,16 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+
+let accounts = {
+  parents: {},
+  children: {},
+};
+
+// 난수 코드 생성 함수
+function generateRandomCode() {
+  return Math.random().toString(36).substr(2, 8); // 알파벳과 숫자로 이루어진 8자리 코드
+}
 
 // 미들웨어 설정
 app.use(cors());
@@ -344,6 +355,52 @@ app.get('/messages', (req, res) => {
     // 최근 메시지 10개만 가져오기 (필요에 따라 수정 가능)
     const recentMessages = chatMessages.slice(-20);
     res.json(recentMessages);
+});
+
+// 부모 계정 생성 API
+app.post('/parent/register', (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).send('이메일을 입력하세요.');
+
+  const code = generateRandomCode();
+  parentAccount = { email, code }; // 부모 계정에 이메일과 코드 저장
+
+  // 코드 이메일로 전송 (nodemailer 사용)
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'seniorhobby12@gmail.com',
+      pass: 'hobby123',
+    },
+  });
+
+  const mailOptions = {
+    from: 'seniorhobby12@gmail.com',
+    to: email,
+    subject: '부모 계정 연결 코드',
+    text: `자녀 계정과 연결하기 위한 코드: ${code}`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.status(500).send('이메일 발송 실패');
+    }
+    res.send('부모 계정 연결 코드가 이메일로 전송되었습니다.');
+  });
+});
+
+// 자녀 계정 생성 및 부모 계정 코드 확인 API
+app.post('/child/register', (req, res) => {
+  const { email, parentCode } = req.body;
+
+  if (!email || !parentCode) return res.status(400).send('이메일과 부모 계정 코드를 입력하세요.');
+
+  if (parentAccount.code !== parentCode) {
+    return res.status(400).send('부모 계정 코드가 일치하지 않습니다.');
+  }
+
+  childAccount = { email, parentCode }; // 자녀 계정에 이메일과 부모 코드 저장
+  res.send('자녀 계정이 성공적으로 등록되었습니다.');
 });
 
 // 서버 실행
