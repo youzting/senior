@@ -3,46 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>코딩 부트캠프</title>
+  <title>요가 클래스</title>
   <link rel="stylesheet" href="newstyles.css">
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="header">
-    <a href="/" class="logo">홈페이지</a>
-  </header>
+  <!-- 상단 네비게이션 바 -->
+  <nav class="navbar">
+    <a href="/" class="logo">노인친구찾기</a>
+    <ul>
+      <li><a href="hobbyRec">취미 추천</a></li>
+      <li><a href="matching">유저 매칭</a></li>
+      <li><a href="program">프로그램 검색</a></li>
+      <li><a href="/mypage">마이페이지</a></li>
+      <li><a href="/logout">로그아웃</a></li>
+    </ul>
+  </nav>
 
-  <!-- Main Layout -->
+  <!-- 메인 콘텐츠 -->
   <div class="main-layout">
-    <!-- 사이드 메뉴 (고정) -->
-    <aside class="side-menu" id="side-menu">
-      <ul>
-        <li><a href="hobbyRec">취미 추천</a></li>
-        <li><a href="matching">유저 매칭</a></li>
-        <li><a href="program">프로그램 검색</a></li>
-        <li><a href="mypage">마이페이지</a></li>
-      </ul>
-    </aside>
-
-    <!-- Main Content -->
     <div class="content-area">
-      <!-- 서비스 제목 영역 -->
-      <section class="service-title">
-        <h1>코딩 부트캠</h1>
-        <p>위치: 온라인, 일정: 매주 토요일 오전 14:00</p>
+      <h2>.</h2>
+      <h2>.</h2>
+      <!-- 프로그램 정보 큰 카드 -->
+      <div class="big-card">
+        <h1>코딩 부트캠프</h1>
+        <p><strong>위치:</strong> 온라인</p>
+        <p><strong>일정:</strong> 매주 토요일 오후 14:00</p>
         <p><strong>상태:</strong> 모집 중</p>
-      </section>
+        <img src="path/to/image_url.jpg" alt="코딩 부트캠프 이미지" class="program-image">
 
-      <!-- 프로그램 이미지 -->
-      <section class="program-image">
-        <img src="path/to/image_url.jpg" alt="코딩 이미지" style="width:100%; border-radius:8px; margin-top:1em;">
-      </section>
-
-      <!-- 프로그램 상세 정보 -->
-      <section class="content-section">
         <h2>클래스 소개</h2>
-        <p>요가 클래스는 건강과 정신적 안정을 위해 설계된 프로그램입니다. 초보자부터 숙련자까지 모두 참여할 수 있으며, 자세 교정과 유연성 향상에 초점을 맞춥니다.</p>
+        <p>코딩 부트캠프는 프로그래밍 기초부터 실전 프로젝트까지 배우는 강의입니다.
+           초보자부터 중급자까지 모두 참여 가능합니다.
+        </p>
 
         <h2>프로그램 정보</h2>
         <ul>
@@ -55,22 +49,20 @@
         </ul>
 
         <!-- 신청하기 버튼 -->
-        <a href="progApply.html?program_name=coding" 
-         class="btn" 
-         style="display:inline-block; margin-top:1em;">
-         신청하기
-        </a>
-      </section>
+        <a href="progApply.html?program_name=coding" class="btn">신청하기</a>
+      </div>
+      <h2>.</h2>
+      <h2>.</h2>
     </div>
   </div>
 
-  <!-- Footer -->
+  <!-- 하단 고정 메뉴 -->
   <footer class="footer">
     <div class="footer-links">
       <a href="#privacy">개인정보 처리방침</a>
       <a href="#terms">이용 약관</a>
     </div>
-    <p>&copy; 2024 경로당테스트. All Rights Reserved.</p>
+    <p>&copy; 2024 프로그램 서비스. All Rights Reserved.</p>
   </footer>
 
 </body>
