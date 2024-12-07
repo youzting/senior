@@ -231,7 +231,7 @@ app.post('/appform', isAuthenticated, (req, res) => {
 });
 
 // 기타 페이지 라우팅
-const pages = ['hobbyRec', 'matching', 'program', 'progApply', 'progInfo1', 'chat'];
+const pages = ['hobbyRec', 'program', 'progApply', 'progInfo1', 'chat'];
 pages.forEach(page => {
     app.get(`/${page}`, (req, res) => {
         res.sendFile(path.join(__dirname, 'public', `${page}.html`));
@@ -281,6 +281,20 @@ app.post('/hobby/update', isAuthenticated, (req, res) => {
             }
             res.redirect('/hobbyRec'); // 성공적으로 업데이트 후 리다이렉트
         });
+    });
+});
+
+app.get('/matching', (req, res) => {
+    const query = 'SELECT username, gender, interests FROM member';
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('데이터베이스 쿼리 오류:', err);
+            return res.status(500).send('서버 오류');
+        }
+
+        // Nunjucks로 렌더링
+        res.render('matching.njk', { users: results });
     });
 });
 
