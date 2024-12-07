@@ -134,11 +134,19 @@ app.post('/signup/insert', async (req, res) => {
 
 // 마이페이지 라우트
 app.get('/mypage', isAuthenticated, (req, res) => {
-    const { userId } = req.query;
+    const userId = req.query.userId;
     const username = req.session.username;
     
     if (!username) {
         return res.status(400).send('잘못된 요청입니다.');
+    }
+
+     const linkedAccount = await getLinkedAccount(userId);
+
+    if (linkedAccount) {
+        res.json([linkedAccount]);  // 연동된 계정이 있을 경우
+    } else {
+        res.json([]);  // 연동된 계정이 없으면 빈 배열 반환
     }
     
     // 사용자 정보 조회
