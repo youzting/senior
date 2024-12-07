@@ -130,25 +130,36 @@
         }
 
         // 현재 로그인한 사용자 ID (예시: 로그인된 사용자 ID 전달)
-        const userId = 1;
+const userId = 1;
 
-        async function fetchLinkedAccount() {
-            const response = await fetch(`/mypage?userId=${userId}`);
-            const data = await response.json();
+async function fetchLinkedAccount() {
+    try {
+        const response = await fetch(`/mypage?userId=${userId}`);
 
-            const linkedAccountDiv = document.getElementById('linked-account');
-            if (data.length > 0) {
-                linkedAccountDiv.innerHTML = `
-                    <h2>연동된 계정:</h2>
-                    <p>이메일: ${data[0].email}</p>
-                    <p>역할: ${data[0].role}</p>
-                `;
-            } else {
-                linkedAccountDiv.textContent = '연동된 계정이 없습니다.';
-            }
+        if (!response.ok) {
+            throw new Error('서버에서 데이터를 가져오는 데 실패했습니다.');
         }
 
-        fetchLinkedAccount();
+        const data = await response.json();
+
+        const linkedAccountDiv = document.getElementById('linked-account');
+        if (data.length > 0) {
+            linkedAccountDiv.innerHTML = `
+                <h2>연동된 계정:</h2>
+                <p>이메일: ${data[0].email}</p>
+                <p>역할: ${data[0].role}</p>
+            `;
+        } else {
+            linkedAccountDiv.textContent = '연동된 계정이 없습니다.';
+        }
+    } catch (error) {
+        console.error(error);
+        document.getElementById('linked-account').textContent = '계정 정보를 불러오는 데 문제가 발생했습니다.';
+    }
+}
+
+fetchLinkedAccount();
+
     </script>
 </head>
 <body>
