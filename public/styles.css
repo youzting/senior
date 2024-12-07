@@ -151,6 +151,17 @@ body {
     width: 200px;
     max-width: 100%;
   }
+
+  .filters input {
+    padding: 0.5em;
+    font-size: 1em;
+    width: 200px;
+    max-width: 100%;
+    height: 2.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
   
   .filters .btn {
     padding: 0.5em 1.5em;
