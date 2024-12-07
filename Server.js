@@ -45,12 +45,6 @@ let childAccount = {};
 function generateRandomCode() {
   return Math.random().toString(36).substr(2, 8); // 알파벳과 숫자로 이루어진 8자리 코드
 }
-async function getLinkedAccount(userId) {
-    // 데이터베이스에서 userId에 해당하는 연동된 계정을 찾는 코드 (예시)
-    const query = 'SELECT * FROM relationships WHERE user_id = ?';
-    const [rows] = await db.execute(query, [userId]);
-    return rows.length > 0 ? rows[0] : null; // 연동된 계정이 있으면 반환, 없으면 null
-}
 
 // 미들웨어 설정
 app.use(cors());
@@ -147,22 +141,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
         return res.status(400).send('잘못된 요청입니다.');
     }
 
-    if (!userId) {
-        return res.status(400).send('사용자 ID가 필요합니다.');
-    }
-
-    try {
-        const linkedAccount = await getLinkedAccount(userId);  // 비동기 함수 호출
-
-        if (linkedAccount) {
-            res.json([linkedAccount]);  // 연동된 계정이 있으면 JSON으로 반환
-        } else {
-            res.json([]);  // 연동된 계정이 없으면 빈 배열 반환
-        }
-    } catch (error) {
-        console.error('연동된 계정 조회 실패:', error);
-        res.status(500).send('서버 오류');
-    }
+    
     
     // 사용자 정보 조회
     db.query('SELECT * FROM member WHERE username = ?', [username], (err, userResults) => {
