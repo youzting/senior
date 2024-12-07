@@ -55,37 +55,14 @@
       <section class="content-section">
         <h2>매칭된 유저 목록</h2>
         <div class="card-container">
+        {% for user in users %}
           <div class="card" data-tag="sports" data-name="김유저" data-location="서울" data-gender="남성">
-            <h3>김유저</h3>
-            <p>관심사: 스포츠</p>
-            <p>성별: 남성</p>
-            <p>위치: 서울</p>
-            <p><strong>아이디:</strong> <span id="profileUsername">{{ me.username }}</span></p>
-            <p><strong>성별:</strong> <span id="profileGender">{{ me.gender }}</span></p>
-            <p><strong>취미:</strong> <span id="profileInterests">{{ me.interests or '없음' }}</span></p>
+            <h3>{{ user.username }}</h3>
+            <p><strong>성별:</strong> <span>{{ user.gender }}</span></p>
+            <p><strong>취미:</strong> <span>{{ user.interests or '없음' }}</span></p>
             <a href="user" class="btn">프로필 보기</a>
           </div>
-          <div class="card" data-tag="arts" data-name="박유저" data-location="부산" data-gender="여성">
-            <h3>박유저</h3>
-            <p>관심사: 예술</p>
-            <p>성별: 여성</p>
-            <p>위치: 부산</p>
-            <a href="user" class="btn">프로필 보기</a>
-          </div>
-          <div class="card" data-tag="music" data-name="이유저" data-location="대구" data-gender="남성">
-            <h3>이유저</h3>
-            <p>관심사: 음악</p>
-            <p>성별: 남성</p>
-            <p>위치: 대구</p>
-            <a href="user" class="btn">프로필 보기</a>
-          </div>
-          <div class="card" data-tag="technology" data-name="최유저" data-location="서울" data-gender="여성">
-            <h3>최유저</h3>
-            <p>관심사: 기술</p>
-            <p>성별: 여성</p>
-            <p>위치: 서울</p>
-            <a href="user" class="btn">프로필 보기</a>
-          </div>
+          {% endfor %}
         </div>
       </section>
     </div>
