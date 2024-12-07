@@ -134,11 +134,28 @@ app.post('/signup/insert', async (req, res) => {
 
 // 마이페이지 라우트
 app.get('/mypage', isAuthenticated, (req, res) => {
+    const { userId } = req.query;
     const username = req.session.username;
     
     if (!username) {
         return res.status(400).send('잘못된 요청입니다.');
     }
+
+     const query = `
+    SELECT u.* FROM users u
+    JOIN relationships r ON 
+      (u.id = r.child_id AND r.parent_id = ?) OR 
+      (u.id = r.parent_id AND r.child_id = ?)
+  `;
+
+     db.query(query, [userId, userId], (err, results) => {
+    if (err) {
+      console.error('연동된 계정 조회 오류:', err);
+      return res.status(500).send('서버 오류');
+    }
+
+    res.json(results);
+  });
 
     // 사용자 정보 조회
     db.query('SELECT * FROM member WHERE username = ?', [username], (err, userResults) => {
@@ -340,51 +357,91 @@ app.get('/messages', (req, res) => {
     res.json(recentMessages);
 });
 
-// 부모 계정 생성 API
 app.post('/parent', (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).send('이메일을 입력하세요.');
 
   const code = generateRandomCode();
-  parentAccount = { email, code }; // 부모 계정에 이메일과 코드 저장
 
-  // 코드 이메일로 전송 (nodemailer 사용)
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'seniorhobby12@gmail.com',
-      pass: 'vesm decn sspn qqsr',
-    },
-  });
-
-  const mailOptions = {
-    from: 'seniorhobby12@gmail.com',
-    to: email,
-    subject: '부모 계정 연결 코드',
-    text: `자녀 계정과 연결하기 위한 코드: ${code}`,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.status(500).send('이메일 발송 실패');
+  // 데이터베이스에 부모 계정 저장
+  const insertQuery = `INSERT INTO users (email, role) VALUES (?, 'parent')`;
+  db.query(insertQuery, [email], (err, result) => {
+    if (err) {
+      console.error('부모 계정 저장 오류:', err);
+      return res.status(500).send('서버 오류');
     }
-    res.send('부모 계정 연결 코드가 이메일로 전송되었습니다.');
+
+    const parentId = result.insertId;
+
+    // 부모 계정의 코드 이메일 전송
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'seniorhobby12@gmail.com',
+        pass: 'vesm decn sspn qqsr',
+      },
+    });
+
+    const mailOptions = {
+      from: 'seniorhobby12@gmail.com',
+      to: email,
+      subject: '부모 계정 연결 코드',
+      text: `자녀 계정과 연결하기 위한 코드: ${code}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).send('이메일 발송 실패');
+      }
+
+      // 부모 계정 코드 저장
+      parentAccount = { id: parentId, email, code };
+      res.send('부모 계정이 등록되고, 연결 코드가 이메일로 전송되었습니다.');
+    });
   });
 });
 
-// 자녀 계정 생성 및 부모 계정 코드 확인 API
+
 app.post('/child', (req, res) => {
   const { email, parentCode } = req.body;
 
-  if (!email || !parentCode) return res.status(400).send('이메일과 부모 계정 코드를 입력하세요.');
-
-  if (parentAccount.code !== parentCode) {
-    return res.status(400).send('부모 계정 코드가 일치하지 않습니다.');
+  if (!email || !parentCode) {
+    return res.status(400).send('이메일과 부모 계정 코드를 입력하세요.');
   }
 
-  childAccount = { email, parentCode }; // 자녀 계정에 이메일과 부모 코드 저장
-  res.send('자녀 계정이 성공적으로 등록되었습니다.');
+  // 부모 계정 코드 확인
+  const findParentQuery = `SELECT id FROM users WHERE role = 'parent' AND email = ?`;
+  db.query(findParentQuery, [parentAccount.email], (err, parentResults) => {
+    if (err || parentResults.length === 0) {
+      return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
+    }
+
+    const parentId = parentResults[0].id;
+
+    // 자녀 계정 저장
+    const insertChildQuery = `INSERT INTO users (email, role) VALUES (?, 'child')`;
+    db.query(insertChildQuery, [email], (err, childResult) => {
+      if (err) {
+        console.error('자녀 계정 저장 오류:', err);
+        return res.status(500).send('서버 오류');
+      }
+
+      const childId = childResult.insertId;
+
+      // 부모와 자녀의 관계 저장
+      const insertRelationshipQuery = `INSERT INTO relationships (parent_id, child_id) VALUES (?, ?)`;
+      db.query(insertRelationshipQuery, [parentId, childId], (err) => {
+        if (err) {
+          console.error('관계 저장 오류:', err);
+          return res.status(500).send('서버 오류');
+        }
+
+        res.send('자녀 계정이 성공적으로 등록되고 부모와 연동되었습니다.');
+      });
+    });
+  });
 });
+
 
 // 서버 실행
 const PORT = process.env.PORT || 15016;
