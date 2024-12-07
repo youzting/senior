@@ -40,7 +40,7 @@
         <select id="interest-select">
           <option value="all">전체</option>
           <option value="스포츠">스포츠</option>
-          <option value="예술">예술</option>
+          <option value="회화">회화</option>
           <option value="음악">음악</option>
           <option value="기술">기술</option>
         </select>
@@ -60,12 +60,12 @@
             <button class="btn" type="submit" aria-label="운동 관련 취미 추가">관련 취미 추가</button>
             </form>
           </div>
-          <div class="card" data-tag="예술">
+          <div class="card" data-tag="회화">
             <form action="/hobby/update" method="post">
             <input type="hidden" name="interests" value="회화(아크릴 페인팅)">
             <h3>아크릴 페인팅 클래스</h3>
             <p>아크릴 페인팅 기초를 배울 수 있는 주말 워크숍입니다.</p>
-            <p class="tag" onclick="filterByTag('arts')">#예술</p>
+            <p class="tag" onclick="filterByTag('arts')">#회화</p>
             <button class="btn" type="submit" aria-label="회화 관련 취미 추가">관련 취미 추가</button>
             </form>
           </div>
