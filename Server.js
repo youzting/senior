@@ -132,21 +132,6 @@ app.post('/signup/insert', async (req, res) => {
         });
 });
 
-// 유저 프로필 페이지
-app.get('/user/:id', isAuthenticated, (req, res) => {
-    const userId = req.params.id;
-    db.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('프로필 조회 실패');
-        }
-        if (results.length === 0) {
-            return res.status(404).send('유저를 찾을 수 없습니다.');
-        }
-        res.render('user-profile', { user: results[0] });
-    });
-});
-
 // 마이페이지 라우트
 app.get('/mypage', isAuthenticated, (req, res) => {
     const username = req.session.username;
