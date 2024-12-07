@@ -64,10 +64,11 @@
         // recipient 입력란에 username 값 설정
         document.getElementById('recipient').value = recipient;
 
-        // HTML 요소에 동적으로 사용자 이름 표시 (옵션)
+        // HTML 요소에 동적으로 사용자 이름 표시
         document.body.insertAdjacentHTML('afterbegin', `<h1>${recipient}</h1>`);
     } else {
         console.log('Recipient 파라미터가 없습니다!');
+        document.body.insertAdjacentHTML('afterbegin', `<h1>Recipient 파라미터가 없습니다!</h1>`);
     }
 </script>
 
