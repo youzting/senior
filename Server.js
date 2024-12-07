@@ -238,7 +238,7 @@ app.post('/appform', isAuthenticated, (req, res) => {
 });
 
 // 기타 페이지 라우팅
-const pages = ['hobbyRec', 'program', 'progApply', 'progInfo1', 'chat'];
+const pages = ['hobbyRec', 'program', 'progApply', 'progInfo1'];
 pages.forEach(page => {
     app.get(`/${page}`, (req, res) => {
         res.sendFile(path.join(__dirname, 'public', `${page}.html`));
@@ -303,6 +303,10 @@ app.get('/matching', (req, res) => {
         // Nunjucks로 렌더링
         res.render('matching.html', { users: results });
     });
+});
+
+app.get('/chat', (req, res) => {
+    res.render('chat.html', {sender: req.session.username});
 });
 
 // 서버 실행
