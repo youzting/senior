@@ -84,6 +84,7 @@
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
+    margin-bottom: 20px;  /* 카드 아래 간격 */
 }
 
 .card:hover {
@@ -114,6 +115,20 @@
 .btn:hover {
     background-color: #2980b9;
 }
+
+/* 반응형 디자인: 작은 화면에서 카드 크기 조정 */
+@media (max-width: 768px) {
+    .card {
+        width: calc(50% - 20px);  /* 화면 너비가 768px 이하일 때 한 줄에 2개의 카드 */
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        width: 100%;  /* 화면 너비가 480px 이하일 때 한 줄에 1개의 카드 */
+    }
+}
+
 
     </style>
     <script>
