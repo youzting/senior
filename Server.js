@@ -140,7 +140,6 @@ app.get('/user/:id', isAuthenticated, (req, res) => {
 app.get('/mypage', isAuthenticated, (req, res) => {
     const username = req.session.username;
     
-
     if (!username) {
         return res.status(400).send('잘못된 요청입니다.');
     }
@@ -186,8 +185,6 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
     });
 });
 
-
-
 app.post('/appform', isAuthenticated, (req, res) => {
     const usernameFromSession = req.session.username;  // 세션에서 username을 가져옴
     const preferredDate = req.body.preferred_date;  // 참여 희망 날짜
@@ -215,7 +212,6 @@ app.post('/appform', isAuthenticated, (req, res) => {
     });
 });
 
-
 // 기타 페이지 라우팅
 const pages = ['hobbyRec', 'matching', 'program', 'progApply', 'progInfo1', 'chat'];
 pages.forEach(page => {
@@ -228,20 +224,25 @@ pages.forEach(page => {
 app.post('/hobby/update', isAuthenticated, (req, res) => {
     const usernameFromSession = req.session.username;
 
-
     // 세션과 데이터베이스에서 사용자 정보를 업데이트
     if (!usernameFromSession) {
         return res.status(400).send('사용자 정보가 없습니다.');
     }
 
+    // 클라이언트에서 전송된 'hobby' 값을 가져옵니다.
+    const { hobby } = req.body; // req.body에서 hobby 가져오기
+    if (!hobby) {
+        return res.status(400).send('취미 정보가 없습니다.');
+    }
+
     const updateQuery = `UPDATE member SET interests = ? WHERE username = ?`;
 
-    db.query(updateQuery, [interests, usernameFromSession], (err, results) => {
+    db.query(updateQuery, [hobby, usernameFromSession], (err, results) => {
         if (err) {
             console.error('업데이트 오류:', err);
             return res.status(500).send('서버 오류');
         }
-        res.redirect('/hobbyRec');  // 업데이트 후 취미 추천으로 리다이렉트
+        res.redirect('/hobbyRec'); // 업데이트 후 취미 추천으로 리다이렉트
     });
 });
 
