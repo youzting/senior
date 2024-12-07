@@ -119,22 +119,12 @@
             </form>
         </div>
     </div>
-     <div class="booking-history">
-        <h2>신청 내역</h2>
-        <% if (applications.length > 0) { %>
-            <ul>
-                <% applications.forEach(application => { %>
-                    <li>
-                        <strong>프로그램:</strong> <%= application.program_name %><br>
-                        <strong>참여 희망 날짜:</strong> <%= application.preferred_date %><br>
-                        <strong>참여 희망 시간:</strong> <%= application.preferred_time %><br>
-                    </li>
-                <% }) %>
-            </ul>
-        <% } else { %>
-            <p>신청한 프로그램이 없습니다.</p>
-        <% } %>
-    </div>
+      <div class="apply">
+        <h2>신청내역</h2>
+        <p><strong>신청:</strong> <span id="program_name">{{ me.program_name }}</span></p>
+        <p><strong>날짜:</strong> <span id="preferred_date">{{ me.preferred_date }}</span></p>
+        <p><strong>시간:</strong> <span id="preferred_time">{{ me.preferred_time }}</span></p>
+      </div>
 </div>
 </body>
 </html>
