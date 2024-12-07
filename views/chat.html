@@ -11,7 +11,8 @@
 </head>
 <body>
 <div id="chat-box">
-    <span>${recipient}님과의 채팅</span><br>
+    <!-- 채팅 상대방의 이름을 동적으로 삽입 -->
+    <span id="chat-title"></span><br>
     <hr>
     <ul id="messages"></ul>
 </div>
@@ -65,10 +66,10 @@
         document.getElementById('recipient').value = recipient;
 
         // HTML 요소에 동적으로 사용자 이름 표시
-        document.body.insertAdjacentHTML('afterbegin', `<h1>${recipient}</h1>`);
+        document.getElementById('chat-title').textContent = `${recipient}님과의 채팅`;
     } else {
         console.log('Recipient 파라미터가 없습니다!');
-        document.body.insertAdjacentHTML('afterbegin', `<h1>Recipient 파라미터가 없습니다!</h1>`);
+        document.getElementById('chat-title').textContent = 'Recipient 파라미터가 없습니다!';
     }
 </script>
 
