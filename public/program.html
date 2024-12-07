@@ -20,9 +20,9 @@
     <aside class="side-menu" id="side-menu">
       <button id="toggle-menu" class="menu-toggle">☰</button>
       <ul>
-        <li><a href="hobbyRec">취미 추천</a></li>
-        <li><a href="matching">유저 매칭</a></li>
-        <li><a href="program">프로그램 검색</a></li>
+        <li><a href="/hobbyRec">취미 추천</a></li>
+        <li><a href="/matching">유저 매칭</a></li>
+        <li><a href="/program">프로그램 검색</a></li>
         <li><a href="/mypage">마이페이지</a></li>
       </ul>
     </aside>
@@ -39,7 +39,7 @@
       <section class="filters">
         <h2>프로그램 검색</h2>
         <input type="text" id="program-search" placeholder="프로그램 이름 입력">
-        <button class="btn">검색</button>
+        <button class="btn" onclick="filterPrograms()">검색</button>
       </section>
 
       <!-- 검색 결과 목록 -->
@@ -69,6 +69,33 @@
     </div>
     <p>&copy; 2024 경로당테스트. All Rights Reserved.</p>
   </footer>
+
+<script>
+    function filterPrograms() {
+      const searchInput = document.getElementById("program-search").value.toLowerCase();
+      const programsList = document.getElementById("programs-list");
+      const programs = programsList.getElementsByClassName("card");
+
+      // 프로그램을 하나씩 확인하여 검색어와 일치하는지 확인
+      Array.from(programs).forEach(program => {
+        const programName = program.getAttribute("data-name").toLowerCase();
+        if (programName.includes(searchInput)) {
+          program.style.display = "block"; // 검색어와 일치하면 표시
+        } else {
+          program.style.display = "none"; // 일치하지 않으면 숨김
+        }
+      });
+    }
+  </script>
+
+<!-- 스타일 -->
+  <style>
+    /* 검색 입력란과 버튼의 스타일 */
+    .filters input, .filters button {
+      height: 2.5em;
+      font-size: 1em;
+    }
+  </style>
 
 </body>
 </html>
