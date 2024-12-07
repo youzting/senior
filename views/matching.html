@@ -58,7 +58,7 @@
         {% for user in users %}
           <div class="card" data-tag="{{ user.interests }}" data-name="{{ user.username }}">
             <h3><a href="/chat.html?username={{ user.username }}" style="text-decoration: none; color: inherit;">{{ user.username }}</a></h3>
-            <strong>님과 채팅하기</strong>
+            <p><strong>님과 채팅하기</strong></p>
             <p><strong>성별:</strong> <span>{{ user.gender }}</span></p>
             <p><strong>취미:</strong> <span>{{ user.interests or '없음' }}</span></p>
           </div>
