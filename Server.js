@@ -210,14 +210,32 @@ app.post('/appform', isAuthenticated, (req, res) => {
     });
 });
 
-
-    
-
 // 기타 페이지 라우팅
 const pages = ['hobbyRec', 'matching', 'program', 'progApply', 'progInfo1', 'chat'];
 pages.forEach(page => {
     app.get(`/${page}`, (req, res) => {
         res.sendFile(path.join(__dirname, 'public', `${page}.html`));
+    });
+});
+
+// 취미 추가
+app.post('/hobby/update', isAuthenticated, (req, res) => {
+    const usernameFromSession = req.session.username;
+
+
+    // 세션과 데이터베이스에서 사용자 정보를 업데이트
+    if (!usernameFromSession) {
+        return res.status(400).send('사용자 정보가 없습니다.');
+    }
+
+    const updateQuery = `UPDATE member SET interests = ? WHERE username = ?`;
+
+    db.query(updateQuery, [interests, usernameFromSession], (err, results) => {
+        if (err) {
+            console.error('업데이트 오류:', err);
+            return res.status(500).send('서버 오류');
+        }
+        res.redirect('/hobbyRec');  // 업데이트 후 취미 추천으로 리다이렉트
     });
 });
 
