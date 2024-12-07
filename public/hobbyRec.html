@@ -17,7 +17,7 @@
   <div class="main-layout">
     <!-- 사이드 메뉴 (토글 버튼 포함) -->
     <aside class="side-menu" id="side-menu">
-      <button id="toggle-menu" class="menu-toggle">☰</button>
+      <button id="toggle-menu" class="menu-toggle" aria-label="메뉴 토글">☰</button>
       <ul>
         <li><a href="hobbyRec">취미 추천</a></li>
         <li><a href="matching">유저 매칭</a></li>
@@ -56,7 +56,7 @@
             <h3>테니스 클럽</h3>
             <p>테니스에 관심이 있다면 주말 테니스 클럽에 참여해보세요!</p>
             <p class="tag" onclick="filterByTag('sports')">#스포츠</p>
-            <button class="btn" type="submit">관련 취미 추가</button>
+            <button class="btn" type="submit" aria-label="운동 관련 취미 추가">관련 취미 추가</button>
             </form>
           </div>
           <div class="card" data-tag="arts">
@@ -65,16 +65,16 @@
             <h3>아크릴 페인팅 클래스</h3>
             <p>아크릴 페인팅 기초를 배울 수 있는 주말 워크숍입니다.</p>
             <p class="tag" onclick="filterByTag('arts')">#예술</p>
-            <button class="btn" type="submit">관련 취미 추가</button>
+            <button class="btn" type="submit" aria-label="회화 관련 취미 추가">관련 취미 추가</button>
             </form>
           </div>
           <div class="card" data-tag="music">
             <form action="/hobby/update" method="post">
-            <input type="hidden" name="hobby" value="음악(기타)">
+            <input type="hidden" name="hobby" value="음악(기타 연주)">
             <h3>기타 연주 모임</h3>
             <p>음악을 사랑하는 분들을 위한 기타 연주 모임입니다.</p>
             <p class="tag" onclick="filterByTag('music')">#음악</p>
-            <button class="btn" type="submit">관련 취미 추가</button>
+            <button class="btn" type="submit" aria-label="음악 관련 취미 추가">관련 취미 추가</button>
             </form>
           </div>
           <div class="card" data-tag="technology">
@@ -83,7 +83,7 @@
             <h3>코딩 워크숍</h3>
             <p>프로그래밍 기초를 배우고 싶은 분들을 위한 코딩 워크숍입니다.</p>
             <p class="tag" onclick="filterByTag('technology')">#기술</p>
-            <button class="btn" type="submit">관련 취미 추가</button>
+            <button class="btn" type="submit" aria-label="기술 관련 취미 추가">관련 취미 추가</button>
             </form>
           </div>
         </div>
@@ -110,6 +110,36 @@
       text-align: center;
       cursor: pointer; /* 태그 클릭 가능하도록 포인터 커서 */
     }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 16px;
+      margin: 16px;
+      max-width: 300px;
+      text-align: center;
+      background-color: #fff;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
   </style>
 
   <!-- JavaScript 추가 -->
@@ -117,6 +147,8 @@
     // 관심사 선택 드롭다운 또는 태그 클릭 시 필터링
     function filterByInterest() {
       const selectedInterest = document.getElementById("interest-select").value;
+      const displayText = selectedInterest === "all" ? "전체" : selectedInterest;
+      document.querySelector('.content-section h2').textContent = `${displayText} 활동 추천`;
       filterCards(selectedInterest === "all" ? "" : selectedInterest);
     }
 
