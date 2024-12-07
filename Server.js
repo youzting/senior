@@ -313,16 +313,18 @@ app.get('/chat', (req, res) => {
 let chatMessages = [];
 
 app.post('/chat/send', isAuthenticated, (req, res) => {
-    const username = req.session.username;
-    const message = req.body.message;
+    const { sender, recipient, message } = req.body;
+
+    // 데이터가 제대로 전달되었는지 확인
+    console.log('받은 데이터:', { sender, recipient, message });
 
     if (!message) {
-        return res.status(400).json({ error: '메시지가 비어 있습니다.' });  // JSON 형식으로 응답
+        return res.status(400).json({ error: '메시지가 비어 있습니다.' });
     }
 
     // 메시지 객체 만들기
     const chatMessage = {
-        username,
+        username: sender,    // sender가 username으로 저장됨
         message,
         timestamp: new Date().toISOString()
     };
@@ -331,7 +333,7 @@ app.post('/chat/send', isAuthenticated, (req, res) => {
     chatMessages.push(chatMessage);
 
     // 성공적인 메시지 저장 후 응답
-    res.status(200).json({ status: 'success', message: '메시지가 전송되었습니다.' });  // JSON 형식으로 응답
+    res.status(200).json({ status: 'success', message: '메시지가 전송되었습니다.' });
 });
 
 // 채팅 메시지 불러오기 API
