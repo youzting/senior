@@ -39,7 +39,7 @@
 </div>
 
 <div>
-    <input type="hidden" id="sender" value="{{sender}}">
+    <input type="hidden" id="sender" value="{{sender}}"> <!-- 서버에서 전달한 sender 값 바인딩 -->
     <input type="hidden" id="recipient" readonly>
     <br><br>
     <textarea id="message" placeholder="메세지를 입력하세요."></textarea><br><br>
@@ -51,25 +51,19 @@
     const urlParams = new URLSearchParams(window.location.search);
     const recipient = urlParams.get('username');  // 'username' 키의 값 가져오기
 
-    // 디버깅용 로그 출력
-    console.log('Recipient:', recipient);
-
     if (recipient) {
         // recipient 입력란에 username 값 설정
         document.getElementById('recipient').value = recipient;
-
-        // HTML 요소에 동적으로 사용자 이름 표시
         document.getElementById('chat-title').textContent = `노인친구찾기 채팅서버`;
-        console.log('채팅 상대:', `노인친구찾기 채팅서버`);
     } else {
         console.log('Recipient 파라미터가 없습니다!');
         document.getElementById('chat-title').textContent = 'Recipient 파라미터가 없습니다!';
         alert('채팅 상대가 지정되지 않았습니다!');
     }
 
-   // 메시지 전송
+    // 메시지 전송
     function sendMessage() {
-        var sender = document.getElementById("sender").value;
+        var sender = document.getElementById("sender").value; // sender 값을 읽음
         var recipient = document.getElementById("recipient").value;
         var message = document.getElementById("message").value.trim();
 
