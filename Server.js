@@ -328,7 +328,7 @@ app.post('/chat/send', isAuthenticated, (req, res) => {
     // 메시지 객체 만들기
     const chatMessage = {
         sender,
-        recipient
+        recipient,
         message,
         timestamp: new Date().toISOString()
     };
