@@ -262,7 +262,7 @@ app.post('/hobby/update', isAuthenticated, (req, res) => {
                 return res.status(500).send('서버 오류');
             }
             res.redirect('/hobbyRec'); // 성공적으로 업데이트 후 리다이렉트
-        }
+        });
     });
 });
 
