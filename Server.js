@@ -370,7 +370,7 @@ app.post('/parent', (req, res) => {
     service: 'gmail',
     auth: {
       user: 'seniorhobby12@gmail.com',
-      pass: 'hobby123',
+      pass: 'hobby123!',
     },
   });
 
