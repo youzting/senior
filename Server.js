@@ -242,7 +242,7 @@ app.post('/appform', isAuthenticated, (req, res) => {
 });
 
 // 기타 페이지 라우팅
-const pages = ['hobbyRec', 'program', 'progApply', 'progInfo1'];
+const pages = ['hobbyRec', 'program', 'progApply', 'progInfo1', 'progInfo2'];
 pages.forEach(page => {
     app.get(`/${page}`, (req, res) => {
         res.sendFile(path.join(__dirname, 'public', `${page}.html`));
