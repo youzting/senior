@@ -170,7 +170,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
             moment.locale('ko'); // 한국어 로케일 설정
 
             // 날짜 포맷팅
-            const applications = applicationResults.map(application => {
+            const application = applicationResults.map(application => {
                 application.formattedDate = moment(application.preferred_date).format('YYYY년 MM월 DD일 dddd');
                 return application;
             });
@@ -179,7 +179,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
             // 데이터베이스에서 가져온 신청 내역을 HTML로 전달
            res.render('mypage', { 
                 me: userResults[0], 
-                 applications: { ...applicationResults, formattedDate }  
+                 applications: { ...applicationResults, application }  
             });
         });
     });
