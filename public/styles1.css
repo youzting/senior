@@ -1,0 +1,145 @@
+/* 전체 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 배경과 폰트 설정 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8; /* 밝은 배경색 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+/* 헤더 스타일 */
+header {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 2.5em;
+    color: #0056a4;
+}
+
+/* 네비게이션 스타일 */
+nav {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2em;
+}
+
+nav a {
+    color: #0056a4;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* 로그인 폼 스타일 */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.form-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #0056a4;
+}
+
+/* 로그인 버튼 스타일 */
+.submit-button button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2em;
+    background-color: #0056a4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button button:hover {
+    background-color: #004080;
+}
+
+/* 푸터 스타일 */
+footer {
+    position: absolute;
+    bottom: 20px;
+    text-align: center;
+    font-size: 1em;
+    color: #555;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+        width: 90%;
+    }
+    
+    h2 {
+        font-size: 1.8em;
+    }
+
+    nav {
+        top: 70px;
+    }
+
+    footer {
+        bottom: 10px;
+    }
+}
