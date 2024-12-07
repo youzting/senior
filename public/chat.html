@@ -61,11 +61,14 @@
 
     // URL에서 쿼리 파라미터 추출
     const urlParams = new URLSearchParams(window.location.search);
-    const recipient = urlParams.get('username'); // 'username' 키의 값 가져오기 -> 채팅 받는 사람
+    const recipient = urlParams.get('username'); // 'username' 키의 값 가져오기
 
-    if (username) {
-      // HTML 요소에 동적으로 사용자 이름 표시
-      document.body.insertAdjacentHTML('afterbegin', `<h1>${username}님과의 채팅</h1>`);
+    if (recipient) {
+        // recipient 입력란에 username 값 설정
+        document.getElementById('recipient').value = recipient;
+
+        // HTML 요소에 동적으로 사용자 이름 표시 (옵션)
+        document.body.insertAdjacentHTML('afterbegin', `<h1>${recipient}님과의 채팅</h1>`);
     }
 
 </script>
