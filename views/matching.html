@@ -56,7 +56,7 @@
         <h2>매칭된 유저 목록</h2>
         <div class="card-container">
         {% for user in users %}
-          <div class="card" data-tag="sports" data-name="김유저" data-location="서울" data-gender="남성">
+          <div class="card" data-tag={{ user.interests }} data-name={{ user.username }} data-gender={{ user.gender }}>
             <h3>{{ user.username }}</h3>
             <p><strong>성별:</strong> <span>{{ user.gender }}</span></p>
             <p><strong>취미:</strong> <span>{{ user.interests or '없음' }}</span></p>
@@ -89,22 +89,13 @@
         // 이름 검색 시 텍스트 입력란
         searchInputContainer.innerHTML = '<input type="text" id="search-input" placeholder="이름 입력" />';
       } else if (criteria === "tag") {
-        // 태그 검색 시 드롭다운
+        // 취미 검색 시 드롭다운
         searchInputContainer.innerHTML = `
           <select id="search-input">
             <option value="sports">스포츠</option>
             <option value="arts">예술</option>
             <option value="music">음악</option>
             <option value="technology">기술</option>
-          </select>`;
-      } else if (criteria === "location") {
-        // 지역 검색 시 드롭다운
-        searchInputContainer.innerHTML = `
-          <select id="search-input">
-            <option value="서울">서울</option>
-            <option value="부산">부산</option>
-            <option value="대구">대구</option>
-            <option value="인천">인천</option>
           </select>`;
       }
     }
