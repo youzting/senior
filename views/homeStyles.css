@@ -1,0 +1,145 @@
+/* 기본 스타일 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background: url('bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #333;
+}
+
+/* 상단 네비게이션 바 */
+.navbar {
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5em 2em;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .logo {
+  font-size: 3em;
+  font-weight: bold;
+  color: #0056a4;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 2em;
+}
+
+.navbar a {
+  color: #333;
+  text-decoration: none;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  color: #0056a4;
+}
+
+/* 메인 섹션 */
+.main-content {
+  text-align: center;
+  padding-top: 160px;
+  color: white;
+}
+
+.main-content h1 {
+  font-size: 3em;
+  font-weight: bold;
+}
+
+.main-content p {
+  font-size: 1.6em;
+  margin-top: 0.8em;
+}
+
+/* 카드 섹션 */
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3em;
+  margin-top: 4em;
+}
+
+.card {
+  background: white;
+  padding: 3em;
+  border-radius: 12px;
+  width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+  width: 180px;
+  height: 180px;
+  margin-bottom: 1.5em;
+}
+
+.card h3 {
+  color: #0056a4;
+  font-size: 1.6em;
+}
+
+.card p {
+  color: #666;
+  font-size: 1.2em;
+  margin: 1em 0;
+}
+
+.card a {
+  display: inline-block;
+  padding: 0.8em 1.2em;
+  background-color: #0056a4;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.card a:hover {
+  background-color: #004080;
+}
+
+/* 하단 고정 메뉴 */
+.footer {
+  background-color: rgba(255, 255, 255, 0.9);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 1.5em 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer a {
+  text-decoration: none;
+  color: #0056a4;
+  margin: 0 1.5em;
+  font-size: 1.2em;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
