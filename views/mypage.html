@@ -67,11 +67,11 @@
         button {
             margin-top: 10px;
         }
-         .apply {
+        .apply {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: center; /* 카드들을 가운데로 정렬 */
+    justify-content: center; /* 카드들을 가로로 정렬 */
     padding: 20px; /* 전체 컨테이너의 여백 추가 */
 }
 
@@ -79,7 +79,7 @@
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    width: 250px; /* 카드 크기 고정 */
+    width: calc(33.33% - 20px); /* 화면 너비의 1/3로 설정하고, gap을 고려하여 20px 차감 */
     padding: 20px;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -114,6 +114,7 @@
 .btn:hover {
     background-color: #2980b9;
 }
+
 
     </style>
     <script>
