@@ -51,28 +51,36 @@
         <h2>추천 활동</h2>
         <div class="card-container">
           <div class="card" data-tag="sports">
+            <form action="/hobby/update" method="post">
             <h3>테니스 클럽</h3>
             <p>테니스에 관심이 있다면 주말 테니스 클럽에 참여해보세요!</p>
             <p class="tag" onclick="filterByTag('sports')">#스포츠</p>
-            <button class="btn">관심사에 추가</button>
+            <button class="btn" type="submit">관련 취미 추가</button>
+            </form>
           </div>
           <div class="card" data-tag="arts">
+            <form action="/hobby/update" method="post">
             <h3>아크릴 페인팅 클래스</h3>
             <p>아크릴 페인팅 기초를 배울 수 있는 주말 워크숍입니다.</p>
             <p class="tag" onclick="filterByTag('arts')">#예술</p>
-            <button class="btn">관심사에 추가</button>
+            <button class="btn" type="submit">관련 취미 추가</button>
+            </form>
           </div>
           <div class="card" data-tag="music">
+            <form action="/hobby/update" method="post">
             <h3>기타 연주 모임</h3>
             <p>음악을 사랑하는 분들을 위한 기타 연주 모임입니다.</p>
             <p class="tag" onclick="filterByTag('music')">#음악</p>
-            <button class="btn">관심사에 추가</button>
+            <button class="btn" type="submit">관련 취미 추가</button>
+            </form>
           </div>
           <div class="card" data-tag="technology">
+            <form action="/hobby/update" method="post">
             <h3>코딩 워크숍</h3>
             <p>프로그래밍 기초를 배우고 싶은 분들을 위한 코딩 워크숍입니다.</p>
             <p class="tag" onclick="filterByTag('technology')">#기술</p>
-            <button class="btn">관심사에 추가</button>
+            <button class="btn" type="submit">관련 취미 추가</button>
+            </form>
           </div>
         </div>
       </section>
