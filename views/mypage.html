@@ -67,66 +67,58 @@
         button {
             margin-top: 10px;
         }
-        .apply {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;  /* 카드 간의 간격 */
-    justify-content: center;
-    padding: 20px;
+        .card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: center;
 }
 
 .card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: calc(25% - 20px); /* 한 줄에 4개의 카드가 들어가도록 설정 */
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    margin-bottom: 20px;  /* 카드 아래 간격 */
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  max-width: 100%;
+  text-align: center;
+  text-decoration: none; /* 링크 밑줄 제거 */
+  color: inherit; /* 링크 색상 상속 */
+  transition: transform 0.2s ease; /* 마우스 오버 시 확대 효과 */
 }
 
 .card:hover {
-    transform: translateY(-5px); /* 카드에 마우스를 올리면 위로 살짝 올라가는 효과 */
+  transform: scale(1.05); /* 마우스 오버 시 확대 효과 */
 }
 
 .card h3 {
-    font-size: 1.5em;
-    margin-top: 0;
+  color: #007bff; /* 제목 색상 */
+  font-size: 1.25em;
+  margin: 0;
+  text-decoration: none; /* 제목 링크 밑줄 제거 */
 }
 
 .card p {
-    font-size: 1em;
-    color: #555;
+  font-size: 0.9em;
+  color: #666;
+  margin: 1em 0;
 }
 
-.btn {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+.card .btn {
+  display: inline-block;
+  padding: 0.5em 1em;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  text-decoration: none; /* 버튼 텍스트 밑줄 제거 */
+  margin-top: 1em;
 }
 
-.btn:hover {
-    background-color: #2980b9;
-}
-
-/* 반응형 디자인: 작은 화면에서 카드 크기 조정 */
-@media (max-width: 768px) {
-    .card {
-        width: calc(50% - 20px);  /* 화면 너비가 768px 이하일 때 한 줄에 2개의 카드 */
-    }
-}
-
-@media (max-width: 480px) {
-    .card {
-        width: 100%;  /* 화면 너비가 480px 이하일 때 한 줄에 1개의 카드 */
-    }
+.card .btn:hover {
+  background-color: #0056b3;
 }
 
 
