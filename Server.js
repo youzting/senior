@@ -140,23 +140,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
     if (!username) {
         return res.status(400).send('잘못된 요청입니다.');
     }
-
-     const query = `
-    SELECT u.* FROM users u
-    JOIN relationships r ON 
-      (u.id = r.child_id AND r.parent_id = ?) OR 
-      (u.id = r.parent_id AND r.child_id = ?)
-  `;
-
-     db.query(query, [userId, userId], (err, results) => {
-    if (err) {
-      console.error('연동된 계정 조회 오류:', err);
-      return res.status(500).send('서버 오류');
-    }
-
-    res.json(results);
-  });
-
+    
     // 사용자 정보 조회
     db.query('SELECT * FROM member WHERE username = ?', [username], (err, userResults) => {
         if (err) {
