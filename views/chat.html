@@ -67,6 +67,7 @@
 
         // HTML 요소에 동적으로 사용자 이름 표시
         document.getElementById('chat-title').textContent = `${recipient}님과의 채팅`;
+        console.log('채팅 상대:', `${recipient}님과의 채팅`); // 디버깅용 로그 추가
     } else {
         console.log('Recipient 파라미터가 없습니다!');
         document.getElementById('chat-title').textContent = 'Recipient 파라미터가 없습니다!';
