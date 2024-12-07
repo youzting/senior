@@ -132,9 +132,9 @@ app.post('/signup/insert', async (req, res) => {
         });
 });
 // 연동된 계정을 반환하는 함수 (await 없이, Promise 사용)
-function getLinkedAccount(userId) {
+function getLinkedAccount(id) {
   return new Promise((resolve, reject) => {
-    const query = 'SELECT * FROM relationships WHERE user_id = ?';
+    const query = 'SELECT * FROM relationships WHERE id = ?';
     db.execute(query, [userId], (err, results) => {
       if (err) {
         return reject(err);  // 오류 발생 시 reject
@@ -147,18 +147,18 @@ function getLinkedAccount(userId) {
 
 // 마이페이지 라우트
 app.get('/mypage', isAuthenticated, (req, res) => {
-    const userId = req.query.userId;
+    const id = req.query.id;
     const username = req.session.username;
     
     if (!username) {
         return res.status(400).send('잘못된 요청입니다.');
     }
-    if (!userId) {
+    if (!id) {
     return res.status(400).send('사용자 ID가 필요합니다.');
   }
 
     // 연동된 계정을 조회
-  getLinkedAccount(userId)
+  getLinkedAccount(id)
     .then((linkedAccount) => {
       if (linkedAccount) {
         res.json(linkedAccount);  // 연동된 계정이 있으면 JSON으로 반환
