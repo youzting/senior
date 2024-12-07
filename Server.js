@@ -132,7 +132,7 @@ app.post('/signup/insert', async (req, res) => {
         });
 });
 // 연동된 계정을 반환하는 함수 (await 없이, Promise 사용)
-function getLinkedAccount(id) {
+function getLinkedAccount(userId) {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM relationships WHERE id = ?';
     db.execute(query, [userId], (err, results) => {
@@ -158,7 +158,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
   }
 
     // 연동된 계정을 조회
-  getLinkedAccount(id)
+  getLinkedAccount(userId)
     .then((linkedAccount) => {
       if (linkedAccount) {
         res.json(linkedAccount);  // 연동된 계정이 있으면 JSON으로 반환
