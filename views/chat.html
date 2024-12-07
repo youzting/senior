@@ -111,32 +111,32 @@
     }
 
     // 메시지 목록 불러오기 함수 (기존)
-    function loadMessages() {
-        fetch('/messages')
-            .then(response => response.json())
-            .then(messages => {
-                var messagesList = document.getElementById("messages");
-                messagesList.innerHTML = ''; // 기존 메시지 지우기
+function loadMessages() {
+    fetch('/messages')
+        .then(response => response.json())
+        .then(messages => {
+            var messagesList = document.getElementById("messages");
+            messagesList.innerHTML = ''; // 기존 메시지 지우기
 
-                messages.forEach(message => {
-                    var messageElement = document.createElement('li');
-                    messageElement.textContent = `${message.sender}: ${message.message}`;
-                    messagesList.appendChild(messageElement);
-                });
-
-                // 채팅 박스를 맨 아래로 스크롤
-                messagesList.scrollTop = messagesList.scrollHeight;
-            })
-            .catch(error => {
-                console.error('메시지 로드 실패:', error);
+            messages.forEach(message => {
+                var messageElement = document.createElement('li');
+                messageElement.textContent = `${message.sender}: ${message.message}`;
+                messagesList.appendChild(messageElement);
             });
-    }
 
-    // 페이지 로드 시 메시지 불러오기
-    loadMessages();
+            // 채팅 박스를 맨 아래로 스크롤
+            messagesList.scrollTop = messagesList.scrollHeight; // 스크롤을 맨 아래로 고정
+        })
+        .catch(error => {
+            console.error('메시지 로드 실패:', error);
+        });
+}
 
-    // 주기적으로 서버에서 메시지 목록을 불러옴
-    setInterval(loadMessages, 2000); // 2초마다 새로운 메시지 확인
+// 페이지 로드 시 메시지 불러오기
+loadMessages();
+
+// 주기적으로 서버에서 메시지 목록을 불러옴
+setInterval(loadMessages, 2000); // 2초마다 새로운 메시지 확인
 </script>
 </body>
 </html>
