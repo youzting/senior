@@ -316,10 +316,10 @@ app.get('/chat', (req, res) => {
 let chatMessages = [];
 
 app.post('/chat/send', isAuthenticated, (req, res) => {
-    const { sender, recipient, message } = req.body;
+    const { sender, message } = req.body;
 
     // 데이터가 제대로 전달되었는지 확인
-    console.log('받은 데이터:', { sender, recipient, message });
+    console.log('받은 데이터:', { sender, message });
 
     if (!message) {
         return res.status(400).json({ error: '메시지가 비어 있습니다.' });
@@ -328,7 +328,6 @@ app.post('/chat/send', isAuthenticated, (req, res) => {
     // 메시지 객체 만들기
     const chatMessage = {
         sender,
-        recipient,
         message,
         timestamp: new Date().toISOString()
     };
