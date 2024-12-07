@@ -38,10 +38,8 @@ app.use(session({
     saveUninitialized: false
 }));
 
-let accounts = {
-  parents: {},
-  children: {},
-};
+let parentAccount = {};
+let childAccount = {};
 
 // 난수 코드 생성 함수
 function generateRandomCode() {
