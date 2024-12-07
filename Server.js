@@ -131,6 +131,19 @@ app.post('/signup/insert', async (req, res) => {
             res.redirect('/');
         });
 });
+// 연동된 계정을 반환하는 함수 (await 없이, Promise 사용)
+function getLinkedAccount(userId) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM relationships WHERE user_id = ?';
+    db.execute(query, [userId], (err, results) => {
+      if (err) {
+        return reject(err);  // 오류 발생 시 reject
+      }
+      resolve(results.length > 0 ? results[0] : null);  // 연동된 계정이 있으면 반환, 없으면 null
+    });
+  });
+}
+
 
 // 마이페이지 라우트
 app.get('/mypage', isAuthenticated, (req, res) => {
@@ -140,6 +153,23 @@ app.get('/mypage', isAuthenticated, (req, res) => {
     if (!username) {
         return res.status(400).send('잘못된 요청입니다.');
     }
+    if (!userId) {
+    return res.status(400).send('사용자 ID가 필요합니다.');
+  }
+
+    // 연동된 계정을 조회
+  getLinkedAccount(userId)
+    .then((linkedAccount) => {
+      if (linkedAccount) {
+        res.json(linkedAccount);  // 연동된 계정이 있으면 JSON으로 반환
+      } else {
+        res.json(null);  // 연동된 계정이 없으면 null 반환
+      }
+    })
+    .catch((error) => {
+      console.error('연동된 계정 조회 실패:', error);
+      res.status(500).send('서버 오류');
+    });
 
     
     
