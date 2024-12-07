@@ -5,69 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이 페이지</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-        }
-        header a {
-            text-decoration: none;
-            color: white;
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-            background-color: #444;
-        }
-        nav a {
-            color: white;
-            padding: 14px 20px;
-            text-decoration: none;
-            text-align: center;
-        }
-        nav a:hover {
-            background-color: #555;
-        }
-        .main-content {
-            padding: 20px;
-        }
-        .profile-info, .booking-history {
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin: 10px 0;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .profile-info h2, .booking-history h2 {
-            margin-top: 0;
-        }
-        .edit-form {
-            display: none;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-        button {
-            margin-top: 10px;
-        }
-        .apply {
+       body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header a {
+    text-decoration: none;
+    color: white;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #444;
+}
+
+nav a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    text-align: center;
+}
+
+nav a:hover {
+    background-color: #555;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.profile-info {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 10px 0;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* 프로필 정보 세로로 정렬 */
+}
+
+.profile-info h2 {
+    margin-top: 0;
+}
+
+.booking-history {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 10px 0;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.booking-history h2 {
+    margin-top: 0;
+}
+
+.edit-form {
+    display: none;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+button {
+    margin-top: 10px;
+}
+
+.apply {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -114,7 +142,6 @@
 .btn:hover {
     background-color: #2980b9;
 }
-
 
     </style>
     <script>
