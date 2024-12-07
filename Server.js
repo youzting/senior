@@ -172,6 +172,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
             // 날짜 포맷팅
             const application = applicationResults.map(application => {
                 application.formattedDate = moment(application.preferred_date).format('YYYY년 MM월 DD일 dddd');
+                application.formattedTime = moment(application.preferred_time, 'HH:mm:ss').format('HH:mm'); // 시간 포맷 (초 제외)
                 return application;
             });
 
