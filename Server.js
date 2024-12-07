@@ -294,7 +294,7 @@ app.get('/matching', (req, res) => {
         }
 
         // Nunjucks로 렌더링
-        res.render('matching.njk', { users: results });
+        res.render('matching.html', { users: results });
     });
 });
 
