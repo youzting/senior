@@ -14,26 +14,22 @@ body {
     align-items: center;
     height: 100vh;
     color: #333;
+    flex-direction: column; /* 수직 정렬 */
 }
 
 /* 헤더 스타일 */
 header {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
     text-align: center;
     font-size: 2.5em;
     color: #0056a4;
+    margin-top: 20px; /* 상단 여백 */
+    margin-bottom: 30px; /* header와 nav 간의 간격 */
 }
 
 /* 네비게이션 스타일 */
 nav {
-    position: absolute;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
     font-size: 1.2em;
+    margin-bottom: 50px; /* nav와 로그인 폼 간의 간격 */
 }
 
 nav a {
@@ -136,7 +132,7 @@ footer {
     }
 
     nav {
-        top: 70px;
+        margin-bottom: 30px; /* nav와 로그인 폼 간격 줄이기 */
     }
 
     footer {
