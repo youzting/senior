@@ -156,22 +156,20 @@
         </div>
     </div>
     <div class="apply">
-            <h2>신청 내역</h2>
-            <div class="card-container">
-                <% if (applications.length > 0) { %>
-                    <% applications.forEach(function(application) { %>
-                        <div class="card">
-                            <h3><%= application.program_name %></h3>
-                            <p><strong>날짜:</strong> <%= application.preferred_date %></p>
-                            <p><strong>시간:</strong> <%= application.preferred_time %></p>
-                            <a href="#">상세 보기</a>
-                        </div>
-                    <% }) %>
-                <% } else { %>
-                    <p>신청한 프로그램이 없습니다.</p>
-                <% } %>
+    <h2>신청 내역</h2>
+    <div class="card-container">
+        {% for application in applications %}
+            <div class="card">
+                <h3>{{ application.program_name }}</h3>
+                <p><strong>날짜:</strong> {{ application.preferred_date }}</p>
+                <p><strong>시간:</strong> {{ application.preferred_time }}</p>
+                <a href="#">상세 보기</a>
             </div>
-        </div>
+        {% else %}
+            <p>신청한 프로그램이 없습니다.</p>
+        {% endfor %}
+    </div>
+</div>
        
 </div>
 </div>
