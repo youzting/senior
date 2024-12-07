@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>채팅창</title>
-    <script src="/socket.io/socket.io.js"></script>
     <style>
         /* 스타일은 필요에 따라 설정 */
     </style>
@@ -17,7 +16,7 @@
 </div>
 
 <div>
-    <input type="hidden" id="sender" value="{{sender}}">  <!-- 서버에서 동적으로 설정한 sender 값 -->
+    <input type="hidden" id="sender" value="{{sender}}">
     <input type="hidden" id="recipient" readonly>
     <br><br>
     <textarea id="message" placeholder="메세지를 입력하세요."></textarea>
@@ -25,44 +24,9 @@
 </div>
 
 <script>
-    var socket = io();  // Socket.IO 클라이언트 생성
-
-    // 서버에서 메시지를 받으면 화면에 표시
-    socket.on('chat message', function(chatMessage) {
-        showMessage(chatMessage);
-    });
-
-    // 메시지 전송
-    function sendMessage() {
-        var sender = document.getElementById("sender").value;
-        var recipient = document.getElementById("recipient").value;
-        var message = document.getElementById("message").value;
-
-        if (message.trim() === '') {
-            alert("메시지를 입력해주세요.");
-            return;
-        }
-
-        var chatMessage = {
-            sender: sender,
-            recipient: recipient,
-            content: message
-        };
-
-        socket.emit('chat message', chatMessage);  // 서버로 메시지를 전송
-        document.getElementById("message").value = ''; // 메시지 전송 후 입력란 비우기
-    }
-
-    // 메시지 화면에 표시
-    function showMessage(chatMessage) {
-        var messageElement = document.createElement('li');
-        messageElement.appendChild(document.createTextNode(chatMessage.sender + ": " + chatMessage.content));
-        document.getElementById("messages").appendChild(messageElement);
-    }
-
     // URL에서 쿼리 파라미터 추출
     const urlParams = new URLSearchParams(window.location.search);
-    const recipient = urlParams.get('username'); // 'username' 파라미터의 값을 가져옴
+    const recipient = urlParams.get('username');  // 'username' 키의 값 가져오기
 
     // 디버깅용 로그 출력
     console.log('Recipient:', recipient);
@@ -73,12 +37,55 @@
 
         // HTML 요소에 동적으로 사용자 이름 표시
         document.getElementById('chat-title').textContent = `${recipient}님과의 채팅`;
-        console.log('채팅 상대:', `${recipient}님과의 채팅`); // 디버깅용 로그
+        console.log('채팅 상대:', `${recipient}님과의 채팅`);
     } else {
-        // recipient가 없을 경우 표시할 기본 메시지
-        document.getElementById('chat-title').textContent = '채팅 상대가 설정되지 않았습니다!';
         console.log('Recipient 파라미터가 없습니다!');
+        document.getElementById('chat-title').textContent = 'Recipient 파라미터가 없습니다!';
     }
+
+    // 메시지 전송
+    function sendMessage() {
+        var sender = document.getElementById("sender").value;
+        var recipient = document.getElementById("recipient").value;
+        var message = document.getElementById("message").value;
+
+        var chatMessage = {
+            sender: sender,
+            recipient: recipient,
+            content: message
+        };
+
+        // 서버에 메시지 전송
+        fetch('/messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(chatMessage)
+        }).then(response => {
+            document.getElementById("message").value = ''; // 메시지 전송 후 입력란 비우기
+            loadMessages();  // 메시지 목록 다시 불러오기
+        });
+    }
+
+    // 서버에서 메시지 목록을 가져와 화면에 표시
+    function loadMessages() {
+        fetch('/messages')
+            .then(response => response.json())
+            .then(messages => {
+                var messagesList = document.getElementById("messages");
+                messagesList.innerHTML = ''; // 기존 메시지 지우기
+
+                messages.forEach(message => {
+                    var messageElement = document.createElement('li');
+                    messageElement.appendChild(document.createTextNode(message.sender + ": " + message.content));
+                    messagesList.appendChild(messageElement);
+                });
+            });
+    }
+
+    // 주기적으로 서버에서 메시지 목록을 불러옴
+    setInterval(loadMessages, 2000); // 2초마다 새로운 메시지 확인
 </script>
 
 </body>
