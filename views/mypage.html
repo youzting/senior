@@ -161,7 +161,7 @@
         {% for application in applications %}
             <div class="card">
                 <h3>{{ application.program_name }}</h3>
-                <p><strong>날짜:</strong> {{ application.preferred_date }}</p>
+                <p><strong>날짜:</strong> {{ application.formattedDate }}</p>
                 <p><strong>시간:</strong> {{ application.preferred_time }}</p>
             </div>
         {% else %}
