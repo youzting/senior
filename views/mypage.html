@@ -129,27 +129,28 @@
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
         }
 
-        const userId = 1;  // 현재 로그인한 사용자 ID (예시로 1로 설정)
-
-        // 연동된 계정을 불러오는 함수
-        async function fetchLinkedAccount() {
+         // 연동된 계정의 MyPage를 조회하는 함수
+        async function fetchLinkedAccount(userId) {
             const response = await fetch(`/mypage?userId=${userId}`);
             const data = await response.json();
 
             const linkedAccountDiv = document.getElementById('linked-account');
-            if (data.length > 0) {
+            if (data) {
                 linkedAccountDiv.innerHTML = `
                     <h2>연동된 계정:</h2>
-                    <p>이메일: ${data[0].email}</p>
-                    <p>역할: ${data[0].role}</p>
+                    <p>이메일: ${data.email}</p>
+                    <p>역할: ${data.role}</p>
                 `;
             } else {
                 linkedAccountDiv.textContent = '연동된 계정이 없습니다.';
             }
         }
 
-        // 버튼 클릭 시 연동된 계정 보기 함수 실행
-        document.getElementById('view-linked-account').addEventListener('click', fetchLinkedAccount);
+        // 부모 계정의 myPage를 볼 수 있는 버튼 클릭 시
+        document.getElementById('view-parent-mypage').addEventListener('click', function() {
+            const parentUserId = 1;  // 부모 계정의 userId (예시)
+            fetchLinkedAccount(parentUserId);  // 부모 계정의 myPage 조회
+        });
     </script>
 </head>
 <body>
@@ -170,10 +171,14 @@
         <p><strong>취미:</strong> <span id="profileInterests">{{ me.interests or '없음' }}</span></p>
         <p><strong>건강상태:</strong> <span id="profileHealthConditions">{{ me.health_conditions or '없음' }}</span></p>
         <button onclick="toggleEditForm()">프로필 수정</button>
+        <button onclick="location.href='parent.html'">부모 계정 등록</button>
+         <button onclick="location.href='child.html'">자녀 계정 등록</button>
         
-        <!-- 연동된 계정 출력 부분 -->
+        <!-- 부모 계정의 myPage를 볼 수 있는 버튼 -->
+    <button id="view-parent-mypage">부모 계정 MyPage 보기</button>
+
     <div id="linked-account">
-        <!-- 연동된 계정이 여기에 표시됩니다 -->
+        <!-- 연동된 계정의 정보가 표시됩니다 -->
     </div>
 
     <!-- 연동된 계정 보기 버튼 -->
@@ -201,8 +206,6 @@
                 <strong>건강상태:</strong>
                 <textarea id="health_conditions" name="health_conditions" placeholder="건강 상태를 입력하세요 (선택 사항)"></textarea><br><br>
                 <button type="submit">저장</button>
-                <button onclick="location.href='parent.html'">부모 계정 등록</button>
-                <button onclick="location.href='child.html'">자녀 계정 등록</button>
             </form>
         </div>
     </div>
