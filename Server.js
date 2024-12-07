@@ -176,7 +176,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
             // 데이터베이스에서 가져온 신청 내역을 HTML로 전달
            res.render('mypage', { 
                 me: userResults[0], 
-                 application: { ...applicationResults, formattedDate }  
+                 applications: { ...applicationResults, formattedDate }  
             });
         });
     });
