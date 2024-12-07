@@ -301,7 +301,7 @@ app.get('/matching', (req, res) => {
         }
 
         // Nunjucks로 렌더링
-        res.render('matching.html', { users: results });
+        res.render('matching.html', { users: results, username: req.session.username });
     });
 });
 
