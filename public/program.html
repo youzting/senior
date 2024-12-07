@@ -15,7 +15,6 @@
       <li><a href="hobbyRec">취미 추천</a></li>
       <li><a href="matching">유저 매칭</a></li>
       <li><a href="program">프로그램 검색</a></li>
-      <li><a href="/chat">채팅하기</a></li>
       <li><a href="/mypage">마이페이지</a></li>
       <li><a href="/logout">로그아웃</a></li>
     </ul>
@@ -33,28 +32,25 @@
       <h2>프로그램 검색</h2>
       <div class="filter-container">
         <input type="text" id="program-search" placeholder="프로그램 이름 입력">
-        <button class="btn">검색</button>
+        <button class="btn" onclick="filterPrograms()">검색</button>
       </div>
     </section>
 
     <!-- 검색 결과 -->
-    <div class="card-container">
-      <div class="card">
+    <div class="card-container" id="program-cards">
+      <div class="card" data-name="요가 클래스">
         <h3>요가 클래스</h3>
         <p><strong>위치:</strong> 서울</p>
         <p><strong>시간:</strong> 매주 화요일 10:00</p>
         <a href="progInfo1" class="btn">신청하기</a>
       </div>
-      <div class="card">
+      <div class="card" data-name="코딩 부트캠프">
         <h3>코딩 부트캠프</h3>
         <p><strong>위치:</strong> 온라인</p>
         <p><strong>시간:</strong> 매주 토요일 14:00</p>
         <a href="progInfo2" class="btn">신청하기</a>
       </div>
     </div>
-    
-      </div>
-    </section>
   </div>
 
   <!-- 하단 고정 메뉴 -->
@@ -67,9 +63,19 @@
   </footer>
 
   <script>
-    // 신청 버튼 이벤트
-    function sign(program) {
-      alert(`${program} 프로그램이 신청되었습니다.`);
+    // 프로그램 검색 필터 기능
+    function filterPrograms() {
+      const searchInput = document.getElementById("program-search").value.toLowerCase();
+      const cards = document.querySelectorAll(".card");
+
+      cards.forEach(card => {
+        const programName = card.dataset.name.toLowerCase();
+        if (programName.includes(searchInput)) {
+          card.style.display = "block"; // 검색어와 일치하면 표시
+        } else {
+          card.style.display = "none"; // 일치하지 않으면 숨김
+        }
+      });
     }
   </script>
 </body>
