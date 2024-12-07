@@ -306,7 +306,10 @@ app.get('/matching', (req, res) => {
 });
 
 app.get('/chat', (req, res) => {
-    res.render('chat.html', {sender: req.session.username});
+    if (!req.session.username) {
+        return res.redirect('/login'); // 로그인이 안 되어 있으면 로그인 페이지로 리다이렉트
+    }
+    res.render('chat.html', { sender: req.session.username });
 });
 
 // 채팅 메시지를 저장할 배열 (실제 애플리케이션에서는 DB에 저장해야 함)
