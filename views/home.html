@@ -1,97 +1,59 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>노인 취미 찾기</title>
-    <link rel="stylesheet" href="styles.css?v=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>홈 페이지</title>
+  <link rel="stylesheet" href="homeStyles.css">
 </head>
 <body>
-    <!-- 헤더 -->
-    <header class="header">
-        <a href="/" class="logo">노인 취미 찾기</a>
-    </header>
 
-    <!-- 메인 레이아웃 -->
-    <div class="main-layout">
-        <!-- 사이드 메뉴 -->
-        <aside class="side-menu">
-            <button class="menu-toggle" onclick="toggleSideMenu()">☰</button>
-            <ul>
-            {% if username %}
-                <li><a href="/hobbyRec">취미 추천</a></li>
-                <li><a href="/matching">유저 매칭</a></li>
-                <li><a href="program">프로그램 검색</a></li>
-                <li><a href="/mypage">마이페이지</a></li>
-                <li><a href="/logout">로그아웃</a></li>
-            {% else %}
-                <li><a href="/login">로그인</a></li>
-                <li><a href="/signup">회원가입</a></li>
-            {% endif %}
-            </ul>
-        </aside>
+  <!-- 상단 네비게이션 바 -->
+  <nav class="navbar">
+    <a href="/home" class="logo"> 노무현친구찾기 </a>
+    <ul>
+        {% if username %}
+            <li><a href="/home">홈</a></li>
+            <li><a href="/mypage">마이페이지</a></li>
+            <li><a href="/logout">로그아웃</a></li>
+        {% else %}
+            <li><a href="/home">홈</a></li>
+            <li><a href="/login">로그인</a></li>
+            <li><a href="/signup">회원가입</a></li>
+        {% endif %}
+    </ul>
+  </nav>
 
-        <!-- 콘텐츠 영역 -->
-        <main class="content-area">
-            <!-- 서비스 소개 -->
-            <section class="service-title">
-                <h1>나에게 맞는 취미를 찾아보세요!</h1>
-                <p>다양한 취미를 통해 새로운 친구를 만나보세요.</p>
-            </section>
-
-            <!-- 필터 및 검색 -->
-            <section class="filters">
-                <select name="age-group" id="age-group">
-                    <option value="">연령대 선택</option>
-                    <option value="60-69">60대</option>
-                    <option value="70-79">70대</option>
-                    <option value="80-89">80대</option>
-                </select>
-                <button class="btn" onclick="filterHobbies()">검색</button>
-            </section>
-
-            <!-- 취미 추천 카드 -->
-            <section class="card-container">
-                <a href="/hobby/1" class="card">
-                    <h3>등산</h3>
-                    <p>건강을 유지하며 자연을 즐겨보세요.</p>
-                    <button class="btn">자세히 보기</button>
-                </a>
-                <a href="/hobby/2" class="card">
-                    <h3>서예</h3>
-                    <p>예술적 감각을 살리고 내면의 평화를 찾으세요.</p>
-                    <button class="btn">자세히 보기</button>
-                </a>
-                <a href="/hobby/3" class="card">
-                    <h3>요가</h3>
-                    <p>유연성과 마음의 평화를 위한 완벽한 선택!</p>
-                    <button class="btn">자세히 보기</button>
-                </a>
-            </section>
-        </main>
+  <!-- 메인 콘텐츠 -->
+  <div class="main-content">
+    <h1>노년기 인생의 가치를 새롭게 하는 파트너</h1>
+    <div class="card-container">
+      <div class="card">
+        <img src="hobby.png" alt="취미추천">
+        <h3>취미 추천</h3>
+        <p>나에게 맞는 새로운 취미를 추천해드려요.</p>
+        <a href="/HobbyRec">바로가기</a>
+      </div>
+      <div class="card">
+        <img src="matching.png" alt="유저매칭">
+        <h3>유저 매칭</h3>
+        <p>비슷한 관심사를 가진 사람을 만나보세요!</p>
+        <a href="/matching">바로가기</a>
+      </div>
+      <div class="card">
+        <img src="prog.png" alt="프로그램">
+        <h3>프로그램 검색</h3>
+        <p>취미에 맞는 프로그램을 찾아보세요.</p>
+        <a href="/program">바로가기</a>
+      </div>
     </div>
+  </div>
 
-    <!-- 푸터 -->
-    <footer class="footer">
-        <p>&copy; 2024 SeniorHobbyFinder. All rights reserved.</p>
-        <div class="footer-links">
-            <a href="/about">소개</a>
-            <a href="/terms">이용약관</a>
-            <a href="/privacy">개인정보 처리방침</a>
-        </div>
-    </footer>
+  <!-- 하단 고정 메뉴 -->
+  <footer class="footer">
+    <a href="#privacy">개인정보 처리방침</a>
+    <a href="#terms">이용 약관</a>
+  </footer>
 
-    <script>
-        function toggleSideMenu() {
-            const sideMenu = document.querySelector('.side-menu');
-            const mainLayout = document.querySelector('.main-layout');
-            sideMenu.classList.toggle('hidden');
-            mainLayout.classList.toggle('side-collapsed');
-        }
-
-        function filterHobbies() {
-            alert('필터를 적용하여 취미를 검색합니다.');
-        }
-    </script>
 </body>
 </html>
