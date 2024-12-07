@@ -67,6 +67,42 @@
         button {
             margin-top: 10px;
         }
+         .apply {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 250px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .card h3 {
+            font-size: 1.5em;
+            margin-top: 0;
+        }
+        .card p {
+            font-size: 1em;
+            color: #555;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
     </style>
     <script>
         function toggleEditForm() {
@@ -120,11 +156,18 @@
         </div>
     </div>
       <div class="apply">
-        <h2>신청내역</h2>
-        <p><strong>신청:</strong> <span id="program_name">{{ me.program_name }}</span></p>
-        <p><strong>날짜:</strong> <span id="preferred_date">{{ me.preferred_date }}</span></p>
-        <p><strong>시간:</strong> <span id="preferred_time">{{ me.preferred_time }}</span></p>
-      </div>
+    <h2>신청 내역</h2>
+    <div class="card-container">
+        <!-- 신청 내역을 카드로 출력 -->
+        <% applications.forEach(application => { %>
+            <div class="card">
+                <h3>프로그램명: <%= application.program_name %></h3>
+                <p><strong>참여 희망 날짜:</strong> <%= application.preferred_date %></p>
+                <p><strong>참여 희망 시간:</strong> <%= application.preferred_time %></p>
+            </div>
+        <% }) %>
+    </div>
+</div>
 </div>
 </body>
 </html>
