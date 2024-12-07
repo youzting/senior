@@ -128,6 +128,26 @@
             const form = document.getElementById('editForm');
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
         }
+
+         const userId = 1;
+
+        async function fetchLinkedAccount() {
+            const response = await fetch(`/mypage?userId=${userId}`);
+            const data = await response.json();
+
+            const linkedAccountDiv = document.getElementById('linked-account');
+            if (data.length > 0) {
+                linkedAccountDiv.innerHTML = `
+                    <h2>연동된 계정:</h2>
+                    <p>이메일: ${data[0].email}</p>
+                    <p>역할: ${data[0].role}</p>
+                `;
+            } else {
+                linkedAccountDiv.textContent = '연동된 계정이 없습니다.';
+            }
+        }
+
+        fetchLinkedAccount();
     </script>
 </head>
 <body>
