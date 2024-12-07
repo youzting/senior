@@ -10,14 +10,15 @@
 
   <!-- 상단 네비게이션 바 -->
   <nav class="navbar">
-    <a href="/home" class="logo"> 노무현친구찾기 </a>
+    <a href="/home" class="logo"> 노인친구찾기 </a>
     <ul>
         {% if username %}
-            <li><a href="/home">홈</a></li>
+            <li><a href="/hobbyRec">취미추천</a></li>
+            <li><a href="/matching">유저매칭</a></li>
+            <li><a href="/program">프로그램</a></li>
             <li><a href="/mypage">마이페이지</a></li>
             <li><a href="/logout">로그아웃</a></li>
         {% else %}
-            <li><a href="/home">홈</a></li>
             <li><a href="/login">로그인</a></li>
             <li><a href="/signup">회원가입</a></li>
         {% endif %}
