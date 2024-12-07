@@ -155,20 +155,24 @@
             </form>
         </div>
     </div>
-       <div class="apply">
-        <h2>신청 내역</h2>
-        <ul>
-            {% for application in applications %}
-                <li>
-                    <strong>프로그램:</strong> <span>{{ application.program_name }}</span><br>
-                    <strong>날짜:</strong> <span>{{ application.preferred_date }}</span><br>
-                    <strong>시간:</strong> <span>{{ application.preferred_time }}</span>
-                </li>
-            {% else %}
-                <p>신청한 프로그램이 없습니다.</p>
-            {% endfor %}
-        </ul>
-    </div>
+    <div class="apply">
+            <h2>신청 내역</h2>
+            <div class="card-container">
+                <% if (applications.length > 0) { %>
+                    <% applications.forEach(function(application) { %>
+                        <div class="card">
+                            <h3><%= application.program_name %></h3>
+                            <p><strong>날짜:</strong> <%= application.preferred_date %></p>
+                            <p><strong>시간:</strong> <%= application.preferred_time %></p>
+                            <a href="#">상세 보기</a>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>신청한 프로그램이 없습니다.</p>
+                <% } %>
+            </div>
+        </div>
+       
 </div>
 </div>
 </body>
