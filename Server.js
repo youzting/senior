@@ -231,13 +231,13 @@ app.post('/hobby/update', isAuthenticated, (req, res) => {
 
     // 클라이언트에서 전송된 'hobby' 값을 가져옵니다.
     const { interests } = req.body; // req.body에서 hobby 가져오기
-    if (!hobby) {
+    if (!interests) {
         return res.status(400).send('취미 정보가 없습니다.');
     }
 
     const updateQuery = `UPDATE member SET interests = ? WHERE username = ?`;
 
-    db.query(updateQuery, [hobby, usernameFromSession], (err, results) => {
+    db.query(updateQuery, [interests, usernameFromSession], (err, results) => {
         if (err) {
             console.error('업데이트 오류:', err);
             return res.status(500).send('서버 오류');
