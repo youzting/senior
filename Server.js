@@ -390,7 +390,7 @@ app.post('/parent', (req, res) => {
 });
 
 // 자녀 계정 생성 및 부모 계정 코드 확인 API
-app.post('/child', (req, res) => {
+app.post('/child.html', (req, res) => {
   const { email, parentCode } = req.body;
 
   if (!email || !parentCode) return res.status(400).send('이메일과 부모 계정 코드를 입력하세요.');
