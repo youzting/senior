@@ -54,7 +54,6 @@
               <h3>{{ user.username }}</h3>
               <p><strong>관심사:</strong> {{ user.interests or '없음' }}</p>
               <p><strong>성별:</strong> {{ user.gender }}</p>
-              <p><strong>위치:</strong> {{ user.location }}</p>
               <a href="/chat?username={{ user.username }}" class="btn">채팅하기</a>
             </div>
           {% endfor %}
