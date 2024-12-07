@@ -230,7 +230,7 @@ app.post('/hobby/update', isAuthenticated, (req, res) => {
     }
 
     // 클라이언트에서 전송된 'hobby' 값을 가져옵니다.
-    const { hobby } = req.body; // req.body에서 hobby 가져오기
+    const { interests } = req.body; // req.body에서 hobby 가져오기
     if (!hobby) {
         return res.status(400).send('취미 정보가 없습니다.');
     }
