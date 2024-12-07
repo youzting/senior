@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자녀 계정 등록</title>
+</head>
+<body>
+    <h1>자녀 계정 등록</h1>
+    <form id="child-register-form">
+        <label for="email">자녀 이메일:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="parentCode">부모 계정 코드:</label>
+        <input type="text" id="parentCode" name="parentCode" required>
+
+        <button type="submit">등록</button>
+    </form>
+
+    <p id="response-message"></p>
+
+    <script>
+        document.getElementById('child-register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const parentCode = document.getElementById('parentCode').value;
+
+            const response = await fetch('/child/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, parentCode }),
+            });
+
+            const data = await response.text();
+            document.getElementById('response-message').textContent = data;
+        });
+    </script>
+</body>
+</html>
