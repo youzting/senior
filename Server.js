@@ -161,7 +161,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
                 console.error('데이터베이스 오류:', err);
                 return res.status(500).send('서버 오류: 신청 내역을 가져오지 못했습니다.');
             }
-            if (applications.length === 0) {
+            if (application_form.length === 0) {
             return res.status(404).send('신청 내역이 없습니다.');
             }
 
