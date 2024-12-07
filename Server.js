@@ -343,7 +343,7 @@ app.post('/chat/send', isAuthenticated, (req, res) => {
 // 채팅 메시지 불러오기 API
 app.get('/messages', (req, res) => {
     // 최근 메시지 10개만 가져오기 (필요에 따라 수정 가능)
-    const recentMessages = chatMessages.slice(-10);
+    const recentMessages = chatMessages.slice(-20);
     res.json(recentMessages);
 });
 
