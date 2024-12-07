@@ -48,6 +48,8 @@ nunjucks.configure(path.join(__dirname, 'views'), {
     autoescape: true,
     express: app
 });
+app.set('view engine', 'html');
+app.set('views', path.join(__dirname, 'views'));
 
 // 유틸 함수: 인증 확인 미들웨어
 function isAuthenticated(req, res, next) {
