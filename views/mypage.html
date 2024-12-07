@@ -184,7 +184,9 @@
                 <p><strong>시간:</strong> {{ application.formattedTime }}</p>
             </div>
         {% else %}
-            <p>신청한 프로그램이 없습니다.</p>
+           <div class="card">
+                <h3>신청한 프로그램이 없습니다.</h3>
+            </div>
         {% endfor %}
     </div>
 </div>
