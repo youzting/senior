@@ -129,8 +129,9 @@
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
         }
 
-         const userId = 1;
+        const userId = 1;  // 현재 로그인한 사용자 ID (예시로 1로 설정)
 
+        // 연동된 계정을 불러오는 함수
         async function fetchLinkedAccount() {
             const response = await fetch(`/mypage?userId=${userId}`);
             const data = await response.json();
@@ -147,7 +148,8 @@
             }
         }
 
-        fetchLinkedAccount();
+        // 버튼 클릭 시 연동된 계정 보기 함수 실행
+        document.getElementById('view-linked-account').addEventListener('click', fetchLinkedAccount);
     </script>
 </head>
 <body>
@@ -168,6 +170,14 @@
         <p><strong>취미:</strong> <span id="profileInterests">{{ me.interests or '없음' }}</span></p>
         <p><strong>건강상태:</strong> <span id="profileHealthConditions">{{ me.health_conditions or '없음' }}</span></p>
         <button onclick="toggleEditForm()">프로필 수정</button>
+        
+        <!-- 연동된 계정 출력 부분 -->
+    <div id="linked-account">
+        <!-- 연동된 계정이 여기에 표시됩니다 -->
+    </div>
+
+    <!-- 연동된 계정 보기 버튼 -->
+    <button id="view-linked-account">연동된 계정 보기</button>
 
         <div id="editForm" class="edit-form">
             <h3>프로필 수정</h3>
