@@ -44,38 +44,41 @@
     <section class="content-section">
       <div class="card-container">
         <!-- 테니스 클럽 카드 -->
-        <div class="card" data-tag="스포츠">
+        <form action="/hobby/update" method="post" class="card" data-tag="스포츠">
+          <input type="hidden" name="interests" value="운동(테니스)">
           <h3>테니스 클럽</h3>
           <p>테니스에 관심이 있다면 주말 테니스 클럽에 참여해보세요!</p>
           <p>태그: #스포츠</p>
-          <a href="#" class="btn">관련 취미 추가</a>
-        </div>
+          <a href="#" class="btn" type="submit" aria-label="테니스 클럽 취미 추가">관련 취미 추가</a>
+        </form>
       
         <!-- 아크릴 페인팅 클래스 카드 -->
-        <div class="card" data-tag="회화">
+        <form action="/hobby/update" method="post" class="card" data-tag="회화">
+          <input type="hidden" name="interests" value="회화(아크릴 페인팅)">
           <h3>아크릴 페인팅 클래스</h3>
           <p>아크릴 페인팅 기초를 배울 수 있는 주말 워크숍입니다.</p>
           <p>태그: #회화</p>
-          <a href="#" class="btn">관련 취미 추가</a>
-        </div>
+          <a href="#" class="btn" type="submit" aria-label="아크릴 페인팅 취미 추가">관련 취미 추가</a>
+        </form>
       
         <!-- 기타 연주 모임 카드 -->
-        <div class="card" data-tag="음악">
+        <form action="/hobby/update" method="post" class="card" data-tag="음악">
+          <input type="hidden" name="interests" value="음악(기타 연주)">
           <h3>기타 연주 모임</h3>
           <p>음악을 사랑하는 분들을 위한 기타 연주 모임입니다.</p>
           <p>태그: #음악</p>
-          <a href="#" class="btn">관련 취미 추가</a>
-        </div>
+          <a href="#" class="btn" type="submit" aria-label="기타 연주 취미 추가">관련 취미 추가</a>
+        </form>
       
         <!-- 코딩 워크숍 카드 -->
-        <div class="card" data-tag="기술">
+        <form action="/hobby/update" method="post" class="card" data-tag="기술">
+          <input type="hidden" name="interests" value="기술(프로그래밍)">
           <h3>코딩 워크숍</h3>
           <p>프로그래밍 기초를 배우고 싶은 분들을 위한 코딩 워크숍입니다.</p>
           <p>태그: #기술</p>
-          <a href="#" class="btn">관련 취미 추가</a>
-        </div>
+          <a href="#" class="btn" type="submit" aria-label="코딩 워크숍 취미 추가">관련 취미 추가</a>
+        </form>
       </div>
-      
     </section>
   </div>
 
@@ -100,10 +103,6 @@
           card.style.display = "none";
         }
       });
-    }
-
-    function addInterest(interest) {
-      alert(`${interest}가 취미 목록에 추가되었습니다.`);
     }
   </script>
 
