@@ -144,20 +144,30 @@ app.get('/mypage', isAuthenticated, (req, res) => {
         return res.status(400).send('잘못된 요청입니다.');
     }
 
-    db.query('SELECT * FROM member WHERE username = ?', [username], (err, results) => {
+    // 사용자 정보 조회
+    db.query('SELECT * FROM member WHERE username = ?', [username], (err, userResults) => {
         if (err) {
             console.error('데이터베이스 오류:', err);
-            return res.status(500).send('서버 오류: 데이터를 가져오지 못했습니다.');
+            return res.status(500).send('서버 오류: 사용자를 가져오지 못했습니다.');
         }
 
-        if (results.length === 0) {
+        if (userResults.length === 0) {
             return res.status(404).send('사용자 정보를 찾을 수 없습니다.');
         }
 
-        // HTML 템플릿 렌더링
-        res.render('mypage.html', { me: results[0] });
+        // 신청 내역 조회
+        db.query('SELECT * FROM application_form WHERE username = ?', [username], (err, applicationResults) => {
+            if (err) {
+                console.error('데이터베이스 오류:', err);
+                return res.status(500).send('서버 오류: 신청 내역을 가져오지 못했습니다.');
+            }
+
+            // HTML 템플릿 렌더링
+            res.render('mypage.html', { me: userResults[0], applications: applicationResults });
+        });
     });
 });
+
 
 // 마이페이지 수정 처리
 app.post('/mypage/update', isAuthenticated, (req, res) => {
