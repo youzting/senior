@@ -312,13 +312,12 @@ app.get('/chat', (req, res) => {
 // 채팅 메시지를 저장할 배열 (실제 애플리케이션에서는 DB에 저장해야 함)
 let chatMessages = [];
 
-// 채팅 메시지 전송 API
 app.post('/chat/send', isAuthenticated, (req, res) => {
     const username = req.session.username;
     const message = req.body.message;
 
     if (!message) {
-        return res.status(400).send('메시지가 비어 있습니다.');
+        return res.status(400).json({ error: '메시지가 비어 있습니다.' });  // JSON 형식으로 응답
     }
 
     // 메시지 객체 만들기
@@ -332,7 +331,7 @@ app.post('/chat/send', isAuthenticated, (req, res) => {
     chatMessages.push(chatMessage);
 
     // 성공적인 메시지 저장 후 응답
-    res.status(200).send({ status: 'success', message: '메시지가 전송되었습니다.' });
+    res.status(200).json({ status: 'success', message: '메시지가 전송되었습니다.' });  // JSON 형식으로 응답
 });
 
 // 채팅 메시지 불러오기 API
