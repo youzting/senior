@@ -403,7 +403,7 @@ app.post('/child', (req, res) => {
   }
 
   // 부모 계정 코드 확인
-  const findParentQuery = 'SELECT id FROM users WHERE role = 'parent' AND email = ?';
+  const findParentQuery = 'SELECT id FROM users WHERE role = parent AND email = ?';
   db.query(findParentQuery, [parentAccount.email], (err, parentResults) => {
     if (err || parentResults.length === 0) {
       return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
