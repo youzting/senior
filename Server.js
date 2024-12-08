@@ -464,11 +464,10 @@ app.post('/child', (req, res) => {
 
 
          // 부모 계정 코드 확인
-  const findParentQuery = `SELECT id FROM users WHERE role = 'parent' AND email = ?`;
-  db.query(findParentQuery, [parentAccount.email], (err, parentResults) => {
-    if (err || parentResults.length === 0) {
-      return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
-    }
+  
+      if (parentAccount.code !== parentCode) {
+    return res.status(400).send('부모 계정 코드가 일치하지 않습니다.');
+  }
 
       const parentId = parentResults[0].id;
 
@@ -483,7 +482,7 @@ app.post('/child', (req, res) => {
         res.send('부모와 자녀 관계가 성공적으로 설정되었습니다.');
       });
     });
-  });
+  
 });
 
 
