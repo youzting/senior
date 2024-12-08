@@ -238,6 +238,86 @@ body {
 .card a:hover {
   background-color: #004080;
 }
+/* 가로로 긴 카드 스타일 */
+.wide-card {
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  max-width: 800px;
+  margin: 1em auto;
+  padding: 2em;
+  text-align: center;
+}
+
+.wide-card h3 {
+  color: #0056a4;
+  font-size: 1.8em;
+  margin-bottom: 1em;
+}
+
+.wide-card p {
+  font-size: 1.2em;
+  color: #333;
+  margin: 0.5em 0;
+}
+
+.wide-card .btn {
+  display: inline-block;
+  padding: 0.8em 1.5em;
+  background-color: #0056a4;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 1em;
+}
+
+.wide-card .btn:hover {
+  background-color: #004080;
+}
+
+/* 진행도 시각화 */
+.progress-visualization {
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  max-width: 800px;
+  margin: 2em auto;
+  padding: 2em;
+}
+
+.progress-visualization h2 {
+  color: #0056a4;
+  font-size: 2em;
+  margin-bottom: 1em;
+}
+
+.progress-visualization p {
+  font-size: 1.2em;
+  color: #333;
+  margin: 0.5em 0;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  margin: 1em 0;
+  position: relative;
+}
+
+.progress-bar .progress {
+  height: 100%;
+  background-color: #0056a4;
+  border-radius: 10px;
+  color: white;
+  font-size: 0.9em;
+  text-align: center;
+  line-height: 20px;
+}
+
 
 /* 하단 고정 메뉴 */
 .footer {
