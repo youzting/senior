@@ -95,7 +95,7 @@
   </div>
 
   <script>
-    const apiUrl = 'http://116.124.191.174:15016/posts';
+    const apiUrl = 'http://localhost:3000/posts';
 
     // 게시글 목록 불러오기
     function fetchPosts() {
@@ -109,7 +109,7 @@
             row.innerHTML = `
               <td>${post.id}</td>
               <td>${post.title}</td>
-              <td>${post.username}</td>
+              <td>${post.author}</td>
               <td>${new Date(post.date).toLocaleString()}</td>
               <td><button class="button" onclick="editPost(${post.id})">수정</button></td>
               <td><button class="button" onclick="deletePost(${post.id})">삭제</button></td>
@@ -125,7 +125,7 @@
       event.preventDefault();
       const title = document.getElementById('title').value;
       const content = document.getElementById('content').value;
-      const username = document.getElementById('username').value;
+      const author = document.getElementById('author').value;
 
       fetch(apiUrl, {
         method: 'POST',
