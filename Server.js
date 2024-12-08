@@ -456,7 +456,7 @@ app.post('/child', (req, res) => {
       return res.status(400).send('입력된 이메일과 username에 해당하는 자녀 계정이 없습니다.');
     }
 
-    const childId = childResults.id;
+    const childId = childResults[0].id;
 
     // 부모 계정 코드 확인: 부모 계정이 존재하는지 확인
     const findParentQuery = 'SELECT id, username FROM users WHERE role = "parent" AND email = ?';
@@ -465,7 +465,7 @@ app.post('/child', (req, res) => {
         return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
       }
 
-      const parentId = parentResults.id;
+      const parentId = parentResults[0].id;
 
       // 부모와 자녀의 관계 저장
       const insertRelationshipQuery = 'INSERT INTO relationships (parent_id, child_id) VALUES (?, ?)';
