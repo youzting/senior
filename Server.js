@@ -460,53 +460,26 @@ app.post('/child', (req, res) => {
   });
 });
 
-// 게시글 추가 API
-app.post("/posts", (req, res) => {
-  const { title, content, author } = req.body;
-  const sql = "INSERT INTO posts (title, content, author) VALUES (?, ?, ?)";
-  db.query(sql, [title, content, author], (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: "게시글 추가 실패" });
-    }
-    res.json({ message: "게시글 추가 성공", id: result.insertId });
+// 게시판 목록 페이지
+app.get('/post', (req, res) => {
+  db.query('SELECT * FROM posts ORDER BY date DESC', (err, results) => {
+    if (err) throw err;
+    res.json(results);  // 게시글 목록을 JSON 형식으로 응답
   });
 });
 
-// 게시글 목록 조회 API
-app.get("/posts", (req, res) => {
-  const sql = "SELECT * FROM posts ORDER BY date DESC";
-  db.query(sql, (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: "게시글 조회 실패" });
-    }
-    res.json(results);
+// 게시글 작성
+app.post('/create', (req, res) => {
+  const { username, title, content } = req.body;
+  const date = new Date();
+  
+  const query = 'INSERT INTO posts (username, title, content, date) VALUES (?, ?, ?, ?)';
+  db.query(query, [username, title, content, date], (err, results) => {
+    if (err) throw err;
+    res.json({ message: '게시글이 작성되었습니다.' });
   });
 });
 
-// 게시글 수정 API
-app.put("/posts/:id", (req, res) => {
-  const { id } = req.params;
-  const { title, content } = req.body;
-  const sql = "UPDATE posts SET title = ?, content = ? WHERE id = ?";
-  db.query(sql, [title, content, id], (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: "게시글 수정 실패" });
-    }
-    res.json({ message: "게시글 수정 성공" });
-  });
-});
-
-// 게시글 삭제 API
-app.delete("/posts/:id", (req, res) => {
-  const { id } = req.params;
-  const sql = "DELETE FROM posts WHERE id = ?";
-  db.query(sql, [id], (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: "게시글 삭제 실패" });
-    }
-    res.json({ message: "게시글 삭제 성공" });
-  });
-});
 
 
 // 서버 실행
