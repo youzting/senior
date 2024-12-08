@@ -357,116 +357,6 @@ app.get('/messages', (req, res) => {
     res.json(recentMessages);
 });
 
-app.post('/parent', (req, res) => {
-  const { email, username } = req.body;
-  // 이메일과 아이디가 입력되지 않으면 각각에 대해 다른 에러 메시지 반환
-  if (!email && !username) {
-    return res.status(400).send('이메일과 아이디를 모두 입력하세요.');
-  }
-
-  if (!email) {
-    return res.status(400).send('이메일을 입력하세요.');
-  }
-
-  if (!username) {
-    return res.status(400).send('아이디를 입력하세요.');
-  }
-
-   // member 테이블에서 username과 email이 일치하는 레코드를 찾기
-  const findMemberQuery = `SELECT * FROM member WHERE email = ? AND username = ?`;
-  db.query(findMemberQuery, [email, username], (err, results) => {
-    if (err) {
-      console.error('쿼리 실행 오류:', err);
-      return res.status(500).send('서버 오류임');
-    }
-      
-    if (results.length === 0) {
-      return res.status(404).send('입력하신 이메일과 사용자명에 일치하는 회원을 찾을 수 없습니다.');
-    }
-      const code = generateRandomCode();
-
-    // 데이터베이스에 부모 계정 저장
-  const insertQuery = `INSERT INTO users (email, role, username, code) VALUES (?, 'parent', ?, ?)`;
-  db.query(insertQuery, [email, username, code], (err, result) => {
-    if (err) {
-      console.error('부모 계정 저장 오류:', err);
-      return res.status(500).send('서버 오류');
-    }
-      
-
-    const parentId = result.insertId;
-    
-    // 부모 계정의 코드 이메일 전송
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'seniorhobby12@gmail.com',
-        pass: 'vesm decn sspn qqsr',
-      }
-    });
-
-    const mailOptions = {
-      from: 'seniorhobby12@gmail.com',
-      to: email,
-      subject: '부모 계정 연결 코드',
-      text: `자녀 계정과 연결하기 위한 코드: ${code}`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return res.status(500).send('이메일 발송 실패');
-      }
-
-      
-      res.send('부모 계정이 등록되고, 연결 코드가 이메일로 전송되었습니다.');
-    });
-  });
-});
-});
-
-
-app.post('/child', (req, res) => {
-  const { email, username, parentCode } = req.body;
-
-    console.log("받은 이메일:", email);
-  console.log("받은 아이디:", username); 
-
-  if (!email || !username || !parentCode) {
-    return res.status(400).send('이메일, 자녀 username, 부모 계정 코드를 모두 입력하세요.');
-  }
-
-  // 자녀 계정 정보 확인: 이메일과 username을 확인하여 해당 자녀 계정이 있는지 확인
-  const findChildQuery = 'SELECT * FROM member WHERE email = ? AND username = ?';
-  db.query(findChildQuery, [email, username], (err, childResults) => {
-        if (err) {
-          console.error('자녀 계정 확인 오류:', err);
-          return res.status(500).send('서버 오류');
-        }
-
-        if (childResults.length === 0) {
-          return res.status(400).send('입력된 이메일과 username에 해당하는 자녀 계정이 없습니다.');
-        }
-      const childId = childResults[0].id;
-
-      const insertQuery = `INSERT INTO users (email, role, username, code) VALUES (?, 'child', ?, ?)`;
-      db.query(insertQuery, [email, username, parentCode], (err, result) => {
-        if (err) {
-          console.error('자녀 계정 저장 오류:', err);
-          return res.status(500).send('서버 오류임');
-        }
-      const newChildId = result.insertId
-
-        // 부모 계정 코드 확인
-          const findParentQuery = `SELECT id FROM users WHERE role = 'parent'`;
-          db.query(findParentQuery, [parentCode], (err, parentResults) => {
-              if (err || parentResults.length === 0) {
-                  return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
-              }
-          });
-      });
-  });
-});
-
 // 게시판 목록 조회
 app.get('/posts', (req, res) => {
   db.query('SELECT * FROM posts ORDER BY date DESC', (err, results) => {
@@ -585,6 +475,116 @@ app.get('/posts/:id', (req, res) => {
   });
 });
 
+app.post('/parent', (req, res) => {
+  const { email, username } = req.body;
+  // 이메일과 아이디가 입력되지 않으면 각각에 대해 다른 에러 메시지 반환
+  if (!email && !username) {
+    return res.status(400).send('이메일과 아이디를 모두 입력하세요.');
+  }
+
+  if (!email) {
+    return res.status(400).send('이메일을 입력하세요.');
+  }
+
+  if (!username) {
+    return res.status(400).send('아이디를 입력하세요.');
+  }
+
+   // member 테이블에서 username과 email이 일치하는 레코드를 찾기
+  const findMemberQuery = `SELECT * FROM member WHERE email = ? AND username = ?`;
+  db.query(findMemberQuery, [email, username], (err, results) => {
+    if (err) {
+      console.error('쿼리 실행 오류:', err);
+      return res.status(500).send('서버 오류임');
+    }
+      
+    if (results.length === 0) {
+      return res.status(404).send('입력하신 이메일과 사용자명에 일치하는 회원을 찾을 수 없습니다.');
+    }
+      const code = generateRandomCode();
+
+    // 데이터베이스에 부모 계정 저장
+  const insertQuery = `INSERT INTO users (email, role, username, code) VALUES (?, 'parent', ?, ?)`;
+  db.query(insertQuery, [email, username, code], (err, result) => {
+    if (err) {
+      console.error('부모 계정 저장 오류:', err);
+      return res.status(500).send('서버 오류');
+    }
+      
+
+    const parentId = result.insertId;
+    
+    // 부모 계정의 코드 이메일 전송
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'seniorhobby12@gmail.com',
+        pass: 'vesm decn sspn qqsr',
+      }
+    });
+
+    const mailOptions = {
+      from: 'seniorhobby12@gmail.com',
+      to: email,
+      subject: '부모 계정 연결 코드',
+      text: `자녀 계정과 연결하기 위한 코드: ${code}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).send('이메일 발송 실패');
+      }
+
+      
+      res.send('부모 계정이 등록되고, 연결 코드가 이메일로 전송되었습니다.');
+    });
+  });
+});
+});
+
+
+app.post('/child', (req, res) => {
+  const { email, username, parentCode } = req.body;
+
+    console.log("받은 이메일:", email);
+  console.log("받은 아이디:", username); 
+
+  if (!email || !username || !parentCode) {
+    return res.status(400).send('이메일, 자녀 username, 부모 계정 코드를 모두 입력하세요.');
+  }
+
+  // 자녀 계정 정보 확인: 이메일과 username을 확인하여 해당 자녀 계정이 있는지 확인
+  const findChildQuery = 'SELECT * FROM member WHERE email = ? AND username = ?';
+  db.query(findChildQuery, [email, username], (err, childResults) => {
+        if (err) {
+          console.error('자녀 계정 확인 오류:', err);
+          return res.status(500).send('서버 오류');
+        }
+
+        if (childResults.length === 0) {
+          return res.status(400).send('입력된 이메일과 username에 해당하는 자녀 계정이 없습니다.');
+        }
+      const childId = childResults[0].id;
+
+      const insertQuery = `INSERT INTO users (email, role, username, code) VALUES (?, 'child', ?, ?)`;
+      db.query(insertQuery, [email, username, parentCode], (err, result) => {
+        if (err) {
+          console.error('자녀 계정 저장 오류:', err);
+          return res.status(500).send('서버 오류임');
+        }
+      const newChildId = result.insertId
+
+        // 부모 계정 코드 확인
+          const findParentQuery = `SELECT id FROM users WHERE role = 'parent'`;
+          db.query(findParentQuery, [parentCode], (err, parentResults) => {
+              if (err || parentResults.length === 0) {
+                  return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
+              }
+          });
+      });
+  });
+});
+
 app.get('/progress', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/progress.html')); // progress.html 파일 경로 지정
 });
@@ -648,7 +648,6 @@ app.post('/check-relationship', (req, res) => {
     });
   });
 });
-
 
 // 서버 실행
 const PORT = process.env.PORT || 15016;
