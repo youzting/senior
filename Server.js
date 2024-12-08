@@ -193,7 +193,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
             });
         });
     });
-
+});
 
 
 // 마이페이지 수정 처리
