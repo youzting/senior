@@ -422,7 +422,7 @@ app.post('/child', (req, res) => {
       const childId = childResult.insertId;
 
       // 부모와 자녀의 관계 저장
-      const insertRelationshipQuery = INSERT INTO relationships (parent_id, child_id) VALUES (?, ?);
+      const insertRelationshipQuery = 'INSERT INTO relationships (parent_id, child_id) VALUES (?, ?)';
       db.query(insertRelationshipQuery, [parentId, childId], (err) => {
         if (err) {
           console.error('관계 저장 오류:', err);
