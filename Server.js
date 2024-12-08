@@ -217,6 +217,11 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
         if (userResults.length === 0) {
             return res.status(404).send('사용자를 찾을 수 없습니다.');
         }
+        // 사용자 정보를 업데이트하는 SQL 쿼리
+const updateQuery = `
+  UPDATE users 
+  SET email = ?, phone = ?, birthdate = ?, age = ?, gender = ?, interests = ?, health_conditions = ?
+  WHERE username = ?`;
 
     db.query(updateQuery, [email, phone, birthdate, age, gender, interests, health_conditions, usernameFromSession], (err, results) => {
         if (err) {
