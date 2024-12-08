@@ -446,11 +446,11 @@ app.post('/child', (req, res) => {
   });
 });
 
-// 게시판 목록 페이지
+// 게시판 목록 조회
 app.get('/posts', (req, res) => {
   db.query('SELECT * FROM posts ORDER BY date DESC', (err, results) => {
     if (err) throw err;
-    res.json(results);  // 게시글 목록을 JSON 형식으로 응답
+    res.json(results); // 게시글 목록을 JSON 형식으로 응답
   });
 });
 
@@ -458,8 +458,7 @@ app.get('/posts', (req, res) => {
 app.post('/create', (req, res) => {
   const { username, title, content, password } = req.body;
   const date = new Date();
-    
-const saltRounds = 10;
+  const saltRounds = 10;
 
   // 비밀번호 해시화
   bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
@@ -481,7 +480,7 @@ app.post('/posts/:id/verifyPassword', (req, res) => {
   const query = 'SELECT password FROM posts WHERE id = ?';
   db.query(query, [postId], (err, results) => {
     if (err) throw err;
-    
+
     if (results.length === 0) {
       return res.status(404).json({ message: '게시글을 찾을 수 없습니다.' });
     }
@@ -489,13 +488,19 @@ app.post('/posts/:id/verifyPassword', (req, res) => {
     const correctPassword = results[0].password;
 
     // 비밀번호가 일치하는지 확인
-    if (password === correctPassword) {
-      return res.json({ success: true });
-    } else {
-      return res.status(403).json({ success: false, message: '비밀번호가 틀립니다.' });
-    }
+    bcrypt.compare(password, correctPassword, (err, isMatch) => {
+      if (err) throw err;
+
+      if (isMatch) {
+        return res.json({ success: true });
+      } else {
+        return res.status(403).json({ success: false, message: '비밀번호가 틀립니다.' });
+      }
+    });
   });
 });
+
+// 게시글 수정
 app.put('/update/:id', (req, res) => {
   const postId = req.params.id;
   const { title, content, password } = req.body;
@@ -512,7 +517,7 @@ app.put('/update/:id', (req, res) => {
     // 비밀번호 검증
     bcrypt.compare(password, post.password, (err, result) => {
       if (err) throw err;
-      
+
       if (result) {
         // 비밀번호가 맞으면 게시글 수정
         const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
@@ -527,7 +532,8 @@ app.put('/update/:id', (req, res) => {
     });
   });
 });
-// 댓글 추가
+
+// 댓글 작성
 app.post('/comments/:postId', (req, res) => {
   const postId = req.params.postId;
   const { username, content } = req.body;
@@ -546,13 +552,15 @@ app.get('/comments/:postId', (req, res) => {
   const query = 'SELECT * FROM comments WHERE post_id = ? ORDER BY date DESC';
   db.query(query, [postId], (err, results) => {
     if (err) throw err;
-    res.json(results);  // 댓글 목록을 JSON 형식으로 응답
+    res.json(results); // 댓글 목록을 JSON 형식으로 응답
   });
 });
+
+// 게시글 상세 조회
 app.get('/posts/:id', (req, res) => {
   const postId = req.params.id;
-//상세보기
- db.query('SELECT * FROM posts WHERE id = ?', [postId], (err, result) => {
+
+  db.query('SELECT * FROM posts WHERE id = ?', [postId], (err, result) => {
     if (err) {
       return res.status(500).send('Database error');
     }
