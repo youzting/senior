@@ -448,7 +448,7 @@ app.post('/child', (req, res) => {
       return res.status(400).send('입력된 이메일과 username에 해당하는 자녀 계정이 없습니다.');
     }
 
-      const insertQuery = `INSERT INTO users (email, role, username, code) VALUES (?, 'child', ?, ?)`;
+      const insertQuery = `INSERT INTO users (email, role, username, parentcode) VALUES (?, 'child', ?, ?)`;
   db.query(insertQuery, [email, username, code], (err, result) => {
     if (err) {
       console.error('자녀 계정 저장 오류:', err);
