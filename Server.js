@@ -514,23 +514,20 @@ app.put('/update/:id', (req, res) => {
       return res.status(404).json({ message: '게시글을 찾을 수 없습니다.' });
     }
 
-    // 비밀번호 검증
-    bcrypt.compare(password, post.password, (err, result) => {
-      if (err) throw err;
+   app.put('/update/:id', (req, res) => {
+  const postId = req.params.id;
+  const { title, content } = req.body;
 
-      if (result) {
-        // 비밀번호가 맞으면 게시글 수정
-        const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
-        db.query(query, [title, content, postId], (err, results) => {
-          if (err) throw err;
-          res.json({ message: '게시글이 수정되었습니다.' });
-        });
-      } else {
-        // 비밀번호가 틀리면 에러 메시지 반환
-        res.status(403).json({ message: '비밀번호가 틀립니다.' });
-      }
-    });
+  // 게시글 수정 쿼리
+  const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
+  db.query(query, [title, content, postId], (err, results) => {
+    if (err) {
+      console.error('게시글 수정 중 오류 발생:', err);
+      return res.status(500).json({ message: '게시글 수정 중 오류가 발생했습니다.' });
+    }
+    res.json({ message: '게시글이 수정되었습니다.' });
   });
+});
 });
 
 // 댓글 작성
