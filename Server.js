@@ -448,7 +448,7 @@ app.post('/child', (req, res) => {
   }
 
   // 자녀 계정 정보 확인: 이메일과 username을 확인하여 해당 자녀 계정이 있는지 확인
-  const findChildQuery = 'SELECT id FROM users WHERE email = ? AND username = ? AND role = "child"';
+  const findChildQuery = 'SELECT id FROM member WHERE email = ? AND username = ?';
   db.query(findChildQuery, [email, username], (err, childResults) => {
     if (err) {
       console.error('자녀 계정 확인 오류:', err);
