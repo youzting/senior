@@ -80,15 +80,36 @@ button:hover {
     box-sizing: border-box;
     overflow: hidden;
   }
-
-.logo {
-  font-size: 3em; /* 로고 글자 크기 */
-  font-weight: bold;
-  color: #0056a4;
-  white-space: nowrap; /* 로고 텍스트 줄바꿈 방지 */
-  overflow: hidden; /* 로고가 상단 바를 넘어가지 않도록 */
-}
-
+.navbar .logo {
+    font-size: 3em; /* 홈 페이지 로고 글씨 크기와 동일하게 설정 */
+    font-weight: bold;
+    color: #0056a4;
+    text-decoration: none;
+    white-space: nowrap; /* 줄바꿈 방지 */
+  }
+  
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5em; /* 홈 페이지와 동일한 간격 적용 */
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar ul li {
+    white-space: nowrap; /* 줄바꿈 방지 */
+  }
+  
+  .navbar a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.4em; /* 홈 페이지 글씨 크기와 동일하게 설정 */
+    font-weight: bold;
+  }
+  
+  .navbar a:hover {
+    color: #0056a4;
+  }
 /* 게시글 목록 */
 #posts-container {
   width: 80%;
