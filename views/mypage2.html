@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이 페이지</title>
+    <style>
+    body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        header a {
+            text-decoration: none;
+            color: white;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .profile-info, .booking-history {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px 0;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile-info h2, .booking-history h2 {
+            margin-top: 0;
+        }
+        .edit-form {
+            display: none;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        button {
+            margin-top: 10px;
+        }
+    .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: center;
+  }
+
+  .card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.5em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    max-width: 100%;
+    text-align: center;
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: inherit; /* 링크 색상 상속 */
+    transition: transform 0.2s ease; /* 마우스 오버 시 확대 효과 */
+  }
+
+  .card:hover {
+    transform: scale(1.05); /* 마우스 오버 시 확대 효과 */
+  }
+
+  .card h3 {
+    color: #007bff; /* 제목 색상 */
+    font-size: 1.25em;
+    margin: 0;
+    text-decoration: none; /* 제목 링크 밑줄 제거 */
+  }
+
+  .card p {
+    font-size: 0.9em;
+    color: #666;
+    margin: 1em 0;
+  }
+
+  .card .btn {
+    display: inline-block;
+    padding: 0.5em 1em;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none; /* 버튼 텍스트 밑줄 제거 */
+    margin-top: 1em;
+  }
+
+  .card .btn:hover {
+    background-color: #0056b3;
+  }
+  </style>
+  <script>
+    function toggleEditForm() {
+      const form = document.getElementById('editForm');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+</head>
+<body>
+<header>
+    <a href="/"><h1 style="color: white; text-decoration: none;">노인 친구 찾기</h1></a>
+</header>
+
+<div class="main-content">
+    <div class="profile-info">
+        <h2>프로필 정보</h2>
+        <p><strong>아이디:</strong> <span id="profileUsername">{{ me.username }}</span></p>
+        <p><strong>이메일:</strong> <span id="profileEmail">{{ me.email }}</span></p>
+        <p><strong>휴대폰 번호:</strong> <span id="profilePhone">{{ me.phone }}</span></p>
+        <p><strong>생년월일:</strong> <span id="profileBirthdate">{{ me.birthdate }}</span></p>
+        <p><strong>나이:</strong> <span id="profileAge">{{ me.age }}</span></p>
+        <p><strong>성별:</strong> <span id="profileGender">{{ me.gender }}</span></p>
+        <p><strong>취미:</strong> <span id="profileInterests">{{ me.interests or '없음' }}</span></p>
+        <p><strong>건강상태:</strong> <span id="profileHealthConditions">{{ me.health_conditions or '없음' }}</span></p>
+    </div>
+</div>
+<div class="apply">
+    <h2>신청 내역</h2><br>
+    <div class="card-container">
+        {% for application in applications %}
+            <div class="card">
+                <h3>{{ application.program_name }}</h3>
+                <p><strong>날짜:</strong> {{ application.formattedDate }}</p>
+                <p><strong>시간:</strong> {{ application.formattedTime }}</p>
+            </div>
+        {% else %}
+           <div class="card">
+                <h3>신청한 프로그램이 없습니다.</h3>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
