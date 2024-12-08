@@ -453,13 +453,20 @@ app.get('/posts', (req, res) => {
 
 // 게시글 작성
 app.post('/create', (req, res) => {
-  const { username, title, content } = req.body;
+  const { username, title, content, password } = req.body;
   const date = new Date();
-  
-  const query = 'INSERT INTO posts (username, title, content, date) VALUES (?, ?, ?, ?)';
-  db.query(query, [username, title, content, date], (err, results) => {
+    
+const saltRounds = 10;
+
+  // 비밀번호 해시화
+  bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
     if (err) throw err;
-    res.json({ message: '게시글이 작성되었습니다.' });
+
+    const query = 'INSERT INTO posts (username, title, content, date, password) VALUES (?, ?, ?, ?, ?)';
+    db.query(query, [username, title, content, date, hashedPassword], (err, results) => {
+      if (err) throw err;
+      res.json({ message: '게시글이 작성되었습니다.' });
+    });
   });
 });
 //게시글 수정
