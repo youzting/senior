@@ -31,7 +31,7 @@
       .then(response => response.json())
       .then(posts => {
         const tableBody = document.querySelector('#board-table tbody');
-        posts.forEach((post, index) => {
+        posts.forEach((post, post) => {
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>${post.id}</td>
