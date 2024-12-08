@@ -438,53 +438,34 @@ app.post('/child', (req, res) => {
   // 자녀 계정 정보 확인: 이메일과 username을 확인하여 해당 자녀 계정이 있는지 확인
   const findChildQuery = 'SELECT * FROM member WHERE email = ? AND username = ?';
   db.query(findChildQuery, [email, username], (err, childResults) => {
-    if (err) {
-      console.error('자녀 계정 확인 오류:', err);
-      return res.status(500).send('서버 오류');
-    }
-      
-
-    if (childResults.length === 0) {
-      return res.status(400).send('입력된 이메일과 username에 해당하는 자녀 계정이 없습니다.');
-    }
-      const childId = childResults[0].id;
-
-      const insertQuery = `INSERT INTO users (email, role, username, code) VALUES (?, 'child', ?, ?)`;
-  db.query(insertQuery, [email, username, parentCode], (err, result) => {
-    if (err) {
-      console.error('자녀 계정 저장 오류:', err);
-      return res.status(500).send('서버 오류임');
-    }
-      const newChildId = result.insertId
-
-    
-
-
-         // 부모 계정 코드 확인
-  
-      const findParentQuery = `SELECT id FROM users WHERE role = 'parent'`;
-   db.query(findParentQuery, [parentCode], (err, parentResults) => {
-    if (err || parentResults.length === 0) {
-      return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
-    }
-      const parentId = parentResults[0].id;
-
-      // 부모와 자녀의 관계 저장
-      const insertRelationshipQuery = 'INSERT INTO relationships (parent_id, child_id) VALUES (?, ?)';
-      db.query(insertRelationshipQuery, [parentId, newChildId], (err) => {
         if (err) {
-          console.error('관계 저장 오류:', err);
+          console.error('자녀 계정 확인 오류:', err);
           return res.status(500).send('서버 오류');
         }
 
-        res.send('부모와 자녀 관계가 성공적으로 설정되었습니다.');
+        if (childResults.length === 0) {
+          return res.status(400).send('입력된 이메일과 username에 해당하는 자녀 계정이 없습니다.');
+        }
+      const childId = childResults[0].id;
+
+      const insertQuery = `INSERT INTO users (email, role, username, code) VALUES (?, 'child', ?, ?)`;
+      db.query(insertQuery, [email, username, parentCode], (err, result) => {
+        if (err) {
+          console.error('자녀 계정 저장 오류:', err);
+          return res.status(500).send('서버 오류임');
+        }
+      const newChildId = result.insertId
+
+        // 부모 계정 코드 확인
+          const findParentQuery = `SELECT id FROM users WHERE role = 'parent'`;
+          db.query(findParentQuery, [parentCode], (err, parentResults) => {
+              if (err || parentResults.length === 0) {
+                  return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
+              }
+          });
       });
-    });
   });
 });
-});
-
-
 
 // 게시판 목록 조회
 app.get('/posts', (req, res) => {
