@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시판</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      width: 80%;
+      margin: 0 auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .button {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #45a049;
+    }
+    .form-container {
+      margin-top: 20px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>게시판</h1>
+    
+    <!-- 게시글 추가 폼 -->
+    <div class="form-container">
+      <h3>게시글 추가</h3>
+      <form id="postForm">
+        <label for="title">제목:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+        
+        <label for="content">내용:</label><br>
+        <textarea id="content" name="content" required></textarea><br><br>
+        
+        <label for="author">작성자:</label><br>
+        <input type="text" id="author" name="author" required><br><br>
+        
+        <button type="submit" class="button">게시글 추가</button>
+      </form>
+    </div>
+
+    <!-- 게시글 목록 테이블 -->
+    <h3>게시글 목록</h3>
+    <table id="postsTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>제목</th>
+          <th>작성자</th>
+          <th>작성일</th>
+          <th>수정</th>
+          <th>삭제</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 게시글 목록이 여기에 동적으로 추가됩니다. -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const apiUrl = 'http://116.124.191.174:15016/posts';
+
+    // 게시글 목록 불러오기
+    function fetchPosts() {
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.querySelector('#postsTable tbody');
+          tableBody.innerHTML = '';
+          data.forEach(post => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${post.id}</td>
+              <td>${post.title}</td>
+              <td>${post.username}</td>
+              <td>${new Date(post.date).toLocaleString()}</td>
+              <td><button class="button" onclick="editPost(${post.id})">수정</button></td>
+              <td><button class="button" onclick="deletePost(${post.id})">삭제</button></td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('게시글 목록 조회 실패:', error));
+    }
+
+    // 게시글 추가하기
+    document.getElementById('postForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const title = document.getElementById('title').value;
+      const content = document.getElementById('content').value;
+      const username = document.getElementById('username').value;
+
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, content, author }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message);
+          fetchPosts();  // 게시글 목록 갱신
+        })
+        .catch(error => console.error('게시글 추가 실패:', error));
+    });
+
+    // 게시글 수정하기
+    function editPost(id) {
+      const title = prompt('새 제목을 입력하세요:');
+      const content = prompt('새 내용을 입력하세요:');
+      
+      if (title && content) {
+        fetch(`${apiUrl}/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title, content }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            alert(data.message);
+            fetchPosts();  // 게시글 목록 갱신
+          })
+          .catch(error => console.error('게시글 수정 실패:', error));
+      }
+    }
+
+    // 게시글 삭제하기
+    function deletePost(id) {
+      if (confirm('정말 삭제하시겠습니까?')) {
+        fetch(`${apiUrl}/${id}`, {
+          method: 'DELETE',
+        })
+          .then(response => response.json())
+          .then(data => {
+            alert(data.message);
+            fetchPosts();  // 게시글 목록 갱신
+          })
+          .catch(error => console.error('게시글 삭제 실패:', error));
+      }
+    }
+
+    // 페이지 로드 시 게시글 목록 불러오기
+    fetchPosts();
+  </script>
+</body>
+</html>
