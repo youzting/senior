@@ -219,7 +219,7 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
         }
         // 사용자 정보를 업데이트하는 SQL 쿼리
 const updateQuery = `
-  UPDATE users 
+  UPDATE member 
   SET email = ?, phone = ?, birthdate = ?, age = ?, gender = ?, interests = ?, health_conditions = ?
   WHERE username = ?`;
 
