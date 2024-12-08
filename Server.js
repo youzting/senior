@@ -148,7 +148,6 @@ app.get('/mypage', isAuthenticated, (req, res) => {
         if (userResults.length === 0) {
             return res.status(404).send('사용자를 찾을 수 없습니다.');
         }
-  
     
         // 신청 내역 조회
         db.query('SELECT * FROM application_form WHERE username = ?', [username], (err, applicationResults) => {
@@ -235,6 +234,16 @@ app.post('/appform', isAuthenticated, (req, res) => {
             console.error(err);
             return res.status(500).send('신청서를 저장하는 중 오류가 발생했습니다.');
         }
+        // 부모-자녀 연동 확인 및 알림 생성
+            const findChildQuery = `SELECT username FROM users WHERE code = (SELECT code FROM users WHERE username = ?) AND role = 'child'`;
+            db.query(findChildQuery, [usernameFromSession], (err, childResults) => {
+                if (err) {
+                    console.error('연동된 자녀 찾기 오류:', err);
+                } else if (childResults.length > 0) {
+                    const childUsername = childResults[0].username;
+                    createNotification(childUsername, usernameFromSession, `부모님이 새로운 프로그램을 신청하셨습니다: ${programName}`);
+                }
+            });
 
         res.redirect('/program');
     });
