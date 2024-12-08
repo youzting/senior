@@ -144,6 +144,51 @@ function getLinkedAccount(userId) {
   });
 }
 
+// 3. 연동된 계정 조회 API 추가
+app.get('/relationships', isAuthenticated, async (req, res) => {
+    const userId = req.query.userId || req.session.userId;
+
+    try {
+        const relationships = await query(`
+            SELECT u.id, u.email, u.role
+            FROM relationships r
+            JOIN users u ON u.id = r.child_id
+            WHERE r.parent_id = ?
+        `, [userId]);
+
+        res.json(relationships);
+    } catch (error) {
+        console.error('연동된 계정 조회 오류:', error);
+        res.status(500).send('서버 오류');
+    }
+});
+
+// 2. 부모 계정 조회 API 수정
+app.get('/mypage', isAuthenticated, async (req, res) => {
+    const userId = req.query.userId || req.session.userId;
+
+    try {
+        // 사용자의 기본 정보 조회
+        const [user] = await query('SELECT * FROM users WHERE id = ?', [userId]);
+        if (!user) return res.status(404).send('사용자를 찾을 수 없습니다.');
+
+        // 연동된 계정 정보 조회
+        const linkedAccounts = await query(`
+            SELECT u.id, u.email, u.role
+            FROM relationships r
+            JOIN users u ON u.id = r.child_id
+            WHERE r.parent_id = ?
+        `, [userId]);
+
+        res.render('mypage.html', {
+            me: user,
+            linkedAccounts: linkedAccounts.length > 0 ? linkedAccounts : null
+        });
+    } catch (error) {
+        console.error('마이페이지 조회 오류:', error);
+        res.status(500).send('서버 오류');
+    }
+});
 
 // 마이페이지 라우트
 app.get('/mypage', isAuthenticated, (req, res) => {
