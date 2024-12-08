@@ -12,6 +12,9 @@
   <nav class="navbar">
     <a href="/" class="logo"> 노인친구찾기 </a>
     <ul>
+        {% if child %}
+          <li><a>개 못생긴 강동혁</a></li>
+        {% endif %}
         {% if username %}
             <li><a href="/hobbyRec">취미 추천</a></li>
             <li><a href="/matching">유저매칭</a></li>
