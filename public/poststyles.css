@@ -1,0 +1,174 @@
+/* 전체적인 레이아웃 */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 헤더 */
+header {
+  background-color: #333;
+  color: white;
+  width: 100%;
+  padding: 15px 0;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+/* 게시글 목록 */
+#posts-container {
+  width: 80%;
+  max-width: 1000px;
+  margin-top: 20px;
+}
+
+.post-item {
+  background-color: white;
+  margin: 10px 0;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-item h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.post-item p {
+  font-size: 16px;
+  color: #555;
+}
+
+.post-item .post-meta {
+  font-size: 14px;
+  color: #888;
+  margin-top: 10px;
+}
+
+/* 게시글 작성 폼 */
+form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+  margin-top: 20px;
+}
+
+form label {
+  font-size: 16px;
+  color: #333;
+  display: block;
+  margin-bottom: 8px;
+}
+
+form input, form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+form button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #45a049;
+}
+
+/* 게시글 수정 폼 */
+#edit-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+  margin-top: 20px;
+}
+
+#edit-form label {
+  font-size: 16px;
+  color: #333;
+  display: block;
+  margin-bottom: 8px;
+}
+
+#edit-form input, #edit-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+#edit-form button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#edit-form button:hover {
+  background-color: #45a049;
+}
+
+/* 댓글 영역 */
+#comment-section {
+  margin-top: 40px;
+  width: 80%;
+  max-width: 800px;
+}
+
+#comment-list {
+  list-style: none;
+  padding: 0;
+}
+
+.comment-item {
+  background-color: white;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.comment-item p {
+  margin: 5px 0;
+}
+
+.comment-item .comment-meta {
+  font-size: 14px;
+  color: #888;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  #posts-container, form, #edit-form, #comment-section {
+    width: 90%;
+  }
+}
