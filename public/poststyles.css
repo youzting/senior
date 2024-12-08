@@ -22,6 +22,14 @@ header h1 {
   margin: 0;
 }
 
+.logo {
+  font-size: 3em; /* 로고 글자 크기 */
+  font-weight: bold;
+  color: #0056a4;
+  white-space: nowrap; /* 로고 텍스트 줄바꿈 방지 */
+  overflow: hidden; /* 로고가 상단 바를 넘어가지 않도록 */
+}
+
 /* 게시글 목록 */
 #posts-container {
   width: 80%;
