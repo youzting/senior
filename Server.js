@@ -78,7 +78,7 @@ function getLinkedAccount(userId) {
       resolve(results.length > 0 ? results : []);  // 연동된 계정이 있으면 반환, 없으면 빈 배열 반환
     });
   });
-});
+}
 
 
 // 라우팅
