@@ -68,7 +68,6 @@ function isAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
-
 // 라우팅
 // 홈 페이지
 // 홈 라우트
@@ -133,9 +132,6 @@ app.post('/signup/insert', async (req, res) => {
         });
 });
 
-
-
-
 // 마이페이지 라우트
 app.get('/mypage', isAuthenticated, (req, res) => {
     const id = req.query.id;
@@ -181,8 +177,6 @@ app.get('/mypage', isAuthenticated, (req, res) => {
         }); // 신청 내역 조회 끝
     }); // 사용자 정보 조회 끝
 });
-
-
 
 // 마이페이지 수정 처리
 app.post('/mypage/update', isAuthenticated, (req, res) => {
@@ -589,7 +583,7 @@ app.get('/progress', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/progress.html')); // progress.html 파일 경로 지정
 });
 
-app.post('/check-relationship', (req, res) => {
+app.get('/mypage2', (req, res) => {
   usernameFromSession = req.session.username;
 
   // Step 1: 코드 가져오기, 자녀의 username 사용
@@ -612,12 +606,29 @@ app.post('/check-relationship', (req, res) => {
         if (parentInfoResults.length === 0) {
           return res.status(404).send('부모 정보를 찾을 수 없습니다.');
         }
-        const parentInfo = parentInfoResults[0];
-        // 부모의 정보를 클라이언트로 반환
-        res.send({
-          parentInfo
+          // 신청 내역 조회
+        db.query('SELECT * FROM application_form WHERE username = ?', [username], (err, applicationResults) => {
+            if (err) {
+                console.error('데이터베이스 오류:', err);
+                return res.status(500).send('서버 오류: 신청 내역을 가져오지 못했습니다.');
+            }
+
+            const moment = require('moment');
+            moment.locale('ko'); // 한국어 로케일 설정
+
+            // 날짜 포맷팅
+            const application = applicationResults.map(application => {
+                application.formattedDate = moment(application.preferred_date).format('YYYY년 MM월 DD일 dddd');
+                application.formattedTime = moment(application.preferred_time, 'HH:mm:ss').format('HH:mm'); // 시간 포맷 (초 제외)
+                return application;
+            });
+
+            // 'mypage' 템플릿을 렌더링하면서 'formattedDate'를 포함한 'application' 객체를 전달
+            res.render('mypage2', { 
+                me: parentInfoResults[0], 
+                applications: application   
+            });
         });
-      });
     });
   });
 });
