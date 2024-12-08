@@ -442,6 +442,54 @@ app.post('/child', (req, res) => {
   });
 });
 
+// 게시글 추가 API
+app.post("/posts", (req, res) => {
+  const { title, content, username } = req.body;
+  const sql = "INSERT INTO posts (title, content, username) VALUES (?, ?, ?)";
+  db.query(sql, [title, content, username], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "게시글 추가 실패" });
+    }
+    res.json({ message: "게시글 추가 성공", id: result.insertId });
+  });
+});
+
+// 게시글 목록 조회 API
+app.get("/posts", (req, res) => {
+  const sql = "SELECT * FROM posts ORDER BY date DESC";
+  db.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "게시글 조회 실패" });
+    }
+    res.json(results);
+  });
+});
+
+// 게시글 수정 API
+app.put("/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const { title, content } = req.body;
+  const sql = "UPDATE posts SET title = ?, content = ? WHERE id = ?";
+  db.query(sql, [title, content, id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "게시글 수정 실패" });
+    }
+    res.json({ message: "게시글 수정 성공" });
+  });
+});
+
+// 게시글 삭제 API
+app.delete("/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = "DELETE FROM posts WHERE id = ?";
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "게시글 삭제 실패" });
+    }
+    res.json({ message: "게시글 삭제 성공" });
+  });
+});
+
 
 // 서버 실행
 const PORT = process.env.PORT || 15016;
