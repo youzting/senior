@@ -469,21 +469,37 @@ const saltRounds = 10;
     });
   });
 });
-//게시글 수정
 app.put('/update/:id', (req, res) => {
   const postId = req.params.id;
-  const { title, content } = req.body;
+  const { title, content, password } = req.body;
 
-  const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
-  db.query(query, [title, content, postId], (err, results) => {
+  // 게시글 조회
+  db.query('SELECT * FROM posts WHERE id = ?', [postId], (err, results) => {
     if (err) throw err;
-    if (results.affectedRows === 0) {
+
+    const post = results[0];
+    if (!post) {
       return res.status(404).json({ message: '게시글을 찾을 수 없습니다.' });
     }
-    res.json({ message: '게시글이 수정되었습니다.' });
+
+    // 비밀번호 검증
+    bcrypt.compare(password, post.password, (err, result) => {
+      if (err) throw err;
+      
+      if (result) {
+        // 비밀번호가 맞으면 게시글 수정
+        const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
+        db.query(query, [title, content, postId], (err, results) => {
+          if (err) throw err;
+          res.json({ message: '게시글이 수정되었습니다.' });
+        });
+      } else {
+        // 비밀번호가 틀리면 에러 메시지 반환
+        res.status(403).json({ message: '비밀번호가 틀립니다.' });
+      }
+    });
   });
 });
-
 // 댓글 추가
 app.post('/comments/:postId', (req, res) => {
   const postId = req.params.postId;
