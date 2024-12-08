@@ -495,6 +495,20 @@ app.get('/comments/:postId', (req, res) => {
     res.json(results);  // 댓글 목록을 JSON 형식으로 응답
   });
 });
+app.get('/posts/:id', (req, res) => {
+  const postId = req.params.id;
+//상세보기
+ db.query('SELECT * FROM posts WHERE id = ?', [postId], (err, result) => {
+    if (err) {
+      return res.status(500).send('Database error');
+    }
+    if (result.length === 0) {
+      return res.status(404).send('Post not found');
+    }
+    res.json(result[0]);
+  });
+});
+
 
 
 
