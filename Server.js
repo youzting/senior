@@ -402,35 +402,36 @@ app.post('/child', (req, res) => {
     return res.status(400).send('이메일과 부모 계정 코드를 입력하세요.');
   }
 
-  // 부모 계정 코드 확인
-  const findParentQuery = 'SELECT id FROM users WHERE role = parent AND email = ?';
-  db.query(findParentQuery, [parentAccount.email], (err, parentResults) => {
-    if (err || parentResults.length === 0) {
-      return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
-    }
+      // 부모 계정 코드 확인
+      const findParentQuery = 'SELECT id FROM users WHERE role = parent AND email = ?';
+      db.query(findParentQuery, [parentAccount.email], (err, parentResults) => {
+        if (err || parentResults.length === 0) {
+          return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
+        }
 
-    const parentId = parentResults[0].id;
+        const parentId = parentResults[0].id;
 
-    // 자녀 계정 저장
-    const insertChildQuery = 'INSERT INTO users (email, role) VALUES (?, child)';
-    db.query(insertChildQuery, [email], (err, childResult) => {
-      if (err) {
-        console.error('자녀 계정 저장 오류:', err);
-        return res.status(500).send('서버 오류');
-      }
+        // 자녀 계정 저장
+        const insertChildQuery = 'INSERT INTO users (email, role) VALUES (?, child)';
+        db.query(insertChildQuery, [email], (err, childResult) => {
+          if (err) {
+            console.error('자녀 계정 저장 오류:', err);
+            return res.status(500).send('서버 오류');
+          }
 
-      const childId = childResult.insertId;
+          const childId = childResult.insertId;
 
-      // 부모와 자녀의 관계 저장
-      const insertRelationshipQuery = 'INSERT INTO relationships (parent_id, child_id) VALUES (?, ?)';
-      db.query(insertRelationshipQuery, [parentId, childId], (err) => {
-        if (err) {
-          console.error('관계 저장 오류:', err);
-          return res.status(500).send('서버 오류');
+          // 부모와 자녀의 관계 저장
+          const insertRelationshipQuery = 'INSERT INTO relationships (parent_id, child_id) VALUES (?, ?)';
+          db.query(insertRelationshipQuery, [parentId, childId], (err) => {
+            if (err) {
+              console.error('관계 저장 오류:', err);
+              return res.status(500).send('서버 오류');
         } 
       res.send('부모와 자녀 관계가 성공적으로 설정되었습니다.');
+        });
+      });
     });
-  });
 });
 
 
