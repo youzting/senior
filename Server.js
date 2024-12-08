@@ -131,18 +131,7 @@ app.post('/signup/insert', async (req, res) => {
             res.redirect('/');
         });
 });
-// 연동된 계정을 반환하는 함수 (await 없이, Promise 사용)
-function getLinkedAccount(userId) {
-  return new Promise((resolve, reject) => {
-    const query = 'SELECT * FROM relationships WHERE id = ?';
-    db.execute(query, [userId], (err, results) => {
-      if (err) {
-        return reject(err);  // 오류 발생 시 reject
-      }
-      resolve(results.length > 0 ? results[0] : null);  // 연동된 계정이 있으면 반환, 없으면 null
-    });
-  });
-}
+
 
 
 
