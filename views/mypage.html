@@ -129,36 +129,6 @@
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
         }
 
-          // 연동된 계정의 MyPage를 조회하는 함수 (await 없이)
-        function fetchLinkedAccount(userId) {
-            fetch(`/mypage?userId=${userId}`)
-                .then(function(response) {
-                    return response.json();  // 서버에서 반환된 JSON 데이터를 파싱
-                })
-                .then(function(data) {
-                    const linkedAccountDiv = document.getElementById('linked-account');
-                    if (data) {
-                        linkedAccountDiv.innerHTML = `
-                            <h2>연동된 계정:</h2>
-                            <p>이메일: ${data.email}</p>
-                            <p>역할: ${data.role}</p>
-                        `;
-                    } else {
-                        linkedAccountDiv.textContent = '연동된 계정이 없습니다.';
-                    }
-                })
-                .catch(function(error) {
-                    console.error('연동된 계정 조회 실패:', error);
-                    const linkedAccountDiv = document.getElementById('linked-account');
-                    linkedAccountDiv.textContent = '서버 오류';
-                });
-        }
-
-        // 부모 계정의 myPage를 볼 수 있는 버튼 클릭 시
-        document.getElementById('view-parent-mypage').addEventListener('click', function() {
-            const parentUserId = 1;  // 부모 계정의 userId (예시)
-            fetchLinkedAccount(parentUserId);  // 부모 계정의 myPage 조회
-        });
     </script>
 </head>
 <body>
