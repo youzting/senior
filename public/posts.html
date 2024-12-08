@@ -24,40 +24,26 @@
     </tbody>
   </table>
 
-
   <script>
     // 서버에서 게시글 목록을 불러오기
     fetch('http://116.124.191.174:15016/posts')
       .then(response => response.json())
       .then(posts => {
         const tableBody = document.querySelector('#board-table tbody');
-        posts.forEach((post, post) => {
+        
+        // 게시글 목록과 수정 링크를 추가
+        posts.forEach((post, index) => {
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>${post.id}</td>
-            <td>${post.title}</td>
+            <td><a href="edit.html?id=${post.id}">${post.title}</a></td>
             <td>${post.username}</td>
             <td>${new Date(post.date).toLocaleString()}</td>
           `;
           tableBody.appendChild(row);
         });
       })
-    .catch(error => console.error('Error:', error));
-    // 게시글 목록에 수정 링크 추가
-posts.forEach((post, post) => {
-  const row = document.createElement('tr');
-  row.innerHTML = `
-    <td>${post.id}</td>
-    <td><a href="edit.html?id=${post.id}">${post.title}</a></td>
-    <td>${post.username}</td>
-    <td>${new Date(post.date).toLocaleString()}</td>
-  `;
-  tableBody.appendChild(row);
-});
-     const postId = new URLSearchParams(window.location.search).get('id');
-     
-
-
+      .catch(error => console.error('Error:', error));
   </script>
 </body>
 </html>
