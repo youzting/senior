@@ -77,46 +77,6 @@ posts.forEach((post, index) => {
 });
      const postId = new URLSearchParams(window.location.search).get('id');
 
-  // 댓글 작성
-  document.getElementById('comment-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const username = document.getElementById('comment-username').value;
-    const content = document.getElementById('comment-content').value;
-
-    const commentData = { username, content };
-
-    fetch(`http://localhost:3000/comment/${postId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(commentData)
-    })
-    .then(response => response.json())
-    .then(data => {
-      alert(data.message);
-      loadComments();  // 댓글 작성 후 댓글 목록 다시 불러오기
-    })
-    .catch(error => console.error('Error:', error));
-  });
-
-  // 댓글 목록 불러오기
-  function loadComments() {
-    fetch(`http://localhost:3000/comments/${postId}`)
-      .then(response => response.json())
-      .then(comments => {
-        const commentList = document.getElementById('comment-list');
-        commentList.innerHTML = '';
-        comments.forEach(comment => {
-          const li = document.createElement('li');
-          li.textContent = `${comment.username}: ${comment.content} (작성일: ${new Date(comment.date).toLocaleString()})`;
-          commentList.appendChild(li);
-        });
-      })
-      .catch(error => console.error('Error:', error));
-  }
-
-  // 페이지 로드 시 댓글 목록 불러오기
-  loadComments();
 
   </script>
 </body>
