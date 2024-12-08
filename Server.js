@@ -469,6 +469,30 @@ const saltRounds = 10;
     });
   });
 });
+
+// 비밀번호 확인
+app.post('/posts/:id/verifyPassword', (req, res) => {
+  const postId = req.params.id;
+  const { password } = req.body;
+
+  const query = 'SELECT password FROM posts WHERE id = ?';
+  db.query(query, [postId], (err, results) => {
+    if (err) throw err;
+    
+    if (results.length === 0) {
+      return res.status(404).json({ message: '게시글을 찾을 수 없습니다.' });
+    }
+
+    const correctPassword = results[0].password;
+
+    // 비밀번호가 일치하는지 확인
+    if (password === correctPassword) {
+      return res.json({ success: true });
+    } else {
+      return res.status(403).json({ success: false, message: '비밀번호가 틀립니다.' });
+    }
+  });
+});
 app.put('/update/:id', (req, res) => {
   const postId = req.params.id;
   const { title, content, password } = req.body;
