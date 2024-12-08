@@ -241,55 +241,52 @@ app.post('/appform', isAuthenticated, (req, res) => {
 });
 
 // 기타 페이지 라우팅
-const pages = ['hobbyRec', 'program', 'progApply', 'progInfo1', 'progInfo2', 'parent', 'child'];
+const pages = ['hobbyRec', 'program', 'progApply', 'progInfo1', 'progInfo2', 'parent', 'child', 'notifications'];
 pages.forEach(page => {
     app.get(`/${page}`, (req, res) => {
         res.sendFile(path.join(__dirname, 'public', `${page}.html`));
     });
 });
 
-// 취미 추가
+//취미 추가
 app.post('/hobby/update', isAuthenticated, (req, res) => {
     const usernameFromSession = req.session.username;
 
-    // 세션과 데이터베이스에서 사용자 정보를 업데이트
     if (!usernameFromSession) {
         return res.status(400).send('사용자 정보가 없습니다.');
     }
 
-    // 클라이언트에서 전송된 'hobby' 값을 가져옵니다.
-    const { interests } = req.body; // req.body에서 hobby 가져오기
+    const { interests } = req.body;
 
-    // interests 필드 확인 후 동작
     const selectQuery = `SELECT interests FROM member WHERE username = ?`;
-
     db.query(selectQuery, [usernameFromSession], (err, results) => {
         if (err) {
             console.error('조회 오류:', err);
             return res.status(500).send('서버 오류');
         }
 
-        const currentInterests = results[0]?.interests || ''; // 기존 interests 값
+        const currentInterests = results[0]?.interests || '';
+        const updatedInterests = currentInterests ? `${currentInterests}, ${interests}` : interests;
 
-        let updateQuery, updatedInterests;
-
-        if (!currentInterests) {
-            // interests 필드가 비어 있는 경우
-            updateQuery = `UPDATE member SET interests = ? WHERE username = ?`;
-            updatedInterests = interests; // 새로 추가된 취미
-        } else {
-            // interests 필드가 비어 있지 않은 경우
-            updateQuery = `UPDATE member SET interests = ? WHERE username = ?`;
-            updatedInterests = `${currentInterests}, ${interests}`; // 기존 값에 추가
-        }
-
-        // interests 필드 업데이트
+        const updateQuery = `UPDATE member SET interests = ? WHERE username = ?`;
         db.query(updateQuery, [updatedInterests, usernameFromSession], (err, results) => {
             if (err) {
                 console.error('업데이트 오류:', err);
                 return res.status(500).send('서버 오류');
             }
-            res.redirect('/hobbyRec'); // 성공적으로 업데이트 후 리다이렉트
+
+            // 부모-자녀 연동 확인 및 알림 생성
+            const findChildQuery = `SELECT username FROM users WHERE code = (SELECT code FROM users WHERE username = ?) AND role = 'child'`;
+            db.query(findChildQuery, [usernameFromSession], (err, childResults) => {
+                if (err) {
+                    console.error('연동된 자녀 찾기 오류:', err);
+                } else if (childResults.length > 0) {
+                    const childUsername = childResults[0].username;
+                    createNotification(childUsername, usernameFromSession, `부모님이 새로운 취미를 추가하셨습니다: ${interests}`);
+                }
+            });
+
+            res.redirect('/hobbyRec');
         });
     });
 });
@@ -643,6 +640,44 @@ app.get('/mypage2', (req, res) => {
     });
   });
 });
+});
+
+// 알림 생성 함수
+function createNotification(childUsername, parentUsername, message) {
+    const query = `INSERT INTO notifications (child_username, parent_username, message) VALUES (?, ?, ?)`;
+    db.query(query, [childUsername, parentUsername, message], (err, results) => {
+        if (err) {
+            console.error('알림 생성 오류:', err);
+        } else {
+            console.log('알림 생성 성공:', message);
+        }
+    });
+}
+
+app.get('/notifications', isAuthenticated, (req, res) => {
+    const username = req.session.username;
+
+    const query = `SELECT * FROM notifications WHERE child_username = ? ORDER BY created_at DESC`;
+    db.query(query, [username], (err, results) => {
+        if (err) {
+            console.error('알림 조회 오류:', err);
+            return res.status(500).send('서버 오류');
+        }
+        res.json(results);
+    });
+});
+
+app.post('/notifications/mark-read', isAuthenticated, (req, res) => {
+    const { notificationId } = req.body;
+
+    const query = `UPDATE notifications SET is_read = TRUE WHERE id = ?`;
+    db.query(query, [notificationId], (err, results) => {
+        if (err) {
+            console.error('알림 읽음 처리 오류:', err);
+            return res.status(500).send('서버 오류');
+        }
+        res.json({ success: true });
+    });
 });
 
 // 서버 실행
