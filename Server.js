@@ -462,7 +462,7 @@ app.post('/create', (req, res) => {
     res.json({ message: '게시글이 작성되었습니다.' });
   });
 });
-// 게시글 수정
+//게시글 수정
 app.put('/update/:id', (req, res) => {
   const postId = req.params.id;
   const { title, content } = req.body;
@@ -470,9 +470,13 @@ app.put('/update/:id', (req, res) => {
   const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
   db.query(query, [title, content, postId], (err, results) => {
     if (err) throw err;
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: '게시글을 찾을 수 없습니다.' });
+    }
     res.json({ message: '게시글이 수정되었습니다.' });
   });
 });
+
 // 댓글 추가
 app.post('/comments/:postId', (req, res) => {
   const postId = req.params.postId;
