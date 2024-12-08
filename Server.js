@@ -607,12 +607,11 @@ app.get('/mypage2', (req, res) => {
           return res.status(404).send('부모 정보를 찾을 수 없습니다.');
         }
           // 신청 내역 조회
-        db.query('SELECT * FROM application_form WHERE username = ?', [username], (err, applicationResults) => {
+        db.query('SELECT * FROM application_form WHERE username = ?', [username, parentInfoResults], (err, applicationResults) => {
             if (err) {
                 console.error('데이터베이스 오류:', err);
                 return res.status(500).send('서버 오류: 신청 내역을 가져오지 못했습니다.');
             }
-
             const moment = require('moment');
             moment.locale('ko'); // 한국어 로케일 설정
 
