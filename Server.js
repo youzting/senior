@@ -144,97 +144,67 @@ function getLinkedAccount(userId) {
   });
 }
 
-// 3. 연동된 계정 조회 API 추가
-app.get('/relationships', isAuthenticated, async (req, res) => {
-    const userId = req.query.userId || req.session.userId;
-
-    try {
-        const relationships = await query(`
-            SELECT u.id, u.email, u.role
-            FROM relationships r
-            JOIN users u ON u.id = r.child_id
-            WHERE r.parent_id = ?
-        `, [userId]);
-
-        res.json(relationships);
-    } catch (error) {
-        console.error('연동된 계정 조회 오류:', error);
-        res.status(500).send('서버 오류');
-    }
-});
-
 
 // 마이페이지 라우트
 app.get('/mypage', isAuthenticated, (req, res) => {
-    const id = req.query.id; // 쿼리 매개변수에서 사용자 ID 가져오기
-    const username = req.session.username; // 세션에서 사용자 이름 가져오기
-
+    const id = req.query.id;
+    const username = req.session.username;
+    
     if (!username) {
         return res.status(400).send('잘못된 요청입니다.');
     }
     if (!id) {
-        return res.status(400).send('사용자 ID가 필요합니다.');
-    }
+    return res.status(400).send('사용자 ID가 필요합니다.');
+  }
 
-    // 1. 부모 계정 정보 조회
-    db.query('SELECT * FROM users WHERE id = ?', [id], (err, parentResult) => {
+    // 연동된 계정을 조회
+  getLinkedAccount(userId)
+    .then((linkedAccount) => {
+      if (linkedAccount) {
+        res.json(linkedAccount);  // 연동된 계정이 있으면 JSON으로 반환
+      } else {
+        res.json(null);  // 연동된 계정이 없으면 null 반환
+      }
+    })
+    .catch((error) => {
+      console.error('연동된 계정 조회 실패:', error);
+      res.status(500).send('서버 오류');
+    });
+
+    
+    
+    // 사용자 정보 조회
+    db.query('SELECT * FROM member WHERE username = ?', [username], (err, userResults) => {
         if (err) {
-            console.error('부모 계정 정보 조회 오류:', err);
-            return res.status(500).send('서버 오류: 부모 계정을 가져오지 못했습니다.');
+            console.error('데이터베이스 오류:', err);
+            return res.status(500).send('서버 오류: 사용자를 가져오지 못했습니다.');
         }
 
-        const parentAccount = parentResult[0]; // 부모 계정 정보
+        if (userResults.length === 0) {
+            return res.status(404).send('사용자 정보를 찾을 수 없습니다.');
+        }
 
-        // 2. 연동된 계정 조회
-        db.query(`
-            SELECT u.id, u.email, u.role 
-            FROM relationships r
-            JOIN users u ON u.id = r.child_id
-            WHERE r.parent_id = ?
-        `, [id], (err, linkedAccountsResult) => {
+        // 신청 내역 조회
+        db.query('SELECT * FROM application_form WHERE username = ?', [username], (err, applicationResults) => {
             if (err) {
-                console.error('연동된 계정 조회 오류:', err);
-                return res.status(500).send('서버 오류: 연동된 계정을 가져오지 못했습니다.');
+                console.error('데이터베이스 오류:', err);
+                return res.status(500).send('서버 오류: 신청 내역을 가져오지 못했습니다.');
             }
+            const moment = require('moment');
+            moment.locale('ko'); // 한국어 로케일 설정
 
-            const linkedAccounts = linkedAccountsResult; // 연동된 자녀 계정 목록
+            // 날짜 포맷팅
+            const application = applicationResults.map(application => {
+                application.formattedDate = moment(application.preferred_date).format('YYYY년 MM월 DD일 dddd');
+                application.formattedTime = moment(application.preferred_time, 'HH:mm:ss').format('HH:mm'); // 시간 포맷 (초 제외)
+                return application;
+            });
 
-            // 3. 현재 사용자의 정보 조회
-            db.query('SELECT * FROM member WHERE username = ?', [username], (err, userResults) => {
-                if (err) {
-                    console.error('데이터베이스 오류:', err);
-                    return res.status(500).send('서버 오류: 사용자를 가져오지 못했습니다.');
-                }
-
-                if (userResults.length === 0) {
-                    return res.status(404).send('사용자 정보를 찾을 수 없습니다.');
-                }
-
-                // 4. 신청 내역 조회
-                db.query('SELECT * FROM application_form WHERE username = ?', [username], (err, applicationResults) => {
-                    if (err) {
-                        console.error('데이터베이스 오류:', err);
-                        return res.status(500).send('서버 오류: 신청 내역을 가져오지 못했습니다.');
-                    }
-
-                    const moment = require('moment');
-                    moment.locale('ko'); // 한국어 로케일 설정
-
-                    // 신청 내역 날짜 포맷팅
-                    const applications = applicationResults.map(application => {
-                        application.formattedDate = moment(application.preferred_date).format('YYYY년 MM월 DD일 dddd');
-                        application.formattedTime = moment(application.preferred_time, 'HH:mm:ss').format('HH:mm'); // 시간 포맷 (초 제외)
-                        return application;
-                    });
-
-                    // 5. 데이터를 템플릿에 전달하여 렌더링
-                    res.render('mypage', {
-                        me: userResults[0], // 현재 사용자 정보
-                        parentAccount, // 부모 계정 정보
-                        linkedAccounts, // 연동된 계정 정보
-                        applications // 신청 내역
-                    });
-                });
+            // 'mypage' 템플릿을 렌더링하면서 'formattedDate'를 포함한 'application' 객체를 전달
+            // 데이터베이스에서 가져온 신청 내역을 HTML로 전달
+           res.render('mypage', { 
+                me: userResults[0], 
+                 applications: application   
             });
         });
     });
