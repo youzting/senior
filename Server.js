@@ -608,6 +608,67 @@ app.get('/progress', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/progress.html')); // progress.html 파일 경로 지정
 });
 
+app.post('/check-relationship', (req, res) => {
+  const { parentId, childId } = req.body;
+
+  // Step 1: 관계 확인 (relationships 테이블에서 parent_id와 child_id가 일치하는지 확인)
+  const checkRelationshipQuery = `
+    SELECT * FROM relationships
+    WHERE parent_id = ? AND child_id = ?;
+  `;
+  db.query(checkRelationshipQuery, [parentId, childId], (err, results) => {
+    if (err) {
+      console.error('관계 확인 오류:', err);
+      return res.status(500).send('서버 오류');
+    }
+
+    if (results.length === 0) {
+      return res.status(400).send('부모-자녀 관계가 존재하지 않습니다.');
+    }
+
+    // Step 2: 부모의 username 가져오기 (users 테이블에서 parentId로 username 찾기)
+    const getUsernameQuery = `
+      SELECT username FROM users WHERE id = ?;
+    `;
+    db.query(getUsernameQuery, [parentId], (err, userResults) => {
+      if (err) {
+        console.error('사용자 정보 조회 오류:', err);
+        return res.status(500).send('서버 오류');
+      }
+
+      if (userResults.length === 0) {
+        return res.status(404).send('부모 정보를 찾을 수 없습니다.');
+      }
+
+      const parentUsername = userResults[0].username;
+
+      // Step 3: member 테이블에서 부모의 username으로 정보 가져오기
+      const getParentInfoQuery = `
+        SELECT * FROM member WHERE username = ?;
+      `;
+      db.query(getParentInfoQuery, [parentUsername], (err, parentInfoResults) => {
+        if (err) {
+          console.error('부모 정보 조회 오류:', err);
+          return res.status(500).send('서버 오류');
+        }
+
+        if (parentInfoResults.length === 0) {
+          return res.status(404).send('부모 정보를 찾을 수 없습니다.');
+        }
+
+        const parentInfo = parentInfoResults[0];
+
+        // 부모의 정보를 클라이언트로 반환
+        res.send({
+          parentInfo, // 부모 정보 포함
+          message: '부모와 자녀 관계가 확인되었습니다. 마이페이지로 이동 가능합니다.',
+        });
+      });
+    });
+  });
+});
+
+
 // 서버 실행
 const PORT = process.env.PORT || 15016;
 app.listen(PORT, () => {
