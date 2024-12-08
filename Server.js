@@ -632,6 +632,7 @@ app.get('/mypage2', (req, res) => {
     });
   });
 });
+});
 
 // 서버 실행
 const PORT = process.env.PORT || 15016;
