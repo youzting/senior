@@ -654,6 +654,11 @@ function createNotification(childUsername, parentUsername, message) {
     });
 }
 
+// 알림 페이지 요청 시 HTML 파일 보내기
+app.get('/notifications', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'notifications.html'));
+});
+
 app.get('/notifications', isAuthenticated, (req, res) => {
     const username = req.session.username;
 
@@ -663,7 +668,7 @@ app.get('/notifications', isAuthenticated, (req, res) => {
             console.error('알림 조회 오류:', err);
             return res.status(500).send('서버 오류');
         }
-        res.render('notifications.html', { notifications: results });
+        res.json(results);  // 알림 데이터를 JSON 형식으로 반환
     });
 });
 
