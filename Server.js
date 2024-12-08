@@ -67,18 +67,6 @@ function isAuthenticated(req, res, next) {
     }
     res.redirect('/login');
 }
-function getLinkedAccount(userId) {
-  return new Promise((resolve, reject) => {
-    // 'userId'가 부모일 경우, 자녀 정보를 조회
-    const query = 'SELECT * FROM relationships WHERE parent_id = ? OR child_id = ?';
-    db.execute(query, [userId, userId], (err, results) => {
-      if (err) {
-        return reject(err);  // 오류 발생 시 reject
-      }
-      resolve(results.length > 0 ? results : []);  // 연동된 계정이 있으면 반환, 없으면 빈 배열 반환
-    });
-  });
-}
 
 
 // 라우팅
