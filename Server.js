@@ -153,23 +153,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
     if (!username) {
         return res.status(400).send('잘못된 요청입니다.');
     }
-    if (!id) {
-    return res.status(400).send('사용자 ID가 필요합니다.');
-  }
 
-    // 연동된 계정을 조회
-  getLinkedAccount(userId)
-    .then((linkedAccount) => {
-      if (linkedAccount) {
-        res.json(linkedAccount);  // 연동된 계정이 있으면 JSON으로 반환
-      } else {
-        res.json(null);  // 연동된 계정이 없으면 null 반환
-      }
-    })
-    .catch((error) => {
-      console.error('연동된 계정 조회 실패:', error);
-      res.status(500).send('서버 오류');
-    });
 
     
     
