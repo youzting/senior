@@ -129,6 +129,32 @@
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
         }
 
+        document.getElementById('view-linked-account').addEventListener('click', function () {
+            fetch('/relationships')
+                .then(response => response.json())
+                .then(data => {
+                    const linkedAccountDiv = document.getElementById('linked-account');
+                    if (data && data.length > 0) {
+                        linkedAccountDiv.innerHTML = '<h2>연동된 계정 목록:</h2>';
+                        data.forEach(account => {
+                            linkedAccountDiv.innerHTML += `
+                                <p>
+                                    <strong>이메일:</strong> ${account.email} <br>
+                                    <strong>역할:</strong> ${account.role} <br>
+                                    <strong>연결된 날짜:</strong> ${account.created_at}
+                                </p>
+                            `;
+                        });
+                    } else {
+                        linkedAccountDiv.textContent = '연동된 계정이 없습니다.';
+                    }
+                })
+                .catch(error => {
+                    console.error('연동된 계정 조회 실패:', error);
+                    document.getElementById('linked-account').textContent = '서버 오류';
+                });
+        });
+
     </script>
 </head>
 <body>
