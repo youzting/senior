@@ -142,8 +142,9 @@
         <p><strong>생년월일:</strong> <span id="profileBirthdate">{{ me.birthdate }}</span></p>
         <p><strong>나이:</strong> <span id="profileAge">{{ me.age }}</span></p>
         <p><strong>성별:</strong> <span id="profileGender">{{ me.gender }}</span></p>
-        <p><strong>취미:</strong> <span id="profileInterests">{{ me.interests or '없음' }}</span></p>
-        <p><strong>건강상태:</strong> <span id="profileHealthConditions">{{ me.health_conditions or '없음' }}</span></p>
+        <p><strong>취미:</strong> <span id="profileInterests">{{ me.interests}}</span></p>
+        <p><strong>건강상태:</strong> <span id="profileHealthConditions">{{ me.health_conditions}}</span></p>
+        <button onclick="location.href='/progress'">진행 상황 보기</button>
     </div>
 </div>
 <div class="apply">
