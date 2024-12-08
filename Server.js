@@ -417,7 +417,7 @@ app.post('/parent', (req, res) => {
       }
 
       // 부모 계정 코드 저장
-      parentAccount = { id: parentId, email, code };
+      parentAccount = { email, code };
       res.send('부모 계정이 등록되고, 연결 코드가 이메일로 전송되었습니다.');
     });
   });
