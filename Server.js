@@ -146,22 +146,22 @@ function getLinkedAccount(userId) {
 
 
 // 연동된 계정을 반환하는 API
-app.get('/relationships', isAuthenticated, async (req, res) => {
+app.get('/relationships', isAuthenticated, (req, res) => {
   const childId = req.session.userId; // 현재 로그인된 사용자의 ID
 
-  try {
-      const linkedAccounts = await query(`
+    query(`
           SELECT u.id, u.email, u.role 
       FROM relationships r
       JOIN users u ON u.id = r.parent_id
       WHERE r.child_id = ?
-      `, [childId]);
-
-      res.json(linkedAccounts); // JSON 형식으로 반환
-  } catch (error) {
+      `, [childId])
+    .then(linkedAccounts => {
+      res.json(linkedAccounts); // JSON 형식으로 응답
+    })
+    .catch(error => {
       console.error('연동된 계정 조회 오류:', error);
       res.status(500).json({ error: '서버 오류' });
-  }
+  });
 });
 
 
