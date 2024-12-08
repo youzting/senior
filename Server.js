@@ -564,6 +564,10 @@ app.get('/posts/:id', (req, res) => {
   });
 });
 
+app.get('/progress', (req, res) => {
+    res.sendFile(path.join(__dirname, 'progress.html')); // progress.html 파일 경로 지정
+});
+
 // 서버 실행
 const PORT = process.env.PORT || 15016;
 app.listen(PORT, () => {
