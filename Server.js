@@ -503,7 +503,7 @@ app.post('/posts/:id/verifyPassword', (req, res) => {
 // 게시글 수정
 app.put('/update/:id', (req, res) => {
   const postId = req.params.id;
-  const { title, content, password } = req.body;
+  const { title, content } = req.body;
 
   // 게시글 조회
   db.query('SELECT * FROM posts WHERE id = ?', [postId], (err, results) => {
@@ -514,20 +514,16 @@ app.put('/update/:id', (req, res) => {
       return res.status(404).json({ message: '게시글을 찾을 수 없습니다.' });
     }
 
-   app.put('/update/:id', (req, res) => {
-  const postId = req.params.id;
-  const { title, content } = req.body;
-
-  // 게시글 수정 쿼리
-  const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
-  db.query(query, [title, content, postId], (err, results) => {
-    if (err) {
-      console.error('게시글 수정 중 오류 발생:', err);
-      return res.status(500).json({ message: '게시글 수정 중 오류가 발생했습니다.' });
-    }
-    res.json({ message: '게시글이 수정되었습니다.' });
+    // 게시글 수정 쿼리
+    const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
+    db.query(query, [title, content, postId], (err, results) => {
+      if (err) {
+        console.error('게시글 수정 중 오류 발생:', err);
+        return res.status(500).json({ message: '게시글 수정 중 오류가 발생했습니다.' });
+      }
+      res.json({ message: '게시글이 수정되었습니다.' });
+    });
   });
-});
 });
 
 // 댓글 작성
