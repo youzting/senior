@@ -461,7 +461,7 @@ app.post('/child', (req, res) => {
 });
 
 // 게시판 목록 페이지
-app.get('/post', (req, res) => {
+app.get('/posts', (req, res) => {
   db.query('SELECT * FROM posts ORDER BY date DESC', (err, results) => {
     if (err) throw err;
     res.json(results);  // 게시글 목록을 JSON 형식으로 응답
