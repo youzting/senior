@@ -449,8 +449,8 @@ app.post('/child', (req, res) => {
     }
       const childId = childResults[0].id;
 
-      const insertQuery = `INSERT INTO users (email, role, username, parentCode) VALUES (?, 'child', ?, ?)`;
-  db.query(insertQuery, [email, username, code], (err, result) => {
+      const insertQuery = `INSERT INTO users (email, role, username, code) VALUES (?, 'child', ?, ?)`;
+  db.query(insertQuery, [email, username, parentCode], (err, result) => {
     if (err) {
       console.error('자녀 계정 저장 오류:', err);
       return res.status(500).send('서버 오류임');
