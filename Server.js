@@ -72,7 +72,7 @@ function isAuthenticated(req, res, next) {
 // 홈 페이지
 // 홈 라우트
 app.get('/', (req, res) => {
-    res.render('home.html', {username: req.session.username});
+    res.render('home.html', {username: req.session.username, child: req.session.child});
 });
 
 // 로그인 페이지
@@ -93,12 +93,14 @@ app.post('/login/check', async (req, res) => {
     try {
         const { username, password } = req.body;
         const results = await query('SELECT * FROM member WHERE username = ?', [username]);
-
         if (results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
             return res.status(401).send('유효하지 않은 사용자명 또는 비밀번호');
         }
-
         req.session.username = username;
+        const ifChildQuery = 'SELECT role FROM users WHERE username = req.session.username';
+        db.query(ifChildQuery, [username], (err, childResults) => {
+            req.session.child = childResults[0].role;
+        });
         res.redirect('/');
     } catch (err) {
         console.error(err);
@@ -504,7 +506,6 @@ app.post('/parent', (req, res) => {
       console.error('부모 계정 저장 오류:', err);
       return res.status(500).send('서버 오류');
     }
-      
 
     const parentId = result.insertId;
     
@@ -528,14 +529,11 @@ app.post('/parent', (req, res) => {
       if (error) {
         return res.status(500).send('이메일 발송 실패');
       }
-
-      
       res.send('부모 계정이 등록되고, 연결 코드가 이메일로 전송되었습니다.');
     });
   });
 });
 });
-
 
 app.post('/child', (req, res) => {
   const { email, username, parentCode } = req.body;
