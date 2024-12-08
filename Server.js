@@ -207,11 +207,16 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
         return res.status(400).send('사용자 정보가 없습니다.');
     }
 
-    const updateQuery = `
-        UPDATE member
-        SET email = ?, phone = ?, birthdate = ?, age = ?, gender = ?, interests = ?, health_conditions = ?
-        WHERE username = ?
-    `;
+    // 사용자 정보를 조회하는 쿼리 추가
+    db.query('SELECT * FROM member WHERE username = ?', [username], (err, userResults) => {
+        if (err) {
+            console.error('데이터베이스 오류:', err);
+            return res.status(500).send('서버 오류: 사용자 정보를 가져오지 못했습니다.');
+        }
+
+        if (userResults.length === 0) {
+            return res.status(404).send('사용자를 찾을 수 없습니다.');
+        }
 
     db.query(updateQuery, [email, phone, birthdate, age, gender, interests, health_conditions, usernameFromSession], (err, results) => {
         if (err) {
