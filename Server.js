@@ -145,25 +145,6 @@ function getLinkedAccount(userId) {
 }
 
 
-// 연동된 계정을 반환하는 API
-app.get('/relationships', isAuthenticated, (req, res) => {
-  const childId = req.session.userId; // 현재 로그인된 사용자의 ID
-
-    query(`
-          SELECT u.id, u.email, u.role 
-      FROM relationships r
-      JOIN users u ON u.id = r.parent_id
-      WHERE r.child_id = ?
-      `, [childId])
-    .then(linkedAccounts => {
-      res.json(linkedAccounts); // JSON 형식으로 응답
-    })
-    .catch(error => {
-      console.error('연동된 계정 조회 오류:', error);
-      res.status(500).json({ error: '서버 오류' });
-  });
-});
-
 
 // 마이페이지 라우트
 app.get('/mypage', isAuthenticated, (req, res) => {
@@ -177,16 +158,6 @@ app.get('/mypage', isAuthenticated, (req, res) => {
     if (!username) {
         return res.status(400).send('잘못된 요청입니다.');
     }
-    
-    // 연동된 계정 정보 조회
-    const linkedAccounts = await query(`
-      SELECT u.id, u.email, u.role 
-      FROM relationships r
-      JOIN users u ON u.id = r.parent_id
-      WHERE r.child_id = ?
-  `, [userId]);
-    
-
     
     
     // 사용자 정보 조회
