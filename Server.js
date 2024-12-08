@@ -440,6 +440,9 @@ app.post('/parent', (req, res) => {
 app.post('/child', (req, res) => {
   const { email, username, parentCode } = req.body;
 
+    console.log("받은 이메일:", email);
+  console.log("받은 아이디:", username); 
+
   if (!email || !username || !parentCode) {
     return res.status(400).send('이메일, 자녀 username, 부모 계정 코드를 모두 입력하세요.');
   }
