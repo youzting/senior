@@ -447,6 +447,7 @@ app.post('/child', (req, res) => {
     if (childResults.length === 0) {
       return res.status(400).send('입력된 이메일과 username에 해당하는 자녀 계정이 없습니다.');
     }
+      const childId = childResults[0].id;
 
       const insertQuery = `INSERT INTO users (email, role, username) VALUES (?, 'child', ?)`;
   db.query(insertQuery, [email, username], (err, result) => {
@@ -454,8 +455,9 @@ app.post('/child', (req, res) => {
       console.error('자녀 계정 저장 오류:', err);
       return res.status(500).send('서버 오류임');
     }
+      const newChildId = result.insertId
 
-    const childId = childResults[0].id;
+    
 
 
          // 부모 계정 코드 확인
