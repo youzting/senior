@@ -365,20 +365,33 @@ app.get('/messages', (req, res) => {
 });
 
 app.post('/parent', (req, res) => {
-  const { email } = req.body;
-  if (!email) return res.status(400).send('이메일을 입력하세요.');
+  const { email, username } = req.body;
+  if (!email || !username) {
+      return res.status(400).send('이메일과 아이디 입력하세요.');
+  }
 
-  const code = generateRandomCode();
-
-  // 데이터베이스에 부모 계정 저장
-  const insertQuery = `INSERT INTO users (email, role) VALUES (?, 'parent')`;
+   // member 테이블에서 username과 email이 일치하는 레코드를 찾기
+  const findMemberQuery = `SELECT * FROM member WHERE email = ? AND username = ?`;
+  db.query(findMemberQuery, [email, username], (err, results) => {
+    if (err) {
+      console.error('쿼리 실행 오류:', err);
+      return res.status(500).send('서버 오류');
+    }
+      
+    if (results.length === 0) {
+      return res.status(404).send('입력하신 이메일과 사용자명에 일치하는 회원을 찾을 수 없습니다.');
+    }
+    // 데이터베이스에 부모 계정 저장
+  const insertQuery = `INSERT INTO users (email, role, username) VALUES (?, 'parent', ?)`;
   db.query(insertQuery, [email], (err, result) => {
     if (err) {
       console.error('부모 계정 저장 오류:', err);
       return res.status(500).send('서버 오류');
     }
+      
 
     const parentId = result.insertId;
+    const code = generateRandomCode();
 
     // 부모 계정의 코드 이메일 전송
     const transporter = nodemailer.createTransport({
@@ -406,6 +419,7 @@ app.post('/parent', (req, res) => {
       res.send('부모 계정이 등록되고, 연결 코드가 이메일로 전송되었습니다.');
     });
   });
+});
 });
 
 
