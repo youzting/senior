@@ -97,10 +97,6 @@ app.post('/login/check', async (req, res) => {
             return res.status(401).send('유효하지 않은 사용자명 또는 비밀번호');
         }
         req.session.username = username;
-        const ifChildQuery = 'SELECT role FROM users WHERE username = ?';
-        db.query(ifChildQuery, [username], (err, childResults) => {
-            req.session.child = childResults[0].role;
-        });
         res.redirect('/');
     } catch (err) {
         console.error(err);
