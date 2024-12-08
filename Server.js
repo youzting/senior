@@ -514,7 +514,7 @@ app.put('/update/:id', (req, res) => {
       return res.status(404).json({ message: '게시글을 찾을 수 없습니다.' });
     }
 
-    // 게시글 수정 쿼리
+    // 게시글 수정 쿼리 (작성자 이름은 수정하지 않음)
     const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
     db.query(query, [title, content, postId], (err, results) => {
       if (err) {
@@ -525,6 +525,7 @@ app.put('/update/:id', (req, res) => {
     });
   });
 });
+
 
 // 댓글 작성
 app.post('/comments/:postId', (req, res) => {
