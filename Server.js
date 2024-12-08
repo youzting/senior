@@ -490,7 +490,7 @@ app.put('/update/:id', (req, res) => {
   });
 });
 // 댓글 추가
-app.post('/comment/:postId', (req, res) => {
+app.post('/posts/:postId', (req, res) => {
   const postId = req.params.postId;
   const { username, content } = req.body;
 
@@ -502,7 +502,7 @@ app.post('/comment/:postId', (req, res) => {
 });
 
 // 댓글 조회
-app.get('/comments/:postId', (req, res) => {
+app.get('/posts/:postId', (req, res) => {
   const postId = req.params.postId;
 
   const query = 'SELECT * FROM comments WHERE post_id = ? ORDER BY date DESC';
