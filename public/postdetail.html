@@ -18,6 +18,25 @@
     <button id="edit-button">수정</button>
   </div>
 
+  <h2>댓글 작성</h2>
+  <form id="comment-form">
+    <div>
+      <label for="comment-username">작성자:</label>
+      <input type="text" id="comment-username" required>
+    </div>
+    <div>
+      <label for="comment-content">댓글:</label>
+      <textarea id="comment-content" required></textarea>
+    </div>
+    <button type="submit">댓글 작성</button>
+  </form>
+
+  <!-- 댓글 목록 -->
+  <h3>댓글 목록</h3>
+  <ul id="comment-list">
+    <!-- 댓글 목록이 여기에 동적으로 추가됩니다 -->
+  </ul>
+
   <script>
     // URL에서 게시글 ID를 추출
     const postId = new URLSearchParams(window.location.search).get('id');
@@ -46,6 +65,47 @@
         console.error('게시글 상세 조회 실패:', error);
         alert('게시글을 불러오는 데 실패했습니다.');
       });
+
+     // 댓글 작성 처리
+    document.getElementById('comment-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById('comment-username').value;
+      const content = document.getElementById('comment-content').value;
+
+      const commentData = { username, content };
+
+      fetch(http://116.124.191.174:15016/comments/${postId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(commentData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+        loadComments();  // 댓글 작성 후 댓글 목록 다시 불러오기
+      })
+      .catch(error => console.error('Error:', error));
+    });
+
+    // 댓글 목록 불러오기
+    function loadComments() {
+      fetch(`http://116.124.191.174:15016/comments/${postId}`)
+        .then(response => response.json())
+        .then(comments => {
+          const commentList = document.getElementById('comment-list');
+          commentList.innerHTML = '';  // 기존 댓글 목록 초기화
+          comments.forEach(comment => {
+            const li = document.createElement('li');
+            li.textContent = `${comment.username}: ${comment.content} (작성일: ${new Date(comment.date).toLocaleString()})`;
+            commentList.appendChild(li);
+          });
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // 페이지 로드 시 댓글 목록 불러오기
+    loadComments();
   </script>
 </body>
 </html>
