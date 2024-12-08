@@ -13,6 +13,10 @@
     
     <label for="content">내용:</label><br>
     <textarea id="content" name="content" required></textarea><br><br>
+
+    <!-- 비밀번호 입력 필드 추가 -->
+    <label for="password">비밀번호:</label><br>
+    <input type="password" id="password" name="password" required><br><br>
     
     <button type="submit">수정하기</button>
   </form>
@@ -36,17 +40,19 @@
 
       const title = document.getElementById('title').value;
       const content = document.getElementById('content').value;
+      const password = document.getElementById('password').value; // 비밀번호 입력값 추가
 
       console.log("수정된 제목:", title); // 디버깅용 로그
       console.log("수정된 내용:", content); // 디버깅용 로그
+      console.log("입력한 비밀번호:", password); // 디버깅용 로그
 
-      // 수정된 게시글 데이터 서버로 전송
+      // 수정된 게시글 데이터와 비밀번호를 서버로 전송
       fetch(`http://116.124.191.174:15016/posts/${postId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title, content })
+        body: JSON.stringify({ title, content, password }) // 비밀번호 포함
       })
         .then(response => response.json())
         .then(data => {
