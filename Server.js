@@ -424,43 +424,49 @@ app.post('/parent', (req, res) => {
 
 
 app.post('/child', (req, res) => {
-  const { email, parentCode } = req.body;
+  const { email, username, parentCode } = req.body;
 
-  if (!email || !parentCode) {
-    return res.status(400).send('이메일과 부모 계정 코드를 입력하세요.');
+  if (!email || !username || !parentCode) {
+    return res.status(400).send('이메일, 자녀 username, 부모 계정 코드를 모두 입력하세요.');
   }
 
-      // 부모 계정 코드 확인
-      const findParentQuery = 'SELECT id, username FROM users WHERE role = parent AND email = ?';
-      db.query(findParentQuery, [parentAccount.email], (err, parentResults) => {
-        if (err || parentResults.length === 0) {
-          return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
-        }
+  // 자녀 계정 정보 확인: 이메일과 username을 확인하여 해당 자녀 계정이 있는지 확인
+  const findChildQuery = 'SELECT id FROM users WHERE email = ? AND username = ? AND role = "child"';
+  db.query(findChildQuery, [email, username], (err, childResults) => {
+    if (err) {
+      console.error('자녀 계정 확인 오류:', err);
+      return res.status(500).send('서버 오류');
+    }
 
-        const parentId = parentResults[0].id;
-        const parentUsername = parentResults[0].username;
+    if (childResults.length === 0) {
+      return res.status(400).send('입력된 이메일과 username에 해당하는 자녀 계정이 없습니다.');
+    }
 
-         const insertChildQuery = `INSERT INTO users (email, role, username) VALUES (?, 'child', ?)`;
-        db.query(insertChildQuery, [childEmail, childUsername], (err, childResult) => {
+    const childId = childResults.id;
+
+    // 부모 계정 코드 확인: 부모 계정이 존재하는지 확인
+    const findParentQuery = 'SELECT id, username FROM users WHERE role = "parent" AND email = ?';
+    db.query(findParentQuery, [parentCode], (err, parentResults) => {
+      if (err || parentResults.length === 0) {
+        return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
+      }
+
+      const parentId = parentResults.id;
+
+      // 부모와 자녀의 관계 저장
+      const insertRelationshipQuery = 'INSERT INTO relationships (parent_id, child_id) VALUES (?, ?)';
+      db.query(insertRelationshipQuery, [parentId, childId], (err) => {
         if (err) {
-            console.error('자녀 계정 저장 오류:', err);
-            return res.status(500).send('서버 오류');
+          console.error('관계 저장 오류:', err);
+          return res.status(500).send('서버 오류');
         }
-            const childId = childResult.insertId;
-            const childUsername = req.session.username;
 
-          // 부모와 자녀의 관계 저장
-          const insertRelationshipQuery = 'INSERT INTO relationships (parent_id, child_id) VALUES (?, ?)';
-          db.query(insertRelationshipQuery, [parentId, childId], (err) => {
-            if (err) {
-              console.error('관계 저장 오류:', err);
-              return res.status(500).send('서버 오류');
-        } 
-      res.send('부모와 자녀 관계가 성공적으로 설정되었습니다.');
-        });
+        res.send('부모와 자녀 관계가 성공적으로 설정되었습니다.');
       });
     });
+  });
 });
+
 
 
 
