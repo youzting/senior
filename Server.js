@@ -153,7 +153,7 @@ app.get('/mypage', isAuthenticated, (req, res) => {
         if (userResults.length === 0) {
             return res.status(404).send('사용자를 찾을 수 없습니다.');
         }
-    }
+    });
     
         // 신청 내역 조회
         db.query('SELECT * FROM application_form WHERE username = ?', [username], (err, applicationResults) => {
