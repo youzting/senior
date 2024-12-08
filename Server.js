@@ -526,7 +526,6 @@ app.put('/update/:id', (req, res) => {
   });
 });
 
-
 // 댓글 작성
 app.post('/comments/:postId', (req, res) => {
   const postId = req.params.postId;
@@ -564,10 +563,6 @@ app.get('/posts/:id', (req, res) => {
     res.json(result[0]);
   });
 });
-
-
-
-
 
 // 서버 실행
 const PORT = process.env.PORT || 15016;
