@@ -211,6 +211,7 @@ app.post('/mypage/update', isAuthenticated, (req, res) => {
             return res.status(500).send('서버 오류');
         }
         res.redirect('/mypage');  // 업데이트 후 마이페이지로 리다이렉트
+        });
     });
 });
 
