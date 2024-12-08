@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시글 상세</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>게시글 상세</h1>
+  <div id="post-detail">
+    <h2 id="post-title"></h2>
+    <p id="post-author"></p>
+    <p id="post-date"></p>
+    <hr>
+    <p id="post-content"></p>
+    <br>
+    <button id="edit-button">수정</button>
+  </div>
+
+  <script>
+    // URL에서 게시글 ID를 추출
+    const postId = new URLSearchParams(window.location.search).get('id');
+
+    // 해당 게시글의 상세 정보를 서버에서 가져오기
+    fetch(`http://116.124.191.174:15016/posts/${postId}`)
+      .then(response => response.json())
+      .then(post => {
+        // 게시글 데이터 화면에 표시
+        document.getElementById('post-title').textContent = post.title;
+        document.getElementById('post-author').textContent = `작성자: ${post.username}`;
+        document.getElementById('post-date').textContent = `작성일: ${new Date(post.date).toLocaleString()}`;
+        document.getElementById('post-content').textContent = post.content;
+
+        // 수정 버튼 클릭 시 수정 페이지로 이동
+        document.getElementById('edit-button').onclick = () => {
+          window.location.href = `edit.html?id=${postId}`;
+        };
+      })
+      .catch(error => console.error('게시글 상세 조회 실패:', error));
+  </script>
+</body>
+</html>
