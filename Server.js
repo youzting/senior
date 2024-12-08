@@ -417,23 +417,23 @@ app.post('/child', (req, res) => {
   }
 
       // 부모 계정 코드 확인
-      const findParentQuery = 'SELECT id FROM users WHERE role = parent AND email = ?';
+      const findParentQuery = 'SELECT id, username FROM users WHERE role = parent AND email = ?';
       db.query(findParentQuery, [parentAccount.email], (err, parentResults) => {
         if (err || parentResults.length === 0) {
           return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
         }
 
         const parentId = parentResults[0].id;
+        const parentUsername = parentResults[0].username;
 
-        // 자녀 계정 저장
-        const insertChildQuery = 'INSERT INTO users (email, role) VALUES (?, child)';
-        db.query(insertChildQuery, [email], (err, childResult) => {
-          if (err) {
+         const insertChildQuery = `INSERT INTO users (email, role, username) VALUES (?, 'child', ?)`;
+        db.query(insertChildQuery, [childEmail, childUsername], (err, childResult) => {
+        if (err) {
             console.error('자녀 계정 저장 오류:', err);
             return res.status(500).send('서버 오류');
-          }
-
-          const childId = childResult.insertId;
+        }
+            const childId = childResult.insertId;
+            const childUsername = req.session.username;
 
           // 부모와 자녀의 관계 저장
           const insertRelationshipQuery = 'INSERT INTO relationships (parent_id, child_id) VALUES (?, ?)';
@@ -447,6 +447,7 @@ app.post('/child', (req, res) => {
       });
     });
 });
+
 
 
 // 게시판 목록 조회
