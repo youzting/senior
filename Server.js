@@ -450,7 +450,6 @@ db.query(findParentQuery, [parentAccount.email], (err, parentResults) => {
   });
 });
 
-});
 
 // 게시판 목록 조회
 app.get('/posts', (req, res) => {
