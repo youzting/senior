@@ -412,7 +412,7 @@ app.post('/child', (req, res) => {
     const parentId = parentResults[0].id;
 
     // 자녀 계정 저장
-    const insertChildQuery = INSERT INTO users (email, role) VALUES (?, 'child');
+    const insertChildQuery = 'INSERT INTO users (email, role) VALUES (?, child)';
     db.query(insertChildQuery, [email], (err, childResult) => {
       if (err) {
         console.error('자녀 계정 저장 오류:', err);
