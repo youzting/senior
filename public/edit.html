@@ -32,10 +32,13 @@
 
     // 수정 폼 제출 시
     document.getElementById('edit-form').addEventListener('submit', function (event) {
-      event.preventDefault();
+      event.preventDefault(); // 기본 폼 전송 방지
 
       const title = document.getElementById('title').value;
       const content = document.getElementById('content').value;
+
+      console.log("수정된 제목:", title); // 디버깅용 로그
+      console.log("수정된 내용:", content); // 디버깅용 로그
 
       // 수정된 게시글 데이터 서버로 전송
       fetch(`http://116.124.191.174:15016/posts/${postId}`, {
@@ -47,10 +50,13 @@
       })
         .then(response => response.json())
         .then(data => {
-          alert(data.message);
+          alert(data.message); // 서버에서 반환한 메시지 출력
           window.location.href = 'posts.html'; // 수정 후 게시글 목록으로 돌아가기
         })
-        .catch(error => console.error('게시글 수정 실패:', error));
+        .catch(error => {
+          console.error('게시글 수정 실패:', error);
+          alert('게시글 수정 중 오류가 발생했습니다.');
+        });
     });
   </script>
 </body>
