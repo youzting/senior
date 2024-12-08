@@ -24,27 +24,6 @@
     </tbody>
   </table>
 
-  <!-- 댓글을 다는 부분 -->
-<div>
-  <h2>댓글</h2>
-  <form id="comment-form">
-    <div>
-      <label for="comment-username">작성자:</label>
-      <input type="text" id="comment-username" required>
-    </div>
-    <div>
-      <label for="comment-content">댓글:</label>
-      <textarea id="comment-content" required></textarea>
-    </div>
-    <button type="submit">댓글 작성</button>
-  </form>
-
-  <h3>댓글 목록</h3>
-  <ul id="comment-list">
-    <!-- 댓글 목록이 여기에 동적으로 추가됩니다 -->
-  </ul>
-</div>
-
 
   <script>
     // 서버에서 게시글 목록을 불러오기
@@ -63,7 +42,6 @@
           tableBody.appendChild(row);
         });
       })
-      .catch(error => console.error('Error:', error));
     // 게시글 목록에 수정 링크 추가
 posts.forEach((post, index) => {
   const row = document.createElement('tr');
@@ -76,6 +54,7 @@ posts.forEach((post, index) => {
   tableBody.appendChild(row);
 });
      const postId = new URLSearchParams(window.location.search).get('id');
+     .catch(error => console.error('Error:', error));
 
 
   </script>
