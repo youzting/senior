@@ -371,8 +371,17 @@ app.get('/messages', (req, res) => {
 
 app.post('/parent', (req, res) => {
   const { email, username } = req.body;
-  if (!email || !username) {
-      return res.status(400).send('이메일과 아이디 입력하세요.');
+  // 이메일과 아이디가 입력되지 않으면 각각에 대해 다른 에러 메시지 반환
+  if (!email && !username) {
+    return res.status(400).send('이메일과 아이디를 모두 입력하세요.');
+  }
+
+  if (!email) {
+    return res.status(400).send('이메일을 입력하세요.');
+  }
+
+  if (!username) {
+    return res.status(400).send('아이디를 입력하세요.');
   }
 
    // member 테이블에서 username과 email이 일치하는 레코드를 찾기
