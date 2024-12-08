@@ -463,7 +463,7 @@ app.post('/child', (req, res) => {
     const childId = childResults[0].id;
 
     // 부모 계정 코드 확인: 부모 계정이 존재하는지 확인
-    const findParentQuery = 'SELECT id, username FROM users WHERE role = "parent" AND email = ?';
+    const findParentQuery = 'SELECT * FROM users WHERE role = "parent" AND email = ?';
     db.query(findParentQuery, [parentCode], (err, parentResults) => {
       if (err || parentResults.length === 0) {
         return res.status(400).send('유효하지 않은 부모 계정 코드입니다.');
