@@ -120,8 +120,6 @@
 .card .btn:hover {
   background-color: #0056b3;
 }
-
-
     </style>
     <script>
         function toggleEditForm() {
@@ -154,7 +152,6 @@
                     document.getElementById('linked-account').textContent = '서버 오류';
                 });
         });
-
     </script>
 </head>
 <body>
@@ -172,22 +169,13 @@
         <p><strong>생년월일:</strong> <span id="profileBirthdate">{{ me.birthdate }}</span></p>
         <p><strong>나이:</strong> <span id="profileAge">{{ me.age }}</span></p>
         <p><strong>성별:</strong> <span id="profileGender">{{ me.gender }}</span></p>
-        <p><strong>취미:</strong> <span id="profileInterests">{{ me.interests or '없음' }}</span></p>
-        <p><strong>건강상태:</strong> <span id="profileHealthConditions">{{ me.health_conditions or '없음' }}</span></p>
-        <button onclick="toggleEditForm()">프로필 수정</button>
-        <button onclick="location.href='parent.html'">부모 계정 등록</button>
-         <button onclick="location.href='child.html'">자녀 계정 등록</button>
-        
-        <!-- 부모 계정의 myPage를 볼 수 있는 버튼 -->
-    <button id="view-parent-mypage">부모 계정 MyPage 보기</button>
-
-    <div id="linked-account">
-        <!-- 연동된 계정의 정보가 표시됩니다 -->
-    </div>
-
-    <!-- 연동된 계정 보기 버튼 -->
-    <button id="view-linked-account">연동된 계정 보기</button>
-    <button onclick="location.href='/progress'">진행 상황 보기</button>
+        <p><strong>취미:</strong> <span id="profileInterests">{{ me.interests}}</span></p>
+        <p><strong>건강상태:</strong> <span id="profileHealthConditions">{{ me.health_conditions}}</span></p>
+        <button onclick="toggleEditForm()">프로필 수정</button><br>
+        <button onclick="location.href='parent.html'">부모 계정 등록</button><br>
+        <button onclick="location.href='child.html'">자녀 계정 등록</button><br>
+        <button id="view-parent-mypage">부모 계정 MyPage 보기</button>
+        <button onclick="location.href='/progress'">진행 상황 보기</button>
 
         <div id="editForm" class="edit-form">
             <h3>프로필 수정</h3>
@@ -209,7 +197,7 @@
                 <strong>취미:</strong>
                 <textarea id="interests" name="interests" value="{{ me.interests }}" readonly></textarea><br><br>
                 <strong>건강상태:</strong>
-                <textarea id="health_conditions" name="health_conditions" placeholder="건강 상태를 입력하세요 (선택 사항)"></textarea><br><br>
+                <textarea id="health_conditions" name="health_conditions" value="{{ me.health_conditions }}" placeholder="건강 상태를 입력하세요 (선택 사항)"></textarea><br><br>
                 <button type="submit">저장</button>
             </form>
         </div>
@@ -226,11 +214,10 @@
         {% else %}
            <div class="card">
                 <h3>신청한 프로그램이 없습니다.</h3>
-            </div>
+           </div>
         {% endfor %}
     </div>
 </div>
-       
 </div>
 </div>
 </body>
