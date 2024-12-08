@@ -444,9 +444,9 @@ app.post('/child', (req, res) => {
 
 // 게시글 추가 API
 app.post("/posts", (req, res) => {
-  const { title, content, username } = req.body;
-  const sql = "INSERT INTO posts (title, content, username) VALUES (?, ?, ?)";
-  db.query(sql, [title, content, username], (err, result) => {
+  const { title, content, author } = req.body;
+  const sql = "INSERT INTO posts (title, content, author) VALUES (?, ?, ?)";
+  db.query(sql, [title, content, author], (err, result) => {
     if (err) {
       return res.status(500).json({ error: "게시글 추가 실패" });
     }
