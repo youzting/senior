@@ -584,34 +584,52 @@ app.get('/progress', (req, res) => {
 });
 
 app.get('/mypage2', (req, res) => {
-  usernameFromSession = req.session.username;
-
+  const usernameFromSession = req.session.username;
   // Step 1: 코드 가져오기, 자녀의 username 사용
   const checkRelationshipQuery = `
-    select code from users where username=usernameFromSession
+    select code from users where username = ?
   `;
-  db.query(checkRelationshipQuery, [usernameFromSession], (err, results) => {
-    relationCode = results;
-    // Step 2: 부모의 username 가져오기 (users 테이블에서 parentId로 username 찾기)
-    const getUsernameQuery = `
-      SELECT username FROM users WHERE code = relationCode and role != child
-    `;
-    db.query(getUsernameQuery, [usernameFromSession, relationCode], (err, coderesults) => {
-      const parentUsername = coderesults
+  db.query(checkRelationshipQuery, [usernameFromSession], (err, codeResults) => {
+      if (err) {
+          console.error('쿼리 실행 오류:', err);
+          return res.status(500).send('서버 오류: 관계 코드를 가져오지 못했습니다.');
+      }
+      if (!codeResults || codeResults.length === 0) {
+          return res.status(404).send('관계 코드를 찾을 수 없습니다.');
+      }
+      const relationCode = codeResults[0].code;
+      // Step 2: 부모의 username 가져오기 (users 테이블에서 parentId로 username 찾기)
+      const getUsernameQuery = `
+      SELECT username FROM users WHERE code = ? and role != 'child'
+      `;
+      db.query(getUsernameQuery, [relationCode], (err, coderesults) => {
+        if (err) {
+            console.error('쿼리 실행 오류:', err);
+            return res.status(500).send('쿼리 실행 중 오류가 발생했습니다.');
+        }
+        if (!coderesults || coderesults.length === 0) {
+            return res.status(404).send('부모 계정 정보를 찾을 수 없습니다.');
+        }
+          const parentUsername = coderesults[0].username;
       // Step 3: member 테이블에서 부모의 username으로 정보 가져오기
       const getParentInfoQuery = `
-        SELECT * FROM member WHERE username = parentUsername;
+        SELECT * FROM member WHERE username = ?;
       `;
       db.query(getParentInfoQuery, [parentUsername], (err, parentInfoResults) => {
-        if (parentInfoResults.length === 0) {
-          return res.status(404).send('부모 정보를 찾을 수 없습니다.');
-        }
+          if (err) {
+              console.error('쿼리 실행 오류:', err);
+              return res.status(500).send('부모 정보를 가져오는 중 오류가 발생했습니다.');
+          }
+          if (!parentInfoResults || parentInfoResults.length === 0) {
+              return res.status(404).send('부모 정보를 찾을 수 없습니다.');
+          }
           // 신청 내역 조회
-        db.query('SELECT * FROM application_form WHERE username = ?', [username, parentInfoResults], (err, applicationResults) => {
+        db.query('SELECT * FROM application_form WHERE username = ?', [parentUsername], (err, applicationResults) => {
             if (err) {
                 console.error('데이터베이스 오류:', err);
                 return res.status(500).send('서버 오류: 신청 내역을 가져오지 못했습니다.');
             }
+            
             const moment = require('moment');
             moment.locale('ko'); // 한국어 로케일 설정
 
@@ -625,7 +643,7 @@ app.get('/mypage2', (req, res) => {
             // 'mypage' 템플릿을 렌더링하면서 'formattedDate'를 포함한 'application' 객체를 전달
             res.render('mypage2', { 
                 me: parentInfoResults[0], 
-                applications: application   
+                applications: application,  
             });
         });
     });
