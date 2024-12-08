@@ -26,12 +26,14 @@
         document.getElementById('child-register-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            console.log("보내는 이메일:", email);
-            console.log("보내는 아이디:", username);
-
+            // 여기서 변수들을 초기화
             const email = document.getElementById('email').value;
             const username = document.getElementById('username').value;
             const parentCode = document.getElementById('parentCode').value;
+
+            console.log("이메일:", email);
+            console.log("아이디:", username);
+            console.log("부모 계정 코드:", parentCode);
 
             const response = await fetch('/child', {
                 method: 'POST',
