@@ -663,7 +663,7 @@ app.get('/notifications', isAuthenticated, (req, res) => {
             console.error('알림 조회 오류:', err);
             return res.status(500).send('서버 오류');
         }
-        res.json(results);
+        res.render('notifications.html', { notifications: results });
     });
 });
 
