@@ -387,7 +387,7 @@ app.post('/parent', (req, res) => {
 
     // 데이터베이스에 부모 계정 저장
   const insertQuery = `INSERT INTO users (email, role, username, code) VALUES (?, 'parent', ?, ?)`;
-  db.query(insertQuery, [email, username], (err, result) => {
+  db.query(insertQuery, [email, username, code], (err, result) => {
     if (err) {
       console.error('부모 계정 저장 오류:', err);
       return res.status(500).send('서버 오류');
