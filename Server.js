@@ -659,7 +659,7 @@ app.get('/notifications', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'notifications.html'));
 });
 
-app.get('/notifications', isAuthenticated, (req, res) => {
+app.get('/notifications/data', isAuthenticated, (req, res) => {
     const username = req.session.username;
 
     const query = `SELECT * FROM notifications WHERE child_username = ? ORDER BY created_at DESC`;
