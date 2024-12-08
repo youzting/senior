@@ -155,10 +155,6 @@ app.get('/mypage', isAuthenticated, (req, res) => {
         return res.status(400).send('잘못된 요청입니다.');
     }
 
-    if (!username) {
-        return res.status(400).send('잘못된 요청입니다.');
-    }
-
     db.query('SELECT * FROM member WHERE username = ?', [username], (err, userResults) => {
         if (err) {
             console.error('데이터베이스 오류:', err);
@@ -169,12 +165,13 @@ app.get('/mypage', isAuthenticated, (req, res) => {
             return res.status(404).send('사용자를 찾을 수 없습니다.');
         }
     
-    // 신청 내역 조회
+        // 신청 내역 조회
         db.query('SELECT * FROM application_form WHERE username = ?', [username], (err, applicationResults) => {
             if (err) {
                 console.error('데이터베이스 오류:', err);
                 return res.status(500).send('서버 오류: 신청 내역을 가져오지 못했습니다.');
             }
+
             const moment = require('moment');
             moment.locale('ko'); // 한국어 로케일 설정
 
@@ -186,14 +183,13 @@ app.get('/mypage', isAuthenticated, (req, res) => {
             });
 
             // 'mypage' 템플릿을 렌더링하면서 'formattedDate'를 포함한 'application' 객체를 전달
-            // 데이터베이스에서 가져온 신청 내역을 HTML로 전달
-           res.render('mypage', { 
+            res.render('mypage', { 
                 me: userResults[0], 
-                 applications: application   
+                applications: application   
             });
-        });
-    });
-});
+        }); // 신청 내역 조회 끝
+    }); // 사용자 정보 조회 끝
+}); // 마이페이지 라우트 끝
 
 
 // 마이페이지 수정 처리
