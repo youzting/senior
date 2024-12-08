@@ -42,8 +42,9 @@
           tableBody.appendChild(row);
         });
       })
+    .catch(error => console.error('Error:', error));
     // 게시글 목록에 수정 링크 추가
-posts.forEach((post, index) => {
+posts.forEach((post, post) => {
   const row = document.createElement('tr');
   row.innerHTML = `
     <td>${post.id}</td>
@@ -54,7 +55,7 @@ posts.forEach((post, index) => {
   tableBody.appendChild(row);
 });
      const postId = new URLSearchParams(window.location.search).get('id');
-     .catch(error => console.error('Error:', error));
+     
 
 
   </script>
