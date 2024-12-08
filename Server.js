@@ -186,7 +186,6 @@ app.get('/mypage', isAuthenticated, (req, res) => {
             });
         });
     });
-});
 
 
 
