@@ -389,7 +389,7 @@ app.post('/parent', (req, res) => {
   db.query(findMemberQuery, [email, username], (err, results) => {
     if (err) {
       console.error('쿼리 실행 오류:', err);
-      return res.status(500).send('서버 오류');
+      return res.status(500).send('서버 오류임');
     }
       
     if (results.length === 0) {
@@ -397,7 +397,7 @@ app.post('/parent', (req, res) => {
     }
     // 데이터베이스에 부모 계정 저장
   const insertQuery = `INSERT INTO users (email, role, username) VALUES (?, 'parent', ?)`;
-  db.query(insertQuery, [email], (err, result) => {
+  db.query(insertQuery, [email, username], (err, result) => {
     if (err) {
       console.error('부모 계정 저장 오류:', err);
       return res.status(500).send('서버 오류');
