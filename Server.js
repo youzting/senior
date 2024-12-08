@@ -478,6 +478,40 @@ app.post('/create', (req, res) => {
     res.json({ message: '게시글이 작성되었습니다.' });
   });
 });
+// 게시글 수정
+app.put('/update/:id', (req, res) => {
+  const postId = req.params.id;
+  const { title, content } = req.body;
+
+  const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
+  db.query(query, [title, content, postId], (err, results) => {
+    if (err) throw err;
+    res.json({ message: '게시글이 수정되었습니다.' });
+  });
+});
+// 댓글 추가
+app.post('/comment/:postId', (req, res) => {
+  const postId = req.params.postId;
+  const { username, content } = req.body;
+
+  const query = 'INSERT INTO comments (post_id, username, content) VALUES (?, ?, ?)';
+  db.query(query, [postId, username, content], (err, results) => {
+    if (err) throw err;
+    res.json({ message: '댓글이 작성되었습니다.' });
+  });
+});
+
+// 댓글 조회
+app.get('/comments/:postId', (req, res) => {
+  const postId = req.params.postId;
+
+  const query = 'SELECT * FROM comments WHERE post_id = ? ORDER BY date DESC';
+  db.query(query, [postId], (err, results) => {
+    if (err) throw err;
+    res.json(results);  // 댓글 목록을 JSON 형식으로 응답
+  });
+});
+
 
 
 
