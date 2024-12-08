@@ -17,6 +17,7 @@
         <th>제목</th>
         <th>작성자</th>
         <th>작성일</th>
+        <th>비밀번호</th> <!-- 비밀번호 칼럼 추가 -->
       </tr>
     </thead>
     <tbody>
@@ -38,11 +39,43 @@
             <td><a href="postdetail.html?id=${post.id}">${post.title}</a></td>
             <td>${post.username}</td>
             <td>${new Date(post.date).toLocaleString()}</td>
+            <td>
+              <!-- 비밀번호 입력 필드 추가 -->
+              <input type="password" id="password-${post.id}" placeholder="비밀번호 입력">
+              <button onclick="verifyPassword(${post.id})">수정</button>
+            </td>
           `;
           tableBody.appendChild(row);
         });
       })
       .catch(error => console.error('Error:', error));
+
+    // 비밀번호 확인 후 수정 페이지로 이동
+    function verifyPassword(postId) {
+      const password = document.getElementById(`password-${postId}`).value;
+
+      // 비밀번호 확인 요청
+      fetch(`http://116.124.191.174:15016/posts/${postId}/verifyPassword`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // 비밀번호가 맞으면 수정 페이지로 이동
+          window.location.href = `edit.html?id=${postId}`;
+        } else {
+          alert('비밀번호가 틀립니다.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('비밀번호 확인 중 오류가 발생했습니다.');
+      });
+    }
   </script>
 </body>
 </html>
